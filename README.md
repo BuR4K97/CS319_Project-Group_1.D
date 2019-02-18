@@ -26,5 +26,6 @@ The repository is to implement the project in CS319 course. Group : 1.D
   The map of the game in our project will be different than the original one. Unit types will be changed (there will be some special types   of units as hereos with different power sets and different abilities). Since defenders can roll at most two dice, where attackers roll     three dice, we might make some changes in the favor of defense, in order to fix imbalance, and so on.
   
 -References
+
 https://shop.hasbro.com/tr-tr/product/risk-game:2C7C6F52-5056-9047-F5DD-EB8AC273BA4C
 https://en.wikipedia.org/wiki/Risk_(game)
