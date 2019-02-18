@@ -17,7 +17,8 @@ The repository is to implement the project in CS319 course. Group : 1.D
 -Object Oriented Programming(Risk Board Game)
 
 -Brief description of your project topic(the real one):
-  Risk is a strategy board game of diplomacy, conflict and conquest[1] for two to six players. The standard version is played on a board     depicting a political map of Earth, divided into forty-two territories, which are grouped into six continents. Turn rotates among players   who control armies of playing pieces with which they attempt to capture territories from other players, with results determined by dice     rolls. Players may form and dissolve alliances during the course of the game. The goal of the game is to occupy every territory on the     board and in doing so, eliminate the other players.[2] The game can be lengthy, requiring several hours to multiple days to finish.         European versions are structured so that each player has a limited "secret mission" objective that shortens the game.
+  
+  Risk is a strategy board game of diplomacy, conflict and conquest[1] for two to six players. The standard version is played on a board  depicting a political map of Earth, divided into forty-two territories, which are grouped into six continents. Turn rotates among players   who control armies of playing pieces with which they attempt to capture territories from other players, with results determined by dice rolls. Players may form and dissolve alliances during the course of the game. The goal of the game is to occupy every territory on the board and in doing so, eliminate the other players.[2] The game can be lengthy, requiring several hours to multiple days to finish. European versions are structured so that each player has a limited "secret mission" objective that shortens the game.
 
 -Brief description of what you will do, your requirements
  The digital version of the game will be implemented by using object oriented software programming.
