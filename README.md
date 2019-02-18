@@ -11,7 +11,7 @@ The repository is to implement the project in CS319 course. Group : 1.D
           Burak Yeni - burak33yeni
           Esad Burak Altinyazar - esadburak
           Anar Huseynov - AnarHuseynov00
-          Yigit Kutay Gulben - yigitkg
+          Yigit Kutay Gulben - yigitk
           Nurlan Farzaliyev - Nurl4n
 
 -Object Oriented Programming(Risk Board Game)
