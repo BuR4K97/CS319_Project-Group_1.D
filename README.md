@@ -26,6 +26,7 @@ The repository is to implement the project in CS319 course. Group : 1.D
  Deciding on how we are going to implement and add some features such as visual effects, specific theme and etc.
  
 -What are the differences between your project and the real one, in short?
+
   The map of the game in our project will be different than the original one. Unit types will be changed (there will be some special types of units as hereos with different power sets and different abilities). Since defenders can roll at most two dice, where attackers roll three dice, we might make some changes in the favor of defense, in order to fix imbalance, and so on.
   
 -References
