@@ -6,6 +6,7 @@ The repository is to implement the project in CS319 course. Group : 1.D
 -Group number: 1D
 
 -Each group member name (Please select one. Ex: "Fantastic 4"):
+
           Burak Mutlu - BuR4K97
           Burak Yeni - burak33yeni
           Esad Burak Altinyazar - esadburak
