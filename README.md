@@ -1,13 +1,15 @@
 # CS319_Project-Group_1.D
 The repository is to implement the project in CS319 course. Group : 1.D
 
--Project name 
+-Project name: Risk Takers
 
--Group number 1D
+-Group number: 1D
 
--Each group member name (Please select one. Ex: "Fantastic 4")
+-Each group member name (Please select one. Ex: "Fantastic 4"):
+          
+      
 
--Object Oriented Programming(Risk Board Game
+-Object Oriented Programming(Risk Board Game)
 
 -Brief description of your project topic(the real one)
 
