@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.ArrayList;//deneme
 
 public class Dice {
 
