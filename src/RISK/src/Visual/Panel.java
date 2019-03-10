@@ -18,7 +18,7 @@ public class Panel extends JPanel{
 		mouseListener = new MouseListener();
 		this.addMouseListener(mouseListener);
 		try {
-			File file = new File("C:\\Users\\BURAK YENI\\Desktop\\Risk.png");
+			File file = new File("C:\\Users\\USER_NAME\\Desktop\\Risk.png");
 			colorMap = ImageIO.read(file);
 		} catch(IOException e) {}
 	}
