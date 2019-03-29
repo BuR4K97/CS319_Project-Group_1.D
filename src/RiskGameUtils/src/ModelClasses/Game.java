@@ -1,5 +1,7 @@
 package ModelClasses;
+
 import java.util.ArrayList;
+import ModelClasses.GameLoader.GAME_MODE;
 
 public class Game {
 	
@@ -9,7 +11,8 @@ public class Game {
 	
 	public static void update() {
 		boolean actionRequest = true, actionInStages = true ; int actionAmount = 0; 
-		Territory sourceTerritory = new Territory(""), targetTerritory = new Territory("");
+		Territory sourceTerritory = new DefaultRiskTerritory(DefaultRiskMode.TERRITORIES.ALASKA, DefaultRiskMode.CONTINENTS.AFRICA)
+				, targetTerritory = sourceTerritory;
 		if(actionRequest) {
 			if(Turn.activePhase == Turn.TURN_PHASE.DRAFT) {
 				Turn.activePlayer.addUnitsToTerritory(targetTerritory, actionAmount);
@@ -32,7 +35,7 @@ public class Game {
 			players.add(new Player(("Player" + (i + 1)), Player.randColor()
 					, Player.randColor(), Player.randColor()));
 		
-		GameLoader.loadTerritoryGraph(GameLoader.GAME_MODE.DEFAULT);
+		GameLoader.loadTerritoryGraph(GAME_MODE.DEFAULT);
 		territories = GameLoader.territories;
 		
 		int distributionCount = territories.size();

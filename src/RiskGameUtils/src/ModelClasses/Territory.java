@@ -1,31 +1,28 @@
 package ModelClasses;
 
-public class Territory implements Combatable {
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-	private String territoryName;
-	private int unitNumber;
-	private Player playerCaptured;
-	private TerritoryGraph graphConnected;
+public abstract class Territory implements Combatable, Serializable {
+
+	protected int unitNumber;
+	protected Player playerCaptured;
+	protected TerritoryGraph graphConnected;
 	
-	public Territory(String territoryName) {
-		this.territoryName = territoryName;
+	public Territory() {
 		unitNumber = 0;
 		playerCaptured = null;
 		graphConnected = null;
 	}
 	
-	public String getName() { return this.territoryName; }
 	public void setPlayer(Player playerCaptured) { this.playerCaptured = playerCaptured; }
 	public Player getPlayer() { return this.playerCaptured; }
 	public int getUnitNumber() { return this.unitNumber; }
 	public void connectToGraph(TerritoryGraph graphToConnect) { graphConnected = graphToConnect; }
 	
-	public Territory stateCopy() {
-		Territory copy = new Territory(territoryName);
-		copy.playerCaptured = playerCaptured;
-		copy.unitNumber = unitNumber;
-		return copy;
-	}
+	public abstract Territory stateCopy(); 
 	
 	public void addUnits(int unitToAdd) {
 		unitNumber += unitToAdd;
@@ -44,12 +41,21 @@ public class Territory implements Combatable {
 		return !(playerCaptured == targetTerritory.playerCaptured);
 	}
 	
-	public void print() { 
-		System.out.print(territoryName + ":\t");
-		if(playerCaptured != null)
-			System.out.print("The player captured: " + playerCaptured.getName() + "\t<->\tThe unit: " + unitNumber);
-		else 
-			System.out.print("The unit: " + unitNumber);
+	public abstract void print();
+	
+	/**
+	private void writeObject(ObjectOutputStream objectBuffer) throws ClassNotFoundException, IOException {
+		objectBuffer.defaultWriteObject();
+		
+		objectBuffer.
 	}
+	
+	private void readObject(ObjectInputStream objectBuffer) throws ClassNotFoundException, IOException {
+		objectBuffer.defaultReadObject();
+		
+		objectBuffer.readObject()
+	}
+	**/
+	
 	
 }//endClass

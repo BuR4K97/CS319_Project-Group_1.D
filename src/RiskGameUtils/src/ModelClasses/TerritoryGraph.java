@@ -1,11 +1,12 @@
 package ModelClasses;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TerritoryGraph {
+public class TerritoryGraph implements Serializable {
 	
-	private static class GraphNode {
+	private static class GraphNode implements Serializable {
 		private Territory territory;
-		private ArrayList<GraphNode> connectedTerritories;
+		private ArrayList<GraphNode> connectedTerritories = new ArrayList<GraphNode>();
 		
 		private boolean connectTerritory(GraphNode connect) {
 			if(this == connect) return false;
@@ -60,7 +61,7 @@ public class TerritoryGraph {
 	public boolean connectTerritory(Territory sourceTerritory, Territory targetTerritory) {
 		GraphNode sourceGraphNode = findGraphNode(sourceTerritory), targetGraphNode;
 		if(sourceGraphNode != null) {
-			targetGraphNode = findGraphNode(sourceTerritory);
+			targetGraphNode = findGraphNode(targetTerritory);
 			if(targetGraphNode != null) {
 				sourceGraphNode.connectTerritory(targetGraphNode);
 				return targetGraphNode.connectTerritory(sourceGraphNode);
