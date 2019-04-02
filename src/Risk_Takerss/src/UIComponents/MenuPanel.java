@@ -22,7 +22,7 @@ public class MenuPanel extends DynamicPanel {
 		this.setPreferredSize(new Dimension(1920, 1080));
 		setLayout(null);
 		try {
-			backgroundPhoto = new ImageIcon("C:\\Users\\User\\Desktop\\Risk_Takerss\\backgroundImages\\MenuBackground.jpg").getImage();
+			backgroundPhoto = new ImageIcon("backgroundImages\\MenuBackground.jpg").getImage();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -32,7 +32,7 @@ public class MenuPanel extends DynamicPanel {
 				MainApplication.initializeGame();
 			}
 		});
-		btnPlayGame.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\Risk_Takerss\\backgroundImages\\PlayGameButton.png"));
+		btnPlayGame.setIcon(new ImageIcon("backgroundImages\\PlayGameButton.png"));
 		btnPlayGame.setBounds(819, 682, 299, 65);
 		btnPlayGame.setBackground(new Color(0,0,0,0));
 		add(btnPlayGame);
@@ -45,7 +45,7 @@ public class MenuPanel extends DynamicPanel {
 		this.setPreferredSize(new Dimension(1920, 1080));
 		setLayout(null);
 		try {
-			backgroundPhoto = new ImageIcon("C:\\Users\\User\\Desktop\\Risk_Takerss\\backgroundImages\\MenuBackground.jpg").getImage();
+			backgroundPhoto = new ImageIcon("backgroundImages\\MenuBackground.jpg").getImage();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -55,7 +55,7 @@ public class MenuPanel extends DynamicPanel {
 				MainApplication.initializeGame();
 			}
 		});
-		btnPlayGame.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\Risk_Takerss\\backgroundImages\\PlayGameButton.png"));
+		btnPlayGame.setIcon(new ImageIcon("backgroundImages\\PlayGameButton.png"));
 		btnPlayGame.setBounds(819, 682, 299, 65);
 		btnPlayGame.setBackground(new Color(0,0,0,0));
 		btnPlayGame.setBorderPainted(false);
