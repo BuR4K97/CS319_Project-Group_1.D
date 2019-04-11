@@ -20,6 +20,7 @@ public class Pixel {
 	static ArrayList<Coordinate> listCopy = new ArrayList<Coordinate>();
 	public static void main(String[] args) throws IOException{
 
+		
 		// frame
 		JFrame frame = new JFrame("alper");
 		frame.setUndecorated(true);
@@ -48,7 +49,7 @@ public class Pixel {
 		JPanel panel = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				for(int i = 0;i < list.size(); i++) {
+				for(int i = 0;i < list.size(); i++) { // - or +
 					g.setColor(new Color(  Math.abs(red + list.get(i).x/ jump) % 255, 
 							Math.abs(green + list.get(i).x/ jump) % 255, Math.abs(blue + list.get(i).x/ jump) % 255));
 					g.fillRect(list.get(i).x, list.get(i).y, x, y);
@@ -56,6 +57,7 @@ public class Pixel {
 			}
 		};
 		panel.setPreferredSize(new Dimension(1920, 1080));
+		panel.setBackground(Color.BLACK);
 		// timer for diassemble
 		Timer di = new Timer(5, new ActionListener() {
 			int movement = 10;

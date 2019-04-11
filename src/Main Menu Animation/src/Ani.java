@@ -32,11 +32,11 @@ public class Ani {
 
 		};
 		panel.setVisible(true);
-		//panel.setBackground(Color.WHITE);
+		panel.setBackground(Color.BLACK);
 		frame.add(panel);
 		// timer
-		int movement = 5;
-		Timer addRectTimer = new Timer(40, new ActionListener() {
+		int movement = 8;
+		Timer addRectTimer = new Timer(30, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				int a = (int)(Math.random() * 4) + 1;
@@ -51,11 +51,12 @@ public class Ani {
 				}else { // top of screen
 					list.add(new MyRectangle((int)(Math.random() * 1920), -10 ,c, 0, movement+(int)(Math.random()*movement)));
 				}
+				panel.repaint();
 			}
 		});
 		addRectTimer.start();
 		// timer
-		Timer moveRectTimer = new Timer(5, new ActionListener() {
+		Timer moveRectTimer = new Timer(10, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for(int i = 0; i < list.size(); i++) {
 					list.get(i).move();
