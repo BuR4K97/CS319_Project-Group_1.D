@@ -41,7 +41,6 @@ public class AnimationVisualBufferAttackAnimation extends Animation {
 	ArrayList<Integer> updateIndex = new ArrayList<Integer>();
 	private int recentLeft, recentRight;
 	private boolean leftDirection = true, rightDirection = true;
-	
 	@Override
 	public boolean execute() {
 		if(terminateImmediate) return false; 
@@ -97,6 +96,10 @@ public class AnimationVisualBufferAttackAnimation extends Animation {
 			}
 		}
 		else if(terminating) {
+			AnimationHandler.terminateCharacterDisplayAnimation(DISPLAY_CHARACTER_COORDINATES[0]);
+			AnimationHandler.terminateCharacterDisplayAnimation(DISPLAY_CHARACTER_COORDINATES[1]);
+			AnimationHandler.terminateCharacterDisplayAnimation(DISPLAY_CHARACTER_COORDINATES[2]);
+			AnimationHandler.terminateCharacterDisplayAnimation(DISPLAY_CHARACTER_COORDINATES[3]);
 			recentLeft += VisualTerritory.PIXEL_JUMP;
 			recentRight -= VisualTerritory.PIXEL_JUMP;
 			updateIndex.clear();
@@ -132,22 +135,58 @@ public class AnimationVisualBufferAttackAnimation extends Animation {
 		return true;
 	}
 	
+	
+	private static final Coordinate[] DISPLAY_CHARACTER_COORDINATES = new Coordinate[] {
+			new Coordinate(VisualTerritory.PIXEL_JUMP * 23, VisualTerritory.PIXEL_JUMP * 5)
+			, new Coordinate(VisualTerritory.PIXEL_JUMP * 43, VisualTerritory.PIXEL_JUMP * 5)
+			, new Coordinate(VisualTerritory.PIXEL_JUMP * 73, VisualTerritory.PIXEL_JUMP * 5)
+			, new Coordinate(VisualTerritory.PIXEL_JUMP * 93, VisualTerritory.PIXEL_JUMP * 5)
+	};
 	private void update() {
 		Coordinate temp = targetCoordinate;
-		if(targetTerritory.getPlayer() != targetPlayer) 
-			targetCoordinate = new Coordinate(ApplicationFrame.width, 0); 
-		else if(sourceTerritory.getUnitNumber() < Combat.MIN_ATTACK_UNIT) {
+		int source = sourceTerritory.getUnitNumber();
+		int target = targetTerritory.getUnitNumber();
+		boolean victory = false;
+		if(targetTerritory.getPlayer() != targetPlayer) {
+			targetCoordinate = new Coordinate(ApplicationFrame.width, 0);
+			victory = true;
+		}
+		else if(sourceTerritory.getUnitNumber() < Combat.MIN_ATTACK_UNIT)
 			targetCoordinate = new Coordinate(-VisualTerritory.PIXEL_JUMP, 0); 
-		}
-		else {
-			double source = sourceTerritory.getUnitNumber();
-			double target = targetTerritory.getUnitNumber();
-			targetCoordinate = VisualTerritory.getIndexedCoordinate(source / (target + source), 0); 
-		}
-		if(temp == null)
+		else 
+			targetCoordinate = VisualTerritory.getIndexedCoordinate( ((double)source) / (target + source), 0);
+		if(temp == null) {
+			AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(source / 10), DISPLAY_CHARACTER_COORDINATES[0]);
+			AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(source % 10), DISPLAY_CHARACTER_COORDINATES[1]);
+			AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(target / 10), DISPLAY_CHARACTER_COORDINATES[2]);
+			AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(target % 10), DISPLAY_CHARACTER_COORDINATES[3]);
 			firstPhase = true;
-		else if(temp.findDistance(targetCoordinate) != 0)
-			firstPhase = true;
+		}
+		else if(temp.findDistance(targetCoordinate) != 0) {
+			AnimationHandler.terminateCharacterDisplayAnimation(DISPLAY_CHARACTER_COORDINATES[0]);
+			AnimationHandler.terminateCharacterDisplayAnimation(DISPLAY_CHARACTER_COORDINATES[1]);
+			AnimationHandler.terminateCharacterDisplayAnimation(DISPLAY_CHARACTER_COORDINATES[2]);
+			AnimationHandler.terminateCharacterDisplayAnimation(DISPLAY_CHARACTER_COORDINATES[3]);
+			if(!victory) {
+				AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(source / 10)
+						, DISPLAY_CHARACTER_COORDINATES[0]);
+				AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(source % 10)
+						, DISPLAY_CHARACTER_COORDINATES[1]);
+				AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(target / 10)
+						, DISPLAY_CHARACTER_COORDINATES[2]);
+				AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(target % 10)
+						, DISPLAY_CHARACTER_COORDINATES[3]);
+			}
+			else {
+				AnimationHandler.requestCharacterDisplayAnimation(Integer.toString((source + target) / 10)
+						, DISPLAY_CHARACTER_COORDINATES[0]);
+				AnimationHandler.requestCharacterDisplayAnimation(Integer.toString((source + target) % 10)
+						, DISPLAY_CHARACTER_COORDINATES[1]);
+				AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(0), DISPLAY_CHARACTER_COORDINATES[2]);
+				AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(0), DISPLAY_CHARACTER_COORDINATES[3]);
+			}
+			firstPhase = true; 
+		}
 	}
 	
 	private static int normalizationModifier(int left, int right) {
@@ -163,10 +202,7 @@ public class AnimationVisualBufferAttackAnimation extends Animation {
 
 	@Override
 	protected void terminate() {
-		if(visualBuffer == null) return;
-		
-		for(int i = 0; i < visualBuffer.size(); i++)
-			visualBuffer.get(i).pixelColor = null;
+		AnimationHandler.visualBuffer.destroyBuffer();
 	}
 	
 	

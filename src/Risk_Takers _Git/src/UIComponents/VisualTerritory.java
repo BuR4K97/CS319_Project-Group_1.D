@@ -48,6 +48,11 @@ public abstract class VisualTerritory implements Serializable {
 		return new Coordinate(currX, currY);
 	}
 	
+	public static boolean checkPixelJumpHierarchy(Coordinate check) {
+		return check.xCoord % 12 == 0 && check.yCoord % 12 == 0;
+	}
+
+	
 	public abstract VisualTerritory copy();
 	public abstract void print();
 	

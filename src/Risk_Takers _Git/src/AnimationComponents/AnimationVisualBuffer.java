@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import AnimationComponents.AnimationVisualBuffer.VisualCoordinate.DRAW_MODE;
 import Controller.GameController;
 import Controller.MainApplication;
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
@@ -58,24 +59,29 @@ public class AnimationVisualBuffer {
 	}
 	
 	private void paintVisualBufferInAttackAnimationMode(Graphics painter) {
-		int pixelJump = (VisualTerritory.PIXEL_JUMP - VisualTerritory.DEFAULT_DRAW_SIZE) / 2;
-		int drawSize = (VisualTerritory.DEFAULT_DRAW_SIZE - (2 * pixelJump)) / 2;
-		pixelJump += drawSize;
-		
 		for(VisualCoordinate coordinate : visualBuffer) {
 			if(coordinate.pixelColor == null) continue;
 			
-			painter.setColor(coordinate.pixelColor);
-			painter.fillRect(coordinate.pixelPosition.xCoord, coordinate.pixelPosition.yCoord
-					, VisualTerritory.DEFAULT_DRAW_SIZE, VisualTerritory.DEFAULT_DRAW_SIZE);
+			if(coordinate.drawMode == DRAW_MODE.NORMAL) {
+				painter.setColor(coordinate.pixelColor);
+				painter.fillRect(coordinate.pixelPosition.xCoord, coordinate.pixelPosition.yCoord
+						, coordinate.drawSize, coordinate.drawSize); 
+			}
+			else if(coordinate.drawMode == DRAW_MODE.BLACK) {
+				painter.setColor(Color.BLACK);
+				painter.fillRect(coordinate.pixelPosition.xCoord, coordinate.pixelPosition.yCoord
+						, coordinate.drawSize, coordinate.drawSize); 
+			}
 		}
 	}
 	
 	public static class VisualCoordinate {
+		public static enum DRAW_MODE { NORMAL, BLACK};
 		
 		public Coordinate pixelPosition;
 		public Color pixelColor;
-		public int drawSize;
+		public DRAW_MODE drawMode = DRAW_MODE.NORMAL;
+		public int drawSize = VisualTerritory.DEFAULT_DRAW_SIZE;
 		
 		private VisualCoordinate(Coordinate pixelPosition) {
 			this.pixelPosition = pixelPosition;

@@ -8,7 +8,6 @@ public class Coordinate implements Serializable {
 	
 	public int xCoord;
 	public int yCoord;
-	public int visualBufferXCoordIndex, visualBufferYCoordIndex;
 	
 	public Coordinate(int xCoord, int yCoord){
 		this.xCoord = xCoord;
@@ -51,6 +50,10 @@ public class Coordinate implements Serializable {
 	
 	public String toString() {
 		return "<" + xCoord + ", " + yCoord + ">";
+	}
+	
+	public boolean equals(Coordinate check) {
+		return (xCoord == check.xCoord) && (yCoord == check.yCoord);
 	}
 	
 }

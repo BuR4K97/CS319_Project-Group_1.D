@@ -3,6 +3,7 @@ package AnimationComponents;
 import java.util.ArrayList;
 
 import ModelClasses.Territory;
+import UIComponents.Coordinate;
 import UIComponents.VisualTerritory;
 
 public class AnimationHandler {
@@ -44,6 +45,15 @@ public class AnimationHandler {
 
 		animations.add(new AnimationVisualBufferAttackAnimation(sourceTerritory, targetTerritory));
 	}
+	
+	public static void requestCharacterDisplayAnimation(String animatedCharacter, Coordinate displayCoordinate) {
+		for(Animation animation : animations)
+			if(animation instanceof CharacterDisplayAnimation)
+				if(((CharacterDisplayAnimation)animation).equals(animatedCharacter, displayCoordinate))
+					return;
+		
+		animations.add(new CharacterDisplayAnimation(animatedCharacter, displayCoordinate));
+	}
 
 	public static void terminateMouseOnTerritoryAnimation(VisualTerritory animateTerritory) {
 		if(animateTerritory == null) return;
@@ -70,6 +80,13 @@ public class AnimationHandler {
 				animation.terminating = true;
 	}
 
+	public static void terminateCharacterDisplayAnimation(Coordinate displayCoordinate) {
+		for(Animation animation : animations)
+			if(animation instanceof CharacterDisplayAnimation)
+				if(((CharacterDisplayAnimation)animation).equals(displayCoordinate))
+					animation.terminating = true;
+	}
+	
 	public static boolean suspendVisualTerritoryPanel() {
 		for(Animation animation : animations) {
 			if(animation instanceof AttackAnimation)
@@ -83,6 +100,8 @@ public class AnimationHandler {
 	public static boolean suspendAttackAnimationTermination() {
 		for(Animation animation : animations) {
 			if(animation instanceof AnimationVisualBufferAttackAnimation)
+				return true;
+			if(animation instanceof CharacterDisplayAnimation)
 				return true;
 		}
 		return false;

@@ -32,7 +32,6 @@ public class TerritorialImageAnalyzer {
 			}
 		}
 		return true;
-
 		
 		/**
 		final int COMBINATIONAL_RANGE_FOR_DIRECTION = 1;
@@ -79,6 +78,7 @@ public class TerritorialImageAnalyzer {
 		**/
 	}
 	
+	/**
 	public static boolean constructVisualBuffer(VisualTerritory visualTerritory, int rasterization_scale, int[] offsets) {
 		if(visualTerritory.coordinates.size() == 0) return false;
 		
@@ -334,6 +334,7 @@ public class TerritorialImageAnalyzer {
 		}
 		
 	}//endInnerClass
+	**/
 	
 	/**
 	//Not working in correct manner
