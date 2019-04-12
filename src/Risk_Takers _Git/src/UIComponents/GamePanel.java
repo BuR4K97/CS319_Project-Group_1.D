@@ -10,6 +10,7 @@ import javax.swing.JButton;
 
 import AnimationComponents.AnimationHandler;
 import Controller.GameController;
+import GameAssets.GameConstants;
 import HelperTools.ImageHandler;
 import ModelClasses.Territory;
 
@@ -23,9 +24,7 @@ public class GamePanel extends DynamicPanel {
 	public GamePanel() {
 		if(GameController.activeMode == null) return;
 		
-		ImageHandler imageBuffer = new ImageHandler("maps\\OldMapTexture.jpeg");
-		imageBuffer.constructData();
-		backgroundTexture = imageBuffer.getBufferedData();
+		backgroundTexture = GameConstants.backgroundTexture;
 		
 		visualTerritoryPanel = new VisualTerritoryVisualization();
 		visualTerritoryPanel.initialize();

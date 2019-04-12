@@ -1,5 +1,6 @@
 package Controller;
 
+import GameAssets.GameConstants;
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
 import ModelClasses.Game;
 import UIComponents.GamePanel;
@@ -34,9 +35,11 @@ public class GameController {
 		if(loadMode == GAME_MODE.DEFAULT) activeMode = new DefaultRiskMode();
 		
 		activeMode.loadGameMode();
+		GameConstants.loadGameConstants();
 	}
 	
 	private static void destroyGameMode() {
+		GameConstants.destroyGameConstants();
 		activeMode.destroyGameMode();
 		activeMode = null;
 	}
