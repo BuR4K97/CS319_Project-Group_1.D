@@ -45,7 +45,7 @@ public class main {
 			}
 		}
 		// draw
-		JPanel panel = new JPanel() {
+		final JPanel panel = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				for (int i = 0; i < 1920; i+= jump) {
@@ -59,7 +59,7 @@ public class main {
 		};
 		// timer for animation
 		
-		Timer ani = new Timer(100, new ActionListener() {
+		Timer ani = new Timer(60, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//
 				if(Math.random() * 15 < 1) {
@@ -68,33 +68,14 @@ public class main {
 					numbers[2] = (int)(Math.random() * 10);
 					numbers[3] = (int)(Math.random() * 10);
 				}
-				//		list[(int)(Math.random() *(1920 / jump))][(int)(Math.random() *(1080 / jump))].big = true;
-				for (int i = 0; i < 1920; i+= jump) {
-					for(int j = 0; j< 1080; j+= jump) {
-						if(list[i / jump][j / jump].big) {
-							if(list[i / jump][j / jump].border < jump) {
-								list[i / jump][j / jump].border++;
-							} else if(list[i / jump][j / jump].border == jump) {
-								//	list[i / jump][j / jump].border--;
-								//	list[i / jump][j / jump].big = false;
-							}
-						}else {
-							if(list[i / jump][j / jump].border > min) {
-								list[i / jump][j / jump].border--;
-							} else if(list[i / jump][j / jump].border == min) {
-								//	list[i / jump][j / jump].big = true;
-							}
-						}
-					}
-				}
-				panel.repaint();
 			}
 		});
 		ani.start();
 		// timer for numberaAnimation
-		Timer numberaAnimation = new Timer(10, new ActionListener() {
+		Timer numberaAnimation = new Timer(60, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setNumbersToPanel();
+				drawNumberOn(new Coordinate(5, 5), 10, 5);
+				panel.repaint();
 			}
 		});
 		numberaAnimation.start();
@@ -106,450 +87,230 @@ public class main {
 	public static void makeAreaB(Coordinate topLeftCoordinate, int lenth) {
 		for(int i = topLeftCoordinate.x; i < topLeftCoordinate.x + lenth; i++) {
 			for(int j = topLeftCoordinate.y; j < topLeftCoordinate.y + lenth; j++) {
-				if(list[i][j].big != true)
-					list[i][j].big = true;
+				if(list[i][j].border < 12)
+					list[i][j].border++;
 			}
 		}
 	}
 	public static void makeAreaS(Coordinate topLeftCoordinate, int lenth) {
 		for(int i = topLeftCoordinate.x; i < topLeftCoordinate.x + lenth; i++) {
 			for(int j = topLeftCoordinate.y; j < topLeftCoordinate.y + lenth; j++) {
-				if(list[i][j].big != false)
-					list[i][j].big = false;
+				if(list[i][j].border > 8)
+					list[i][j].border--;
 			}
 		}
 	}
-	public static void setNumbersToPanel() {
-		for(int i = 0; i < 4; i++) {
-			if(i == 0 || i == 1) {
-				if(0 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 18), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 18), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 28), 5);
-				}
-				if(1 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 8), 5);
-					makeAreaS(new Coordinate(33 + i * 20, 8), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 13), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(33 + i * 20, 13), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 18), 5);
-					makeAreaS(new Coordinate(33 + i * 20, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 23), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(33 + i * 20, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 28), 5);
-				}
-				if(2 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 8), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 18), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(33 + i * 20, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 28), 5);
-				}
-				if(3 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 8), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 28), 5);
-				}
-				if(4 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20, 8), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 23), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 28), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 28), 5);
-				}
-				if(5 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(33 + i * 20, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 28), 5);
-				}
-				if(6 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(33 + i * 20, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 18), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 28), 5);
-				}
-				if(7 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 8), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 13), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 18), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 23), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 28), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 28), 5);
-				}
-				if(8 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 18), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 28), 5);
-				}
-				if(9 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20, 28), 5);
-				}
-
-
-			} else if(i == 2 || i == 3) {
-				if(0 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 18), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 18), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 28), 5);
-				}
-				if(1 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 8), 5);
-					makeAreaS(new Coordinate(33 + i * 20 + diff, 8), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 13), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(33 + i * 20 + diff, 13), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 18), 5);
-					makeAreaS(new Coordinate(33 + i * 20 + diff, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 23), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(33 + i * 20 + diff, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 28), 5);
-				}
-				if(2 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 8), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 18), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(33 + i * 20 + diff, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 28), 5);
-				}
-				if(3 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 8), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 28), 5);
-				}
-				if(4 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 8), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 23), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 28), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 28), 5);
-				}
-				if(5 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(33 + i * 20 + diff, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 28), 5);
-				}
-				if(6 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(33 + i * 20 + diff, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 18), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 28), 5);
-				}
-				if(7 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 8), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 13), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 18), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 23), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 28), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 28), 5);
-				}
-				if(8 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 18), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 28), 5);
-				}
-				if(9 == numbers[i]) {
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 8), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 8), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 13), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 13), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 13), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 18), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 18), 5);
-
-					makeAreaS(new Coordinate(23 + i * 20 + diff, 23), 5);
-					makeAreaS(new Coordinate(28 + i * 20 + diff, 23), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 23), 5);
-
-					makeAreaB(new Coordinate(23 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(28 + i * 20 + diff, 28), 5);
-					makeAreaB(new Coordinate(33 + i * 20 + diff, 28), 5);
-				}
-
-
-
-			}
-
+	public static void drawNumberOn(Coordinate topLeft, int blockLength, int number) {
+		if(number == 0) {
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
 		}
+		if(number == 1) {
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		if(number == 2) {
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		if(number == 3) {
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		if(number == 4) {
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		if(number == 5) {
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		if(number == 6) {
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		if(number == 7) {
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		if(number == 8) {
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		if(number == 9) {
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaS(new Coordinate(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Coordinate(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Coordinate(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		
 	}
 }
