@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 public class DrawingString{
+	boolean end = false;
 	public int x;
 	public int y;
 	public int minLength;
@@ -17,14 +18,15 @@ public class DrawingString{
 	public String string;
 	public ArrayList<Rect> list = new ArrayList<Rect>();
 	int startAnimationDelay = 15;
-	int startAnimationSpeed = 10;
-	int endAnimationDelay = 10;
-	int endAnimationSpeed = 10;
+	int startAnimationSpeed = 25;
+	int endAnimationDelay = 15;
+	int endAnimationSpeed = 25;
 	Timer startAnimation, endAnimation;
 	Timer mexicoWave;
 	int mexicoWaveCoordinate;
-	int mexicoWaveDelay = 30;
+	int mexicoWaveDelay = 1;
 	int mexicoWaveLength;
+	boolean mouseEntered = false;
 	public class Rect{
 		public int y;
 		public int x;
@@ -36,14 +38,15 @@ public class DrawingString{
 		public Rect(int xx, int yy) {			
 			border = minLength;
 			this.x = xx;
-			xCurrent = -minLength;
+			//xCurrent = -minLength;
+			xCurrent = (int)(Math.random() * 1920 / 2);
 			this.y = yy;
 			yEnd = 1080;
 		}
 	}
 	public DrawingString(int x, int y, int maxLength, String string) { // width = maxlength*5
 		this.maxLength = maxLength;
-		this.minLength = (int)(maxLength * 2 / 3);
+		this.minLength = (int)(maxLength * 6 / 7);
 		mexicoWaveLength = maxLength - minLength;
 		this.x = x;
 		this.y = y;
@@ -63,7 +66,7 @@ public class DrawingString{
 						list.get(i).endAnimation = false;
 					}
 					else if(list.get(i).y < list.get(i).yEnd && list.get(i).endAnimation) {
-						System.out.println("a");
+
 						list.get(i).y += endAnimationSpeed;
 						done = false;
 					}
@@ -72,8 +75,10 @@ public class DrawingString{
 						done = false;
 					}
 				}
-				if(done)
+				if(done) {
 					endAnimation.stop();
+					end = true;
+				}
 			}
 		});
 		//endAnimation.start();
@@ -129,7 +134,10 @@ public class DrawingString{
 	public void paint(Graphics g) {
 
 		for(int i = 0; i < list.size(); i++) {
-			g.setColor(Color.CYAN);
+			if(mouseEntered)
+				g.setColor(Color.CYAN);
+			else
+				g.setColor(Color.LIGHT_GRAY);
 			//g.drawRect(x, y, maxLength * string.length() * 4 , maxLength*5);
 			g.fillRect(list.get(i).xCurrent, list.get(i).y, list.get(i).border, list.get(i).border);
 		}
