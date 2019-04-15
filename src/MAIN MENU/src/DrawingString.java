@@ -24,7 +24,7 @@ public class DrawingString{
 	Timer startAnimation, endAnimation;
 	Timer mexicoWave;
 	int mexicoWaveCoordinate;
-	int mexicoWaveDelay = 1;
+	int mexicoWaveDelay = 15;
 	int mexicoWaveLength;
 	boolean mouseEntered = false;
 	public class Rect{
