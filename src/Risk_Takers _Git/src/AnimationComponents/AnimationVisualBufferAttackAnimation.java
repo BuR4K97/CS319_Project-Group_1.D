@@ -137,10 +137,10 @@ public class AnimationVisualBufferAttackAnimation extends Animation {
 	
 	
 	private static final Coordinate[] DISPLAY_CHARACTER_COORDINATES = new Coordinate[] {
-			new Coordinate(VisualTerritory.PIXEL_JUMP * 23, VisualTerritory.PIXEL_JUMP * 5)
-			, new Coordinate(VisualTerritory.PIXEL_JUMP * 43, VisualTerritory.PIXEL_JUMP * 5)
-			, new Coordinate(VisualTerritory.PIXEL_JUMP * 73, VisualTerritory.PIXEL_JUMP * 5)
-			, new Coordinate(VisualTerritory.PIXEL_JUMP * 93, VisualTerritory.PIXEL_JUMP * 5)
+			new Coordinate(VisualTerritory.PIXEL_JUMP * 25, VisualTerritory.PIXEL_JUMP * 7)
+			, new Coordinate(VisualTerritory.PIXEL_JUMP * 40, VisualTerritory.PIXEL_JUMP * 7)
+			, new Coordinate(VisualTerritory.PIXEL_JUMP * 110, VisualTerritory.PIXEL_JUMP * 7)
+			, new Coordinate(VisualTerritory.PIXEL_JUMP * 125, VisualTerritory.PIXEL_JUMP * 7)
 	};
 	private void update() {
 		Coordinate temp = targetCoordinate;
@@ -185,7 +185,7 @@ public class AnimationVisualBufferAttackAnimation extends Animation {
 				AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(0), DISPLAY_CHARACTER_COORDINATES[2]);
 				AnimationHandler.requestCharacterDisplayAnimation(Integer.toString(0), DISPLAY_CHARACTER_COORDINATES[3]);
 			}
-			firstPhase = true; 
+			firstPhase = true;
 		}
 	}
 	
