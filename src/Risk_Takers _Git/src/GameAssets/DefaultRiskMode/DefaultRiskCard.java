@@ -4,5 +4,11 @@ import ModelClasses.Card;
 
 public class DefaultRiskCard extends Card {
 
-	
+	DefaultRiskMode.TERRITORIES territory;
+	DefaultRiskMode.CONTINENTS continent;
+	public DefaultRiskCard() {
+		
+	}
+	 
+ 
 }
