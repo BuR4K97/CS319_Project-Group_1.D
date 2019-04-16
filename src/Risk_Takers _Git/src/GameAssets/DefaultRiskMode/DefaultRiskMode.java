@@ -34,6 +34,7 @@ public class DefaultRiskMode extends GameMode {
 	
 	public void checkStates(GameState prevState, GameState currState) {
 		//Implement this
+		
 	}
 	
 	public void loadTerritoryGraph() {
