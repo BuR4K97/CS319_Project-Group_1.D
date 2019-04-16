@@ -6,9 +6,9 @@ public class DefaultRiskCard extends Card {
 
 	DefaultRiskMode.TERRITORIES territory;
 	DefaultRiskMode.CONTINENTS continent;
-	public DefaultRiskCard() {
-		
+	
+	public DefaultRiskCard(CARD_TYPES cardType) {
+		super(cardType);
 	}
 	 
- 
 }
