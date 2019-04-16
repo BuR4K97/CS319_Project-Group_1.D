@@ -1,5 +1,6 @@
 package UIComponents;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +25,7 @@ public class GamePanel extends DynamicPanel {
 	public GamePanel() {
 		if(GameController.activeMode == null) return;
 		
+		setBackground(Color.BLACK);
 		backgroundTexture = GameConstants.backgroundTexture;
 		
 		visualTerritoryPanel = new VisualTerritoryVisualization();
@@ -104,7 +106,7 @@ public class GamePanel extends DynamicPanel {
 	
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
-		painter.drawImage(backgroundTexture, 0, 0, this);
+		//painter.drawImage(backgroundTexture, 0, 0, this);
 		visualTerritoryPanel.paint(painter);
 	}
 	
