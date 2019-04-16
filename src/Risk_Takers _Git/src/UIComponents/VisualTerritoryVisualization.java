@@ -113,9 +113,14 @@ public class VisualTerritoryVisualization {
 			currElement.paint(painter, selected);
 			
 			if(!AnimationHandler.suspendVisualTerritoryPanel()) {
-				painter.setColor(Color.BLACK);
-				if(currElement.mainCoordinate != null) painter.drawString("" + corresponding.getUnitNumber(), currElement.mainCoordinate.xCoord
-						, currElement.mainCoordinate.yCoord); 
+				if(currElement.mainCoordinate != null) { 
+					painter.setColor(Color.WHITE);
+					painter.fillRect(currElement.mainCoordinate.xCoord - 1, currElement.mainCoordinate.yCoord - VisualTerritory.PIXEL_JUMP
+							- 6, 1 * VisualTerritory.PIXEL_JUMP,  2 *VisualTerritory.PIXEL_JUMP);
+					painter.setColor(Color.BLACK);
+					painter.drawString("" + corresponding.getUnitNumber(), currElement.mainCoordinate.xCoord
+							, currElement.mainCoordinate.yCoord);
+				}
 			}
 		}
 	}
