@@ -30,23 +30,26 @@ public class CharacterDisplayAnimation extends Animation {
 			terminateImmediate = true;
 	}
 
-	private double drawSize = VisualTerritory.DEFAULT_DRAW_SIZE;
 	@Override
 	public boolean execute() {
 		if(terminateImmediate) return false;
 		
-		if(terminating) 
-			drawSize -= ANIMATION_MODIFIER;
-		else if(drawSize < UPPER_BOUND)
-			drawSize += ANIMATION_MODIFIER;
-		
-		for(VisualCoordinate coordinate : animateVisualCoordinates)
-			coordinate.drawSize = (int)drawSize;
-
-		if(animateVisualCoordinates.get(0).drawSize < LOWER_BOUND) {
+		boolean terminate = false;
+		for(VisualCoordinate coordinate : animateVisualCoordinates) {
+			if(terminating)
+				coordinate.drawSize -= ANIMATION_MODIFIER;
+			else if(coordinate.drawSize < UPPER_BOUND)
+				coordinate.drawSize += ANIMATION_MODIFIER;
+				
+			coordinate.drawMode = DRAW_MODE.WHITE;
+			if(coordinate.drawSize < LOWER_BOUND)
+				terminate = true;
+		}
+		if(terminate) {
 			terminate();
 			return false;
 		}
+
 		return true;
 	}
 
@@ -89,7 +92,6 @@ public class CharacterDisplayAnimation extends Animation {
 			selectCubeCoordinates(visualBuffer, cubeCoordinates[3]);
 			selectCubeCoordinates(visualBuffer, cubeCoordinates[4]);
 			selectCubeCoordinates(visualBuffer, cubeCoordinates[5]);
-			selectCubeCoordinates(visualBuffer, cubeCoordinates[7]);
 			selectCubeCoordinates(visualBuffer, cubeCoordinates[9]);
 			selectCubeCoordinates(visualBuffer, cubeCoordinates[10]);
 			selectCubeCoordinates(visualBuffer, cubeCoordinates[11]);

@@ -47,10 +47,10 @@ public class AnimationHandler {
 	}
 	
 	public static void requestCharacterDisplayAnimation(String animatedCharacter, Coordinate displayCoordinate) {
-		for(Animation animation : animations)
-			if(animation instanceof CharacterDisplayAnimation)
-				if(((CharacterDisplayAnimation)animation).equals(animatedCharacter, displayCoordinate))
-					return;
+		for(int i = 0; i < animations.size(); i++)
+			if(animations.get(i) instanceof CharacterDisplayAnimation)
+				if(((CharacterDisplayAnimation)animations.get(i)).equals(animatedCharacter, displayCoordinate))
+					animations.remove(i);
 		
 		animations.add(new CharacterDisplayAnimation(animatedCharacter, displayCoordinate));
 	}
