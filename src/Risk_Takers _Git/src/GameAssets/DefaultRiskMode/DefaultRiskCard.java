@@ -7,8 +7,20 @@ public class DefaultRiskCard extends Card {
 	DefaultRiskMode.TERRITORIES territory;
 	DefaultRiskMode.CONTINENTS continent;
 	
-	public DefaultRiskCard(CARD_TYPES cardType) {
-		super(cardType);
+	/**
+	 * @param cardtype - you should give SOLDIER or HORSE or CANNON
+	**/
+	public DefaultRiskCard(DefaultRiskMode.TERRITORIES territory, CARD_TYPES cardtype) {
+		super(cardtype);
+		this.territory = territory;
+	}
+	
+	/**
+	 * @param cardtype - you should give EASY or MODERATE or HARD
+	**/
+	public DefaultRiskCard(DefaultRiskMode.CONTINENTS continent, CARD_TYPES cardtype) {
+		super(cardtype);
+		this.continent = continent;
 	}
 	 
 }
