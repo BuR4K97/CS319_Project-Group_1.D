@@ -1,6 +1,8 @@
 package GameAssets.DefaultRiskMode;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import ModelClasses.Card;
 import ModelClasses.GameState;
 import Controller.GameMode;
 import HelperTools.FileHandler;
@@ -11,9 +13,10 @@ import UIComponents.VisualTerritory;
 
 public class DefaultRiskMode extends GameMode {
 	
-	public static final String VISUAL_DATA_FILENAME = "DefaultRiskVisualTerritories.so";
-	public static final String MODEL_DATA_FILENAME = "DefaultRiskTerritoryGraph.so";
-	public static final String PIXEL_MAP_FILENAME = "maps\\Risk.png";
+	public static final String VISUAL_DATA_FILENAME = "GameAssets\\DefaultRiskMode\\DefaultRiskVisualTerritories.so";
+	public static final String MODEL_DATA_FILENAME = "GameAssets\\DefaultRiskMode\\DefaultRiskTerritoryGraph.so";
+	public static final String PIXEL_MAP_FILENAME = "GameAssets\\DefaultRiskMode\\Risk.png";
+	public static final String CARD_SET_FILENAME = "GameAssets\\DefaultRiskMode\\DefaultRiskCardSet.so";
 	
 	public static enum TERRITORIES { ALASKA, NORTH_WEST_TERRITORY, GREENLAND, ALBERIA, ONTARIO
 		, EASTERN_CANADA, WESTERN_UNITED_STATES, EASTERN_UNITED_STATES, CENTRAL_AMERICA, VENEZUELA
@@ -59,6 +62,16 @@ public class DefaultRiskMode extends GameMode {
 		imageBuffer.constructData();
 		pixelMap = new PixelMap();
 		pixelMap.imageBuffer = imageBuffer.getBufferedData();
+	}
+
+	@Override
+	public void loadCardSet() {
+		FileHandler fileHandler = new FileHandler(CARD_SET_FILENAME);
+		ArrayList<Serializable> objects = fileHandler.loadDataFromFile();
+		
+		cardSet = new ArrayList<Card>();
+		for(Serializable currElement : objects)
+			cardSet.add((Card)currElement);
 	}
 	
 }

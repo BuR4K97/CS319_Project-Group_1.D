@@ -63,6 +63,4 @@ public class MouseInGameListener implements MouseMotionListener, MouseListener {
 		mouseReleased = true;
 	}
 	
-	
-	
 }

@@ -81,7 +81,6 @@ public class CharacterDisplayAnimation extends Animation {
 				xCoord = displayCoordinate.xCoord + (SCALE_MODIFIER * VisualTerritory.PIXEL_JUMP * i);
 				yCoord = displayCoordinate.yCoord + (SCALE_MODIFIER * VisualTerritory.PIXEL_JUMP * n);
 				cubeCoordinates[currIndex++] = new Coordinate(xCoord, yCoord);
-				System.out.println(cubeCoordinates[currIndex - 1]);
 			}
 		}
 

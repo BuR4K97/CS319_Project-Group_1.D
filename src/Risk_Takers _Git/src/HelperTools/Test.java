@@ -5,9 +5,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import GameAssets.DefaultRiskMode.DefaultRiskCard;
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
 import GameAssets.DefaultRiskMode.DefaultRiskTerritory;
 import GameAssets.DefaultRiskMode.DefaultRiskVisualTerritory;
+import ModelClasses.Card;
+import ModelClasses.Card.CARD_TYPES;
 import ModelClasses.Territory;
 import ModelClasses.TerritoryGraph;
 import UIComponents.Coordinate;
@@ -19,8 +22,80 @@ public class Test {
 		
 		processDefaultRiskTerritoryGraph(DefaultRiskMode.MODEL_DATA_FILENAME);
 		processDefaultRiskVisualTerritories(DefaultRiskMode.PIXEL_MAP_FILENAME, DefaultRiskMode.VISUAL_DATA_FILENAME);
+		processDefaultRiskCardSet(DefaultRiskMode.CARD_SET_FILENAME);
 		System.out.println("Terminated");
 		
+	}
+	
+	public static void processDefaultRiskCardSet(String dataFile) {
+		ArrayList<Card> cardSet = new ArrayList<>();
+		
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.ASIA, CARD_TYPES.EXTREME_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.EUROPE, CARD_TYPES.HARD_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.NORTH_AMERICA, CARD_TYPES.HARD_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.AFRICA, CARD_TYPES.MODERATE_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.SOUTH_AMERICA, CARD_TYPES.EASY_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.AUSTRALIA, CARD_TYPES.EASY_CONTINENT));
+		
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NOTHERN_EUROPE, CARD_TYPES.EXTREME_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NORTH_WEST_TERRITORY, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EASTERN_UNITED_STATES, CARD_TYPES.EXTREME_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.INDONESIA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SIBERIA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SOUTH_AFRICA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.JAPAN, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.AFGHANISTAN, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.MADAGASCAR, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.VENEZUELA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EGYPT, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EASTERN_CANADA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.ALBERIA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.WESTERN_AUSTRALIA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.IRKUTSK, CARD_TYPES.EXTREME_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.KAMCHATKA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.INDIA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.BRAZIL, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.ICELAND, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.YAKUTSK, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.URAL, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.WESTERN_UNITED_STATES, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.WESTERN_EUROPE, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.ARGENTINA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.ONTARIO, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NORTH_AFRICA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.CENTRAL_AFRICA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.MONGOLA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.GREENLAND, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EASTERN_AUSTRALIA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SOUTHEAST_ASIA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.GREAT_BRITAIN, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SOUTHERN_EUROPE, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.ALASKA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.CHINA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SCANDINAVIA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NEW_GUINESS, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.CENTRAL_AFRICA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EAST_AFRICA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.PERU, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.RUSIA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.MIDDLE_EAST, CARD_TYPES.EXTREME_UNIT));
+		
+		ArrayList<Serializable> objects = new ArrayList<Serializable>();
+		for(Card currElement : cardSet)
+			objects.add(currElement);
+		
+		FileHandler fileHandler = new FileHandler(dataFile);
+		fileHandler.saveDataToFile(objects);
+		
+		cardSet = new ArrayList<Card>();
+		for(Serializable currElement : objects)
+			cardSet.add((Card)currElement);
+		
+		Scanner scan = new Scanner(System.in);
+		for(Card currElement : cardSet) {
+			currElement.print();
+			scan.nextLine();
+		}
 	}
 	
 	public static void processDefaultRiskTerritoryGraph(String dataFile) {
