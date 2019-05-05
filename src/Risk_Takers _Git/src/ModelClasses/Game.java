@@ -134,6 +134,10 @@ public class Game {
 		}
 	}
 	
+	public static boolean activateCards(ArrayList<Card> activates) {
+		return Turn.activePlayer.activateCards(activates);
+	}
+	
 	private static int randColor() {
 		final int COLOR_CAP = 256;
 		return (int)(Math.random() * COLOR_CAP);

@@ -14,6 +14,10 @@ public class UnitPocket {
 		return cardSet;
 	}
 	
+	public int getUnitAmount() {
+		return unitAmount;
+	}
+	
 	public boolean activateCards(ArrayList<Card> cardSet) {
 		if(cardSet.size() == 1) {
 			if(cardSet.get(0).getActivationType() != CARD_ACTIVATION.INSTANT)
@@ -53,10 +57,6 @@ public class UnitPocket {
 			return true;	
 		}
 		else return false;
-	}
-	
-	public int getUnitAmount() {
-		return unitAmount;
 	}
 	
 }

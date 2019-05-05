@@ -1,6 +1,9 @@
 package Controller;
 
+import java.util.ArrayList;
+
 import AnimationComponents.AnimationHandler;
+import ModelClasses.Card;
 import ModelClasses.Combat;
 import ModelClasses.Game;
 import ModelClasses.Player;
@@ -130,5 +133,9 @@ public class GameInteractions {
 		if(targetTerritory == null) return false;
 		
 		return Game.isSelectable(sourceTerritory, targetTerritory);
+	}
+	
+	public static boolean requestCardActivation(ArrayList<Card> activates) {
+		return Game.activateCards(activates);
 	}
 }
