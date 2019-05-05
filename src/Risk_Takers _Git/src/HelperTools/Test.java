@@ -308,5 +308,7 @@ public class Test {
 		}
 		System.out.println("Total Territory: " + visualTerritories.size() + "\tSurrounded with " + pixelCount + " pixels");
 	}
-
+	public static void processDefaultRiskData() {
+		
+	}
 }
