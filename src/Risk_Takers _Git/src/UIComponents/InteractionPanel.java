@@ -17,24 +17,24 @@ import ModelClasses.Card;
 import ModelClasses.Territory;
 
 public class InteractionPanel {
-	
+
 	private JButton nextPhaseButton;
 	private JButton actionRequestButton;
 	private JTextField actionAmountField;
-	private JButton attackTillCapture; 
+	private JButton attackTillCapture;
 	private JButton attackPerRoll;
 	private JButton terminateAttack;
 	private JButton cardButton;
 	private JButton activateCards;
 	private JButton cardModeBackButton;
-	
+
 	public void initialize(VisualTerritoryVisualization visualTerritoryPanel) {
 		nextPhaseButton = new JButton("Next Phase");
 		actionRequestButton = new JButton("Action Request");
 		actionAmountField = new JTextField();
-		
+
 		nextPhaseButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameController.interactions.requestNextPhase();
@@ -43,9 +43,9 @@ public class InteractionPanel {
 				visualTerritoryPanel.getFocusTerritories()[0] = null; visualTerritoryPanel.getFocusTerritories()[1] = null;
 			}
 		});
-		
+
 		actionRequestButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -60,35 +60,35 @@ public class InteractionPanel {
 				}
 			}
 		});
-		
+
 		actionAmountField.setPreferredSize(new Dimension(90, 30));
-		
+
 		attackTillCapture = new JButton("Attack TillCapture");
 		attackPerRoll = new JButton("Attack PerRoll");
 		terminateAttack = new JButton("Terminate Attack");
 		attackTillCapture.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameController.interactions.requestAttackTillCapture();
 			}
-			
+
 		});
 		attackPerRoll.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameController.interactions.requestAttackPerRoll();
 			}
-			
+
 		});
 		terminateAttack.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameController.interactions.terminateCombat();
 			}
-		
+
 		});
 		attackTillCapture.setVisible(false);
 		attackTillCapture.setEnabled(false);
@@ -96,42 +96,42 @@ public class InteractionPanel {
 		attackPerRoll.setEnabled(false);
 		terminateAttack.setVisible(false);
 		terminateAttack.setEnabled(false);
-		
+
 		cardButton = new JButton("Show Cards");
 		cardButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				((GamePanel)MainApplication.frame.focusPanel).initializeCardMode();
 			}
-			
+
 		});
-		
+
 		activateCards = new JButton("Activate Cards");
 		activateCards.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
-			
+
 		});
 		cardModeBackButton = new JButton("Back");
 		cardModeBackButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				((GamePanel)MainApplication.frame.focusPanel).terminateCardMode();
 			}
-			
+
 		});
 		activateCards.setVisible(false);
 		activateCards.setEnabled(false);
 		cardModeBackButton.setVisible(false);
 		cardModeBackButton.setEnabled(false);
-		
+
 	}
-	
+
 	public void insertButtons(JPanel target) {
 		target.add(nextPhaseButton);
 		target.add(actionRequestButton);
@@ -143,7 +143,7 @@ public class InteractionPanel {
 		target.add(activateCards);
 		target.add(cardModeBackButton);
 	}
-	
+
 	public void activateCombatMode() {
 		nextPhaseButton.setEnabled(false);
 		nextPhaseButton.setVisible(false);
@@ -160,7 +160,7 @@ public class InteractionPanel {
 		terminateAttack.setVisible(true);
 		terminateAttack.setEnabled(true);
 	}
-	
+
 	public void deactivateCombatMode() {
 		nextPhaseButton.setEnabled(true);
 		nextPhaseButton.setVisible(true);
@@ -177,7 +177,7 @@ public class InteractionPanel {
 		terminateAttack.setVisible(false);
 		terminateAttack.setEnabled(false);
 	}
-	
+
 	public void activateCardMode() {
 		nextPhaseButton.setEnabled(false);
 		nextPhaseButton.setVisible(false);
@@ -192,7 +192,7 @@ public class InteractionPanel {
 		cardModeBackButton.setVisible(true);
 		cardModeBackButton.setEnabled(true);
 	}
-	
+
 	public void deactivateCardMode() {
 		nextPhaseButton.setEnabled(true);
 		nextPhaseButton.setVisible(true);

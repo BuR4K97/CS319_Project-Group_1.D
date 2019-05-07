@@ -31,31 +31,31 @@ public class OptionsPanel extends JPanel {
 		this.setPreferredSize(new Dimension(1920, 1080));
 		setLayout(null);
 		setBackground(Color.BLACK);
-		
+
 		stringList = new ArrayList<VisualString>();
-		
+
 		labelSettingsGif = new JLabel("");
 		labelSettingsGif.setBackground(new Color(0,0,0,0));
 		labelSettingsGif.setForeground(new Color(0,0,0,0));
 		labelSettingsGif.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\My Changes\\buttonImages\\settings.gif"));
 		labelSettingsGif.setBounds(436, 480, 148, 126);
 		add(labelSettingsGif);
-				
+
 		lblBack = new JLabel("");
 		lblBack.setFont(new Font("Algerian", Font.BOLD, 50));
 		lblBack.setBounds(47, 989, 139, 66);
 		add(lblBack);
-		
+
 		comboBoxMusic = new JComboBox();
 		comboBoxMusic.setToolTipText("Change Music");
 		comboBoxMusic.setSelectedIndex(-1);
 		comboBoxMusic.setBackground(new Color(254,233,222,100));
 		comboBoxMusic.setFont(new Font("Sylfaen", Font.PLAIN, 20));
 		comboBoxMusic.setForeground(new Color(254,233,222,100));
-		comboBoxMusic.setAlignmentX (Component.CENTER_ALIGNMENT);		
+		comboBoxMusic.setAlignmentX (Component.CENTER_ALIGNMENT);
 		comboBoxMusic.setBounds(840, 412, 248, 30);
 		add(comboBoxMusic);
-		
+
 		comboBoxTurnOnOffMusic = new JComboBox();
 		comboBoxTurnOnOffMusic.setToolTipText("Turn On Off Music");
 		comboBoxTurnOnOffMusic.setSelectedIndex(-1);
@@ -65,7 +65,7 @@ public class OptionsPanel extends JPanel {
 		comboBoxTurnOnOffMusic.setAlignmentX (Component.CENTER_ALIGNMENT);
 		comboBoxTurnOnOffMusic.setBounds(840, 528, 248, 30);
 		add(comboBoxTurnOnOffMusic);
-		
+
 		comboBoxChangeDifficulty = new JComboBox();
 		comboBoxChangeDifficulty.setToolTipText("Change Difficulty");
 		comboBoxChangeDifficulty.setSelectedIndex(-1);
@@ -75,16 +75,16 @@ public class OptionsPanel extends JPanel {
 		comboBoxTurnOnOffMusic.setAlignmentX (Component.CENTER_ALIGNMENT);
 		comboBoxChangeDifficulty.setBounds(840, 644, 248, 30);
 		add(comboBoxChangeDifficulty);
-				
+
 	}
-	
+
 	public void initialize()
 	{
 		stringList.add(new VisualString(770, 126, 14, "Options"));
 		stringList.add(new VisualString(47, 989, 10, "Back"));
 		//fireWorks = new Fireworks(); // I guess we dont need animation here, keep it simple))
 	}
-	
+
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
@@ -92,9 +92,13 @@ public class OptionsPanel extends JPanel {
 			stringList.get(i).paint(g);
 		//fireWorks.paint(g);
 	}
-	
+
 	public JLabel getBackLabel()
 	{
 		return lblBack;
+	}
+
+	public void setStringList() {
+		this.stringList = new ArrayList<VisualString>();
 	}
 }

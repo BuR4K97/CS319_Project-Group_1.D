@@ -19,19 +19,21 @@ import ModelClasses.Card;
 import ModelClasses.Territory;
 
 public class GamePanel extends DynamicPanel {
-	
+
 	private VisualTerritoryVisualization visualTerritoryPanel;
 	private InteractionPanel interactionPanel;
 	private TextualInGamePanel textualInGamePanel;
 	private VisualCardPanel visualCardPanel;
 	private BufferedImage backgroundTexture;
-	
+	private ArrayList<VisualString> stringList;
+
 	public GamePanel() {
 		if(GameController.activeMode == null) return;
-		
+		//setLayout(null);
+
 		setBackground(Color.BLACK);
 		backgroundTexture = GameConstants.backgroundTexture;
-		
+
 		visualTerritoryPanel = new VisualTerritoryVisualization();
 		visualTerritoryPanel.initialize();
 		interactionPanel = new InteractionPanel();
@@ -39,32 +41,32 @@ public class GamePanel extends DynamicPanel {
 		textualInGamePanel = new TextualInGamePanel();
 		textualInGamePanel.initialize();
 		visualCardPanel = new VisualCardPanel();
-		
+
 		visualTerritoryPanel.insertMouseListeners(this);
 		textualInGamePanel.insertLabels(this);
 		interactionPanel.insertButtons(this);
 	}
-	
+
 	public void initializeAttackScenario(Territory[] combatTerritories) {
 		interactionPanel.activateCombatMode();
 		visualTerritoryPanel.inCombatMode(combatTerritories);
 	}
-	
+
 	public void terminateAttackScenario() {
 		interactionPanel.deactivateCombatMode();
 		visualTerritoryPanel.outCombatMode();
 	}
-	
+
 	public void initializeCardMode() {
 		interactionPanel.activateCardMode();
 		visualCardPanel.inCardMode();
 	}
-	
+
 	public void terminateCardMode() {
 		interactionPanel.deactivateCardMode();
 		visualCardPanel.outCardMode();
 	}
-	
+
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
 		//painter.drawImage(backgroundTexture, 0, 0, this);
@@ -72,17 +74,20 @@ public class GamePanel extends DynamicPanel {
 		visualTerritoryPanel.paint(painter);
 		visualCardPanel.paint(painter);
 	}
-	
+
 	public void update() {
 		visualTerritoryPanel.update();
 		if(GameController.interactions.getTextualPanelUpdateRequest())
-			textualInGamePanel.update(); 
+			textualInGamePanel.update();
 		if(GameController.interactions.getVisualCardPanelUpdateRequest())
-			visualCardPanel.update();	
+			visualCardPanel.update();
 	}
-	
+
 	public void destroy() {
 		visualTerritoryPanel.destroy();
 	}
-	
+
+	public void setStringList() {
+		this.stringList = new ArrayList<VisualString>();
+	}
 }
