@@ -1,6 +1,7 @@
 package UIComponents;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,15 +57,18 @@ public class GamePanel extends DynamicPanel {
 	
 	public void initializeCardMode() {
 		interactionPanel.activateCardMode();
+		visualCardPanel.inCardMode();
 	}
 	
 	public void terminateCardMode() {
 		interactionPanel.deactivateCardMode();
+		visualCardPanel.outCardMode();
 	}
 	
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
 		//painter.drawImage(backgroundTexture, 0, 0, this);
+		painter.setFont(new Font("pixel", Font.BOLD, 20));
 		visualTerritoryPanel.paint(painter);
 		visualCardPanel.paint(painter);
 	}

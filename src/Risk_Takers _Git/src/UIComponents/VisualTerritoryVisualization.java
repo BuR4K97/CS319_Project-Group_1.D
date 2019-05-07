@@ -98,7 +98,6 @@ public class VisualTerritoryVisualization {
 	public void paint(Graphics painter) {
 		AnimationHandler.visualBuffer.paint(painter);
 		
-		painter.setFont(new Font("pixel", Font.BOLD, 20));
 		Territory corresponding;
 		for(VisualTerritory currElement : visualTerritories) {
 			painter.setColor(Color.WHITE);

@@ -99,12 +99,12 @@ public class Game {
 			else i--;
 		}
 		
-		final double INITIAL_UNIT_MODIFIER = 10;
+		final double INITIAL_UNIT_MODIFIER = 3;
 		ArrayList<Card> cardSet = GameController.activeMode.cardSet;
 		ArrayList<Card> activates = new ArrayList<Card>();
 		for(Player player : players) {
 			for(int i = 0; i < cardSet.size() / (playerNumber * INITIAL_UNIT_MODIFIER); i++) {
-				for(int n = 0; n < CARD_ACTIVATION.COMBINATIONAL.activation; n++) {
+				for(int n = 0; n < CARD_ACTIVATION.COMBINATIONAL.activation - 2; n++) {
 					player.insertCard(cardSet.get(i));
 					activates.add(cardSet.get(i));
 				}

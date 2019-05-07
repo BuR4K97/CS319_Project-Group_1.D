@@ -7,6 +7,8 @@ import ModelClasses.Card.CARD_TYPES;
 
 public class UnitPocket {
 
+	public static final int MAX_CARD = 9;
+	
 	private int unitAmount = 0;
 	private ArrayList<Card> cardSet = new ArrayList<Card>();
 	
