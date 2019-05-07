@@ -29,9 +29,9 @@ public class InteractionPanel {
 	private JLabel attackTillCapture;
 	private JLabel attackPerRoll;
 	private JLabel terminateAttack;//
-	private JButton cardButton;
-	private JButton activateCards;
-	private JButton cardModeBackButton;
+	private JLabel cardButton;
+	private JLabel activateCards;
+	private JLabel cardModeBackButton;
 
 	public void initialize(VisualTerritoryVisualization visualTerritoryPanel) {
 		
@@ -143,35 +143,57 @@ public class InteractionPanel {
 		attackPerRoll.setEnabled(false);
 		terminateAttack.setVisible(false);
 		terminateAttack.setEnabled(false);
-
-		cardButton = new JButton("Show Cards");
-		cardButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		
+		cardButton = new JLabel("Show Cards");
+		cardButton.setBounds(1320, 1013, 285, 29);
+		cardButton.setForeground(Color.GRAY);
+		cardButton.setBackground(new Color(0, 0, 0, 0));
+		cardButton.setFont(new Font("Calibri", Font.BOLD, 32));
+		cardButton.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
 				((GamePanel)MainApplication.frame.focusPanel).initializeCardMode();
 			}
-
 		});
-
-		activateCards = new JButton("Activate Cards");
-		activateCards.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
+		
+		
+		activateCards = new JLabel("Activate Cards");
+		activateCards.setBounds(1090, 1013, 230, 29);
+		activateCards.setForeground(Color.GRAY);
+		activateCards.setBackground(new Color(0, 0, 0, 0));
+		activateCards.setFont(new Font("Calibri", Font.BOLD, 32));
+		
+		cardModeBackButton = new JLabel("Back");
+		cardModeBackButton.setBounds(1305, 1013, 265, 29);
+		cardModeBackButton.setForeground(Color.GRAY);
+		cardModeBackButton.setBackground(new Color(0, 0, 0, 0));
+		cardModeBackButton.setFont(new Font("Calibri", Font.BOLD, 32));
+		
+		
+		activateCards.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
 			}
-
 		});
-		cardModeBackButton = new JButton("Back");
-		cardModeBackButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		
+		
+		cardModeBackButton.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
 				((GamePanel)MainApplication.frame.focusPanel).terminateCardMode();
 			}
-
 		});
+		
+		
 		activateCards.setVisible(false);
 		activateCards.setEnabled(false);
 		cardModeBackButton.setVisible(false);

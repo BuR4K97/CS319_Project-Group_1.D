@@ -89,7 +89,7 @@ public class GamePanel extends DynamicPanel {
 	}
 
 	public void setStringList() {
-		this.interactionStringList = new ArrayList<VisualString>();
+		//this.interactionStringList = new ArrayList<VisualString>();
 	}
 	
 }
