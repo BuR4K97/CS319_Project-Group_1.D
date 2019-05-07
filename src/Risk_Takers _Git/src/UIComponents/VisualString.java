@@ -30,7 +30,7 @@ public class VisualString {
 	int mexicoWaveDelay = 15;
 	int mexicoWaveLength;
 	boolean mouseEntered = false;
-	
+	Color color = null;
 	public class Rect{
 		public int y;
 		public int x;
@@ -49,7 +49,8 @@ public class VisualString {
 		}
 	}
 	
-	public VisualString(int x, int y, int maxLength, String string) { // width = maxlength*5
+	public VisualString(int x, int y, int maxLength, String string, Color color) { // width = maxlength*5
+		
 		this.maxLength = maxLength;
 		this.minLength = (int)(maxLength * 6 / 7);
 		mexicoWaveLength = maxLength - minLength;
@@ -57,6 +58,8 @@ public class VisualString {
 		this.y = y;
 		this.string = string;
 		mexicoWaveCoordinate = x;
+		this.color = color;
+		
 		for(int i = 0; i < string.length(); i++)
 			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
 		endAnimation = new Timer(endAnimationDelay, new ActionListener() {
@@ -136,21 +139,115 @@ public class VisualString {
 		});
 		mexicoWave.start();
 	}
-	public void paint(Graphics g) {
+	
+	
+public VisualString(int x, int y, int maxLength, String string) { // width = maxlength*5
+		
+		this.maxLength = maxLength;
+		this.minLength = (int)(maxLength * 6 / 7);
+		mexicoWaveLength = maxLength - minLength;
+		this.x = x;
+		this.y = y;
+		this.string = string;
+		mexicoWaveCoordinate = x;
+		this.color = Color.WHITE;
+		
+		for(int i = 0; i < string.length(); i++)
+			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
+		endAnimation = new Timer(endAnimationDelay, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean done = true;
+				for(int i = 0; i < list.size(); i++) {
+					
+					if(Math.random() * 4 < 1)
+						list.get(i).endAnimation = true;
+					if(Math.abs(list.get(i).y - list.get(i).yEnd) <= endAnimationSpeed && list.get(i).endAnimation) {
+						list.get(i).y = list.get(i).yEnd;
+						list.get(i).endAnimation = false;
+					}
+					else if(list.get(i).y < list.get(i).yEnd && list.get(i).endAnimation) {
 
+						list.get(i).y += endAnimationSpeed;
+						done = false;
+					}
+					else if(list.get(i).y > list.get(i).yEnd && list.get(i).endAnimation) {
+						list.get(i).y -= endAnimationSpeed;
+						done = false;
+					}
+				}
+				if(done) {
+					endAnimation.stop();
+					end = true;
+				}
+			}
+		});
+		//endAnimation.start();
+		startAnimation = new Timer(startAnimationDelay, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean done = true;
+				for(int i = 0; i < list.size(); i++) {
+					if(Math.random() * 4 < 1)
+						list.get(i).startAnimation = true;
+					if(Math.abs(list.get(i).x - list.get(i).xCurrent) <= startAnimationSpeed && list.get(i).startAnimation) {
+						list.get(i).xCurrent = list.get(i).x;
+						list.get(i).startAnimation = false;
+					}
+					else if(list.get(i).x < list.get(i).xCurrent && list.get(i).startAnimation) {
+						list.get(i).xCurrent -= startAnimationSpeed;
+						done = false;
+					}
+					else if(list.get(i).x > list.get(i).xCurrent && list.get(i).startAnimation) {
+						list.get(i).xCurrent += startAnimationSpeed;
+						done = false;
+					}
+				}
+				if(done)
+					startAnimation.stop();
+			}
+		});
+		startAnimation.start();
+		mexicoWave = new Timer(mexicoWaveDelay, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*
+				if(mexicoWaveCoordinate < (x + string.length() * 4 * maxLength) + mexicoWaveLength)
+					mexicoWaveCoordinate+=mexicoWaveLength;
+				else
+					mexicoWaveCoordinate =-mexicoWaveLength*2+ x;
+				 */
+				if(mexicoWaveCoordinate < (1920) + mexicoWaveLength * maxLength)
+					mexicoWaveCoordinate += mexicoWaveLength * 3;
+				else
+					mexicoWaveCoordinate = - mexicoWaveLength * 3;
+				for(int i = 0; i < list.size(); i++) {
+					for(int j = 0; j <= mexicoWaveLength;j++) {
+						if(Math.abs(list.get(i).x - mexicoWaveCoordinate) <= maxLength * (j+1) && Math.abs(list.get(i).x - mexicoWaveCoordinate) > maxLength * (j)) {
+							list.get(i).border = maxLength - j;
+							break;
+						} 
+					}
+				}
+			}
+
+		});
+		mexicoWave.start();
+	}	
+	
+	
+	public void paint(Graphics g) {
+		g.setColor(color);
 		for(int i = 0; i < list.size(); i++) {
-			if(mouseEntered)
-				g.setColor(Color.CYAN);
-			else
-				g.setColor(Color.LIGHT_GRAY);
+			
 			//g.drawRect(x, y, maxLength * string.length() * 4 , maxLength*5);
 			g.fillRect(list.get(i).xCurrent, list.get(i).y, list.get(i).border, list.get(i).border);
 		}
 	}
+	
 	public  void makeAreaB(Rect topLeftCoordinate, int length) {
 		list.add(new Rect(topLeftCoordinate.x, topLeftCoordinate.y));
 	}
+	
 	public  void makeAreaS(Rect topLeftCoordinate, int lenth) {}
+	
 	public  void drawNumberOn(Rect topLeft, int blockLength, char ch) {
 		if(ch == ' ') {
 			makeAreaS(new Rect(topLeft.x, topLeft.y), blockLength);

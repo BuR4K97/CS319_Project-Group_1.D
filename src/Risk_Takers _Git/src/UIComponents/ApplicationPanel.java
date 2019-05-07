@@ -46,20 +46,12 @@ public class ApplicationPanel extends DynamicPanel {
 		
 		// Mouse Listener to the Play Game label in Main Panel
 		MouseListener listenerToPlayGameLabelInMenuPanel = new MouseListener() {
-			@Override
 			public void mouseReleased(MouseEvent e) {}
-			
-			@Override
 			public void mousePressed(MouseEvent e) {}
-			
-			@Override
 			public void mouseExited(MouseEvent e) {}
-			
-			@Override
 			public void mouseEntered(MouseEvent e) {}
-			
-			@Override
 			public void mouseClicked(MouseEvent e) {
+				((MenuPanel)menuPanel).setStringList();
 				layout.show(self, "gamePanel");
 				MainApplication.destroyMenu();
 				MainApplication.initializeGame();
@@ -68,19 +60,10 @@ public class ApplicationPanel extends DynamicPanel {
 		
 		// Mouse Listener to the Quit label in Main Panel
 		MouseListener listenerToQuitLabelInMenuPanel = new MouseListener() {
-			@Override
 			public void mouseReleased(MouseEvent e) {}
-			
-			@Override
 			public void mousePressed(MouseEvent e) {}
-			
-			@Override
 			public void mouseExited(MouseEvent e) {}
-			
-			@Override
 			public void mouseEntered(MouseEvent e) {}
-			
-			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.exit(1);
 			}
@@ -88,20 +71,12 @@ public class ApplicationPanel extends DynamicPanel {
 		
 		// Mouse Listener to the Settings label in Main Panel
 		MouseListener listenerToSettingsLabelInMenuPanel = new MouseListener() {
-			@Override
 			public void mouseReleased(MouseEvent e) {}
-			
-			@Override
 			public void mousePressed(MouseEvent e) {}
-			
-			@Override
 			public void mouseExited(MouseEvent e) {}
-			
-			@Override
 			public void mouseEntered(MouseEvent e) {}
-			
-			@Override
 			public void mouseClicked(MouseEvent e) {
+				((MenuPanel)menuPanel).setStringList();
 				layout.show(self, "settingsPanel");
 				((OptionsPanel)settingsPanel).requestFocusInWindow();
 				((OptionsPanel)settingsPanel).initialize();
@@ -110,20 +85,12 @@ public class ApplicationPanel extends DynamicPanel {
 		
 		// Mouse Listener to the How To Play label in Main Panel
 		MouseListener listenerToHowToPlayLabelInMenuPanel = new MouseListener() {
-			@Override
 			public void mouseReleased(MouseEvent e) {}
-			
-			@Override
 			public void mousePressed(MouseEvent e) {}
-			
-			@Override
 			public void mouseExited(MouseEvent e) {}
-			
-			@Override
 			public void mouseEntered(MouseEvent e) {}
-			
-			@Override
 			public void mouseClicked(MouseEvent e) {
+				((MenuPanel)menuPanel).setStringList();
 				layout.show(self, "howToPlayPanel");
 				((HowToPlayPanel)howToPlayPanel).requestFocusInWindow();
 				((HowToPlayPanel)howToPlayPanel).initialize();
@@ -132,20 +99,12 @@ public class ApplicationPanel extends DynamicPanel {
 		
 		// Mouse Listener to the About Us label in Main Panel
 		MouseListener listenerToAboutUsLabelInMenuPanel = new MouseListener() {
-			@Override
 			public void mouseReleased(MouseEvent e) {}
-			
-			@Override
 			public void mousePressed(MouseEvent e) {}
-			
-			@Override
 			public void mouseExited(MouseEvent e) {}
-			
-			@Override
 			public void mouseEntered(MouseEvent e) {}
-			
-			@Override
 			public void mouseClicked(MouseEvent e) {
+				((MenuPanel)menuPanel).setStringList();
 				layout.show(self, "aboutUsPanel");
 				((AboutUsPanel)aboutUsPanel).requestFocusInWindow();
 				((AboutUsPanel)aboutUsPanel).initialize();
@@ -154,20 +113,14 @@ public class ApplicationPanel extends DynamicPanel {
 				
 		// Mouse Listener to the About Us label in Main Panel
 		MouseListener listenerToBackLabelInSettingsHowTPAboutUsPanel = new MouseListener() {
-			@Override
 			public void mouseReleased(MouseEvent e) {}
-			
-			@Override
 			public void mousePressed(MouseEvent e) {}
-			
-			@Override
 			public void mouseExited(MouseEvent e) {}
-			
-			@Override
 			public void mouseEntered(MouseEvent e) {}
-			
-			@Override
 			public void mouseClicked(MouseEvent e) {
+				((HowToPlayPanel)howToPlayPanel).setStringList();
+				((AboutUsPanel)aboutUsPanel).setStringList();
+				((OptionsPanel)settingsPanel).setStringList();
 				layout.show(self, "menuPanel");
 				((MenuPanel)menuPanel).requestFocusInWindow();
 				((MenuPanel)menuPanel).initialize();

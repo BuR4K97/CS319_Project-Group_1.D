@@ -9,22 +9,25 @@ import javax.swing.JPanel;
 import Controller.GameController;
 
 public class TextualInGamePanel {
-	
+
 	private JLabel phaseLabel;
 	private JLabel playerLabel;
-	
+
 	public void initialize() {
 		phaseLabel = new JLabel();
+		phaseLabel.setForeground(Color.WHITE);
 		phaseLabel.setFont(new Font("Calibri", Font.BOLD, 32));
+		
 		playerLabel = new JLabel();
 		playerLabel.setFont(new Font("Calibri", Font.BOLD, 32));
 	}
-	
+
 	public void insertLabels(JPanel target) {
 		target.add(phaseLabel);
 		target.add(playerLabel);
+		
 	}
-	
+
 	public void update() {
 		phaseLabel.setText(GameController.interactions.getActivePhase().toString());
 		playerLabel.setText(GameController.interactions.getActivePlayer().toString());
