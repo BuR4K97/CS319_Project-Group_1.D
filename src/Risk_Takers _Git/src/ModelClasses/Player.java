@@ -9,9 +9,9 @@ public class Player {
 	private ArrayList<Territory> territories = new ArrayList<Territory>();
 	private UnitPocket unitPocket = new UnitPocket();
 
-	public Player(String playerName, int red, int green, int blue) {
+	public Player(String playerName, Color playerColor) {
 		this.playerName = playerName;
-		playerColor = new Color(red, green, blue);
+		this.playerColor = playerColor;
 		territories = new ArrayList<Territory>();
 	}
 	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Controller.GameController;
 import Controller.GameInteractions;
+import GameAssets.GameConstants;
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
 import ModelClasses.Card.CARD_ACTIVATION;
 import ModelClasses.Turn.TURN_PHASE;
@@ -19,6 +20,7 @@ import UIComponents.VisualTerritory;
 public class Game {
 	
 	public static final int MIN_PLAYER_NUMBER = 2;
+	public static final int MAX_PLAYER_NUMBER = 4;
 	public static ArrayList<Player> players;
 	public static ArrayList<Territory> territories;
 	
@@ -76,12 +78,12 @@ public class Game {
 	 */
 	public static boolean initialize(int playerNumber) {
 		if(playerNumber < MIN_PLAYER_NUMBER) return false;
+		if(playerNumber > MAX_PLAYER_NUMBER) return false;
 		if(GameController.activeMode == null) return false;
 		
 		players = new ArrayList<Player>();
 		for(int i = 0; i < playerNumber; i++)
-			players.add(new Player(("Player" + (i + 1)), randColor()
-					, randColor(), randColor()));
+			players.add(new Player(("Player " + (i + 1)), GameConstants.PLAYER_COLORS[i]));
 		
 		territories = GameController.activeMode.territoryGraph.getTerritories();
 		
