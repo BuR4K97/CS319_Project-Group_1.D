@@ -25,11 +25,10 @@ public class GamePanel extends DynamicPanel {
 	private TextualInGamePanel textualInGamePanel;
 	private VisualCardPanel visualCardPanel;
 	private BufferedImage backgroundTexture;
-	private ArrayList<VisualString> stringList;
-
+	
 	public GamePanel() {
 		if(GameController.activeMode == null) return;
-		//setLayout(null);
+		setLayout(null);
 
 		setBackground(Color.BLACK);
 		backgroundTexture = GameConstants.backgroundTexture;
@@ -73,6 +72,8 @@ public class GamePanel extends DynamicPanel {
 		painter.setFont(new Font("pixel", Font.BOLD, 20));
 		visualTerritoryPanel.paint(painter);
 		visualCardPanel.paint(painter);
+		
+		//call textual ingamepanel paint method
 	}
 
 	public void update() {
@@ -88,6 +89,6 @@ public class GamePanel extends DynamicPanel {
 	}
 
 	public void setStringList() {
-		this.stringList = new ArrayList<VisualString>();
+		this.interactionStringList = new ArrayList<VisualString>();
 	}
 }

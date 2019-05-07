@@ -1,11 +1,16 @@
 package UIComponents;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -18,25 +23,40 @@ import ModelClasses.Territory;
 
 public class InteractionPanel {
 
-	private JButton nextPhaseButton;
-	private JButton actionRequestButton;
+	private JLabel nextPhaseLabel;
+	private JLabel actionRequestLabel;
 	private JTextField actionAmountField;
-	private JButton attackTillCapture;
-	private JButton attackPerRoll;
-	private JButton terminateAttack;
+	private JLabel attackTillCapture;
+	private JLabel attackPerRoll;
+	private JLabel terminateAttack;//
 	private JButton cardButton;
 	private JButton activateCards;
 	private JButton cardModeBackButton;
 
 	public void initialize(VisualTerritoryVisualization visualTerritoryPanel) {
-		nextPhaseButton = new JButton("Next Phase");
-		actionRequestButton = new JButton("Action Request");
+		
+		nextPhaseLabel = new JLabel("Next Phase");
+		nextPhaseLabel.setBounds(815, 1013, 185, 29);
+		nextPhaseLabel.setForeground(Color.GRAY);
+		nextPhaseLabel.setBackground(new Color(0, 0, 0, 0));
+		nextPhaseLabel.setFont(new Font("Calibri", Font.BOLD, 32));
+		
+		actionRequestLabel = new JLabel("Action Request");
+		actionRequestLabel.setBounds(985, 1013, 235, 29);
+		actionRequestLabel.setForeground(Color.GRAY);
+		actionRequestLabel.setBackground(new Color(0, 0, 0, 0));
+		actionRequestLabel.setFont(new Font("Calibri", Font.BOLD, 32));
+		
 		actionAmountField = new JTextField();
-
-		nextPhaseButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		actionAmountField.setBounds(1220, 1013, 40, 29);
+		
+		
+		nextPhaseLabel.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.requestNextPhase();
 				AnimationHandler.terminateMouseOnTerritoryAnimation(visualTerritoryPanel.getFocusTerritories()[0]);
 				AnimationHandler.terminateMouseOnTerritoryAnimation(visualTerritoryPanel.getFocusTerritories()[1]);
@@ -44,10 +64,12 @@ public class InteractionPanel {
 			}
 		});
 
-		actionRequestButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		actionRequestLabel.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
 				try {
 					int actionAmount = Integer.parseInt(actionAmountField.getText());
 					GameController.interactions.requestAction(actionAmount);
@@ -60,36 +82,61 @@ public class InteractionPanel {
 				}
 			}
 		});
-
+		
 		actionAmountField.setPreferredSize(new Dimension(90, 30));
 
-		attackTillCapture = new JButton("Attack TillCapture");
-		attackPerRoll = new JButton("Attack PerRoll");
-		terminateAttack = new JButton("Terminate Attack");
-		attackTillCapture.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		attackTillCapture = new JLabel("Attack Till Capture");
+		attackTillCapture.setBounds(815, 1013, 285, 29);
+		attackTillCapture.setForeground(Color.GRAY);
+		attackTillCapture.setBackground(new Color(0, 0, 0, 0));
+		attackTillCapture.setFont(new Font("Calibri", Font.BOLD, 32));
+		
+		attackPerRoll = new JLabel("Attack Per Roll");
+		attackPerRoll.setBounds(1090, 1013, 230, 29);
+		attackPerRoll.setForeground(Color.GRAY);
+		attackPerRoll.setBackground(new Color(0, 0, 0, 0));
+		attackPerRoll.setFont(new Font("Calibri", Font.BOLD, 32));
+		
+		terminateAttack = new JLabel("Terminate Attack");
+		terminateAttack.setBounds(1305, 1013, 265, 29);
+		terminateAttack.setForeground(Color.GRAY);
+		terminateAttack.setBackground(new Color(0, 0, 0, 0));
+		terminateAttack.setFont(new Font("Calibri", Font.BOLD, 32));
+		
+		
+		attackTillCapture.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.requestAttackTillCapture();
 			}
-
 		});
-		attackPerRoll.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		
+		
+		attackPerRoll.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.requestAttackPerRoll();
 			}
-
 		});
-		terminateAttack.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		
+		
+		terminateAttack.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.terminateCombat();
 			}
-
 		});
+		
+		
 		attackTillCapture.setVisible(false);
 		attackTillCapture.setEnabled(false);
 		attackPerRoll.setVisible(false);
@@ -133,8 +180,8 @@ public class InteractionPanel {
 	}
 
 	public void insertButtons(JPanel target) {
-		target.add(nextPhaseButton);
-		target.add(actionRequestButton);
+		target.add(nextPhaseLabel);
+		target.add(actionRequestLabel);
 		target.add(actionAmountField);
 		target.add(attackTillCapture);
 		target.add(attackPerRoll);
@@ -145,10 +192,10 @@ public class InteractionPanel {
 	}
 
 	public void activateCombatMode() {
-		nextPhaseButton.setEnabled(false);
-		nextPhaseButton.setVisible(false);
-		actionRequestButton.setEnabled(false);
-		actionRequestButton.setVisible(false);
+		nextPhaseLabel.setEnabled(false);
+		nextPhaseLabel.setVisible(false);
+		actionRequestLabel.setEnabled(false);
+		actionRequestLabel.setVisible(false);
 		actionAmountField.setEnabled(false);
 		actionAmountField.setVisible(false);
 		cardButton.setEnabled(false);
@@ -162,10 +209,10 @@ public class InteractionPanel {
 	}
 
 	public void deactivateCombatMode() {
-		nextPhaseButton.setEnabled(true);
-		nextPhaseButton.setVisible(true);
-		actionRequestButton.setEnabled(true);
-		actionRequestButton.setVisible(true);
+		nextPhaseLabel.setEnabled(true);
+		nextPhaseLabel.setVisible(true);
+		actionRequestLabel.setEnabled(true);
+		actionRequestLabel.setVisible(true);
 		actionAmountField.setEnabled(true);
 		actionAmountField.setVisible(true);
 		cardButton.setEnabled(true);
@@ -179,10 +226,10 @@ public class InteractionPanel {
 	}
 
 	public void activateCardMode() {
-		nextPhaseButton.setEnabled(false);
-		nextPhaseButton.setVisible(false);
-		actionRequestButton.setEnabled(false);
-		actionRequestButton.setVisible(false);
+		nextPhaseLabel.setEnabled(false);
+		nextPhaseLabel.setVisible(false);
+		actionRequestLabel.setEnabled(false);
+		actionRequestLabel.setVisible(false);
 		actionAmountField.setEnabled(false);
 		actionAmountField.setVisible(false);
 		cardButton.setEnabled(false);
@@ -194,10 +241,10 @@ public class InteractionPanel {
 	}
 
 	public void deactivateCardMode() {
-		nextPhaseButton.setEnabled(true);
-		nextPhaseButton.setVisible(true);
-		actionRequestButton.setEnabled(true);
-		actionRequestButton.setVisible(true);
+		nextPhaseLabel.setEnabled(true);
+		nextPhaseLabel.setVisible(true);
+		actionRequestLabel.setEnabled(true);
+		actionRequestLabel.setVisible(true);
 		actionAmountField.setEnabled(true);
 		actionAmountField.setVisible(true);
 		cardButton.setEnabled(true);
