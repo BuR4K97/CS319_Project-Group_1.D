@@ -18,13 +18,14 @@ import javax.swing.Timer;
 import GameAssets.DefaultRiskMode.DefaultRiskCard;
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
 import GameAssets.DefaultRiskMode.DefaultRiskTerritory;
+import GameAssets.DefaultRiskMode.DefaultRiskVisualCard;
 import GameAssets.DefaultRiskMode.DefaultRiskVisualTerritory;
-import GameAssets.DefaultRiskMode.DefaultRiskMode.TERRITORIES;
 import ModelClasses.Card;
 import ModelClasses.Card.CARD_TYPES;
 import ModelClasses.Territory;
 import ModelClasses.TerritoryGraph;
 import UIComponents.Coordinate;
+import UIComponents.VisualCard;
 import UIComponents.VisualTerritory;
 
 public class Test{
@@ -85,20 +86,14 @@ public class Test{
 	}
 	
 	public static void processDefaultRiskData() {
-		//processDefaultRiskTerritoryGraph(DefaultRiskMode.MODEL_DATA_FILENAME);
+		processDefaultRiskTerritoryGraph(DefaultRiskMode.MODEL_DATA_FILENAME);
 		processDefaultRiskVisualTerritories(DefaultRiskMode.PIXEL_MAP_FILENAME, DefaultRiskMode.VISUAL_DATA_FILENAME);
-		//processDefaultRiskCardSet(DefaultRiskMode.CARD_SET_FILENAME);
+		processDefaultRiskCardSet(DefaultRiskMode.CARD_SET_FILENAME);
+		processDefaultRiskVisualCards(DefaultRiskMode.VISUAL_CARDS_FILENAME);
 	}
 	
 	public static void processDefaultRiskCardSet(String dataFile) {
 		ArrayList<Card> cardSet = new ArrayList<>();
-		
-		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.ASIA, CARD_TYPES.EXTREME_CONTINENT));
-		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.EUROPE, CARD_TYPES.HARD_CONTINENT));
-		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.NORTH_AMERICA, CARD_TYPES.HARD_CONTINENT));
-		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.AFRICA, CARD_TYPES.MODERATE_CONTINENT));
-		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.SOUTH_AMERICA, CARD_TYPES.EASY_CONTINENT));
-		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.AUSTRALIA, CARD_TYPES.EASY_CONTINENT));
 		
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NOTHERN_EUROPE, CARD_TYPES.EXTREME_UNIT));
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NORTH_WEST_TERRITORY, CARD_TYPES.HARD_UNIT));
@@ -142,6 +137,13 @@ public class Test{
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.PERU, CARD_TYPES.EASY_UNIT));
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.RUSIA, CARD_TYPES.MODERATE_UNIT));
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.MIDDLE_EAST, CARD_TYPES.EXTREME_UNIT));
+		
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.ASIA, CARD_TYPES.EXTREME_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.EUROPE, CARD_TYPES.HARD_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.NORTH_AMERICA, CARD_TYPES.HARD_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.AFRICA, CARD_TYPES.MODERATE_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.SOUTH_AMERICA, CARD_TYPES.EASY_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.AUSTRALIA, CARD_TYPES.EASY_CONTINENT));
 		
 		ArrayList<Serializable> objects = new ArrayList<Serializable>();
 		for(Card currElement : cardSet)
@@ -423,8 +425,7 @@ public class Test{
 		visualTerritories.get(40).mainCoordinate = new Coordinate(1654, 836);
 		visualTerritories.get(41).mainCoordinate = new Coordinate(1779, 813);
 		
-		TerritorialImageAnalyzer.constructTerritorialData(visualTerritories);
-		TerritorialImageAnalyzer.constructScaledTerritorialData(visualTerritories);
+		TerritorialImageAnalyzer.constructVisualTerritorialData(visualTerritories);
 		
 		ArrayList<Serializable> objects = new ArrayList<Serializable>();
 		for(VisualTerritory currElement : visualTerritories)
@@ -446,6 +447,59 @@ public class Test{
 			scan.nextLine();
 		}
 		System.out.println("Total Territory: " + visualTerritories.size() + "\tSurrounded with " + pixelCount + " pixels");
+	}
+	
+	public static void processDefaultRiskVisualCards(String dataFile) {
+		FileHandler fileHandler = new FileHandler(DefaultRiskMode.CARD_SET_FILENAME);
+		ArrayList<Serializable> objects = fileHandler.loadDataFromFile();
+		
+		ArrayList<Card> cardSet = new ArrayList<Card>();
+		for(Serializable currElement : objects)
+			cardSet.add((Card)currElement);
+		
+		ArrayList<VisualCard> visualCards = new ArrayList<VisualCard>();
+		for(Card card : cardSet) {
+			try {
+				DefaultRiskMode.TERRITORIES territory = DefaultRiskMode.TERRITORIES.valueOf(card.getCorrespondingTag());
+				if(territory != null)
+					visualCards.add(new DefaultRiskVisualCard(territory, card.cardType));
+			} 
+			catch(IllegalArgumentException exception) {}
+		}
+		
+		fileHandler = new FileHandler(DefaultRiskMode.VISUAL_DATA_FILENAME);
+		objects = fileHandler.loadDataFromFile();
+		
+		ArrayList<VisualTerritory> visualTerritories = new ArrayList<VisualTerritory>();
+		for(Serializable currElement : objects)
+			visualTerritories.add((VisualTerritory)currElement);
+		
+		for(VisualCard visualCard : visualCards) {
+			VisualTerritory processVisualTerritory = null;
+			for(VisualTerritory vt : visualTerritories)
+				if(vt.checkItsCorresponding(visualCard.getCorrespondingTag()))
+					processVisualTerritory = vt;
+			((DefaultRiskVisualCard)visualCard).characteristicVisualData = TerritorialImageAnalyzer
+					.extractVisualCardCharacteristicData(processVisualTerritory);
+		}		
+		
+		objects = new ArrayList<Serializable>();
+		for(VisualCard currElement : visualCards)
+			objects.add(currElement);
+		
+		fileHandler = new FileHandler(dataFile);
+		fileHandler.saveDataToFile(objects);
+		objects = fileHandler.loadDataFromFile();
+		
+		visualCards = new ArrayList<VisualCard>();
+		for(Serializable currElement : objects)
+			visualCards.add((VisualCard)currElement);
+		
+		Scanner scan = new Scanner(System.in);
+		for(VisualCard currElement : visualCards) {
+			currElement.print();
+			scan.nextLine();
+		}
 	}
 
 }

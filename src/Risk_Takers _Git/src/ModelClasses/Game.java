@@ -3,6 +3,9 @@ package ModelClasses;
 import java.util.ArrayList;
 
 import Controller.GameController;
+import Controller.GameInteractions;
+import GameAssets.DefaultRiskMode.DefaultRiskMode;
+import ModelClasses.Card.CARD_ACTIVATION;
 import ModelClasses.Turn.TURN_PHASE;
 import UIComponents.VisualTerritory;
 
@@ -40,8 +43,10 @@ public class Game {
 		}
 		else if(GameController.interactions.getActionRequest()) {
 			if(Turn.activePhase == TURN_PHASE.DRAFT) {
-				if(focusTerritory[0] != null)
+				if(focusTerritory[0] != null) {
 					Turn.activePlayer.addUnitsToTerritory(focusTerritory[0], actionAmount);
+					//GameController.interactions.requestTextualPanelUpdateRequest();
+				}
 			}
 			else if(Turn.activePhase == TURN_PHASE.ATTACK) {
 				if(focusTerritory[0] != null && focusTerritory[1] != null) {
@@ -93,7 +98,22 @@ public class Game {
 			}
 			else i--;
 		}
+		
+		final double INITIAL_UNIT_MODIFIER = 10;
+		ArrayList<Card> cardSet = GameController.activeMode.cardSet;
+		ArrayList<Card> activates = new ArrayList<Card>();
+		for(Player player : players) {
+			for(int i = 0; i < cardSet.size() / (playerNumber * INITIAL_UNIT_MODIFIER); i++) {
+				for(int n = 0; n < CARD_ACTIVATION.COMBINATIONAL.activation; n++) {
+					player.insertCard(cardSet.get(i));
+					activates.add(cardSet.get(i));
+				}
+				//player.activateCards(activates);
+			}
+		}
 		Turn.initialize();
+		GameController.interactions.requestTextualPanelUpdateRequest();
+		GameController.interactions.requestVisualCardPanelUpdateRequest();
 		
 		return true;
 	}
@@ -110,12 +130,6 @@ public class Game {
 		Turn.destroy();
 		players = null;
 		territories = null;
-	}
-	
-	public static Territory findCorrespondingTerritory(VisualTerritory visualTerritory) {
-		for(Territory currTerritory : territories)
-			if(currTerritory.checkItsCorresponding(visualTerritory)) return currTerritory;
-		return null;
 	}
 
 	public static boolean isSelectable(Territory sourceTerritory, Territory targetTerritory) {
@@ -135,12 +149,20 @@ public class Game {
 	}
 	
 	public static boolean activateCards(ArrayList<Card> activates) {
-		return Turn.activePlayer.activateCards(activates);
+		if(Turn.activePlayer.activateCards(activates)) {
+			GameController.interactions.requestVisualCardPanelUpdateRequest();
+			return true;
+		}
+		return false;
 	}
 	
 	private static int randColor() {
 		final int COLOR_CAP = 256;
 		return (int)(Math.random() * COLOR_CAP);
+	}
+
+	public static ArrayList<Card> extractActivePlayerCards() {
+		return Turn.activePlayer.getCardSet();
 	}
 	
 }//endClass

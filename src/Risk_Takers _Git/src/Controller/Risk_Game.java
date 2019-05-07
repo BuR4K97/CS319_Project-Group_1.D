@@ -5,7 +5,7 @@ public class Risk_Game {
 	public static void main(String[] args) {
 		
 		MainApplication.initialize();
-		MainApplication.initializeGame();
+		MainApplication.initializeMenu();
 		
 	}//main
 

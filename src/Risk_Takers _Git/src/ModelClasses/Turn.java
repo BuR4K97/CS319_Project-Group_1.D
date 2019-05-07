@@ -24,6 +24,7 @@ public class Turn {
 		else if(activePhase == TURN_PHASE.ATTACK) {
 			currState = GameState.extractGameState();
 			GameController.activeMode.checkStates(prevState, currState);
+			GameController.interactions.requestVisualCardPanelUpdateRequest();
 			prevState = currState;
 			activePhase = TURN_PHASE.FORTIFY;
 		}
@@ -31,6 +32,7 @@ public class Turn {
 			nextPlayer();
 			activePhase = TURN_PHASE.DRAFT;
 		}
+		GameController.interactions.requestTextualPanelUpdateRequest();
 	}
 	
 	private static void nextPlayer() {
@@ -40,6 +42,7 @@ public class Turn {
 		if(currIndex == Game.players.size() - 1) currIndex = 0;
 		else currIndex++;
 		activePlayer = Game.players.get(currIndex); 
+		GameController.interactions.requestVisualCardPanelUpdateRequest();
 	}
 
 	public static void destroy() {

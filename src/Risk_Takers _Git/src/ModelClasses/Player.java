@@ -7,7 +7,7 @@ public class Player {
 	private String playerName;
 	private Color playerColor;
 	private ArrayList<Territory> territories = new ArrayList<Territory>();
-	private UnitPocket unitPocket;
+	private UnitPocket unitPocket = new UnitPocket();
 
 	public Player(String playerName, int red, int green, int blue) {
 		this.playerName = playerName;

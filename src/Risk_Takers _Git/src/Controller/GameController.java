@@ -13,8 +13,11 @@ public class GameController {
 	
 	public static boolean initializeGame(int playerNumber, GAME_MODE loadMode) {
 		loadGameMode(loadMode);
-		if(!Game.initialize(playerNumber)) return false;
 		interactions = new GameInteractions();
+		if(!Game.initialize(playerNumber)) {
+			interactions = null;
+			return false;
+		}
 		return true;
 	}
 	

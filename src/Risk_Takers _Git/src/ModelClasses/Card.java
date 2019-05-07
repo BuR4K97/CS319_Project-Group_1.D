@@ -4,10 +4,19 @@ import java.io.Serializable;
 
 public abstract class Card implements Serializable {
 
-	protected CARD_TYPES cardType;
+	public CARD_TYPES cardType;
 	
-	public static enum CARD_ACTIVATION { INSTANT, COMBINATIONAL };
+	public static enum CARD_ACTIVATION { 
+		INSTANT(1), COMBINATIONAL(3); 
+		
+		public int activation;
+		
+		private CARD_ACTIVATION(int activation) {
+			this.activation = activation;
+		}
+	};
 	
+	public static final int COMBINATIONAL_VARIANTS = 4;
 	public static enum CARD_TYPES {
 		
 		EASY_UNIT(CARD_ACTIVATION.COMBINATIONAL), MODERATE_UNIT(CARD_ACTIVATION.COMBINATIONAL)
@@ -21,7 +30,7 @@ public abstract class Card implements Serializable {
 			this.activationType = activationType;
 		}
 		
-		private static int getUnitBuff(CARD_TYPES type) {
+		public static int getUnitBuff(CARD_TYPES type) {
 			if(type == EASY_UNIT) return 1;
 			if(type == EASY_CONTINENT) return 2;
 			if(type == MODERATE_UNIT) return 3;
@@ -47,5 +56,7 @@ public abstract class Card implements Serializable {
 	}
 	
 	public abstract void print();
+	public abstract boolean checkItsCorresponding(String checkTag);
+	public abstract String getCorrespondingTag();
 	
 }

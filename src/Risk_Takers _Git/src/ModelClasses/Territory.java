@@ -48,7 +48,8 @@ public abstract class Territory implements Combatable, Serializable {
 		return graphConnected.checkConnect(this, targetTerritory);
 	}
 	
-	public abstract boolean checkItsCorresponding(VisualTerritory check);
+	public abstract boolean checkItsCorresponding(String checkTag);
+	public abstract String getCorrespondingTag();
 	public abstract void print();
 	
 	/**

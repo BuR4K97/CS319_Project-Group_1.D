@@ -19,44 +19,63 @@ public class UnitPocket {
 	}
 	
 	public boolean activateCards(ArrayList<Card> cardSet) {
-		if(cardSet.size() == 1) {
+		if(cardSet.size() == CARD_ACTIVATION.INSTANT.activation) {
 			if(cardSet.get(0).getActivationType() != CARD_ACTIVATION.INSTANT)
 				return false;
 			
-			unitAmount += cardSet.get(0).getUnitBuff();
-			this.cardSet.remove(cardSet.get(0));
-			return true;
+			ArrayList<Card> removes = new ArrayList<Card>();
+			int addUnit = 0;
+			for(int i = 0; i < CARD_ACTIVATION.INSTANT.activation; i++) {
+				if(this.cardSet.remove(cardSet.get(i))) {
+					removes.add(cardSet.get(i));
+					addUnit += cardSet.get(i).getUnitBuff();
+					continue;
+				}
+				for(Card card : removes)
+					this.cardSet.add(card);
+				return false;
+			}
+			unitAmount += addUnit / CARD_ACTIVATION.INSTANT.activation;
+			return true;	
 		}
-		else if(cardSet.size() == 3) {
+		else if(cardSet.size() == CARD_ACTIVATION.COMBINATIONAL.activation) {
 			for(Card card : cardSet)
 				if(card.getActivationType() != CARD_ACTIVATION.COMBINATIONAL)
 					return false;
 			
-			CARD_TYPES cardType = cardSet.get(0).cardType;
-			if(cardSet.get(1).cardType == cardType && cardSet.get(2).cardType == cardType) {
-				unitAmount += cardSet.get(0).getUnitBuff();
-				for(Card card : cardSet) 
-					this.cardSet.remove(card);
-				return true;
+			boolean activated = true;
+			for(int i = 0; i < CARD_ACTIVATION.COMBINATIONAL.activation - 1; i++) {
+				if(cardSet.get(i).cardType != cardSet.get(i + 1).cardType) {
+					activated = false;
+					break; 
+				}
+			}
+			if(!activated) {
+				CARD_TYPES[] combinationalCase = {CARD_TYPES.EASY_UNIT, CARD_TYPES.MODERATE_UNIT, CARD_TYPES.HARD_UNIT};
+				typeCheck:for(CARD_TYPES type : combinationalCase) {
+					for(Card card : cardSet)
+						if(card.cardType == type)
+							continue typeCheck;
+					return false;
+				}
 			}
 			
-			CARD_TYPES[] combinationalCase = {CARD_TYPES.EASY_UNIT, CARD_TYPES.MODERATE_UNIT, CARD_TYPES.HARD_UNIT};
-			Card activateCard = null;
-			typeCheck:for(CARD_TYPES type : combinationalCase) {
-				for(Card card : cardSet)
-					if(card.cardType == type) {
-						if(type == combinationalCase[1])
-							activateCard = card; 
-						continue typeCheck;
-					}
+			ArrayList<Card> removes = new ArrayList<Card>();
+			int addUnit = 0;
+			for(int i = 0; i < CARD_ACTIVATION.COMBINATIONAL.activation; i++) {
+				if(this.cardSet.remove(cardSet.get(i))) {
+					removes.add(cardSet.get(i));
+					addUnit += cardSet.get(i).getUnitBuff();
+					continue;
+				}
+				for(Card card : removes)
+					this.cardSet.add(card);
 				return false;
 			}
-			unitAmount += activateCard.getUnitBuff();
-			for(Card card : cardSet)
-				this.cardSet.remove(card); 
-			return true;	
+			unitAmount += addUnit / CARD_ACTIVATION.COMBINATIONAL.activation;
+			return true;
 		}
-		else return false;
+		return false;
 	}
 	
 }
