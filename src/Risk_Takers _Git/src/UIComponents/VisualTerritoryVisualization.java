@@ -32,8 +32,9 @@ public class VisualTerritoryVisualization {
 	}
 
 	public void inCombatMode(Territory[] combatTerritories) {
-		AnimationHandler.requestAttackAnimation(visualTerritories, findItsCorresponding(combatTerritories[0])
-				, findItsCorresponding(combatTerritories[1]), combatTerritories[0], combatTerritories[1]);
+		AnimationHandler.requestAttackAnimation(visualTerritories, GameInteractions
+				.findCorrespondingVisualTerritory(combatTerritories[0]), GameInteractions
+				.findCorrespondingVisualTerritory(combatTerritories[1]), combatTerritories[0], combatTerritories[1]);
 	}
 	
 	public void outCombatMode() {
@@ -188,13 +189,6 @@ public class VisualTerritoryVisualization {
 			AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
 			focusTerritories[1] = null; 
 		}
-	}
-	
-	private VisualTerritory findItsCorresponding(Territory territory) {
-		for(VisualTerritory visualTerritory : visualTerritories)
-			if(territory.checkItsCorresponding(visualTerritory))
-				return visualTerritory;
-		return null;
 	}
 	
 	public VisualTerritory[] getFocusTerritories() {

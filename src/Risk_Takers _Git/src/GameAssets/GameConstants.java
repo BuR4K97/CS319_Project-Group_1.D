@@ -15,8 +15,8 @@ import HelperTools.ImageHandler;
 
 public class GameConstants {
 	
-	private static final String BACKGROUND_TEXTURE_FILENAME = "constants\\OldMapTexture.jpeg";
-	private static final String PIXEL_FONT_FILENAME = "constants\\pixel.ttf";
+	private static final String BACKGROUND_TEXTURE_FILENAME = "GameAssets\\OldMapTexture.jpeg";
+	private static final String PIXEL_FONT_FILENAME = "GameAssets\\pixel.ttf";
 	
 	private static Font pixelFont;
 	public static BufferedImage backgroundTexture;

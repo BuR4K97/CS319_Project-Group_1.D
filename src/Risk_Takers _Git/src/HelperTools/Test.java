@@ -1,26 +1,166 @@
 package HelperTools;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import GameAssets.DefaultRiskMode.DefaultRiskCard;
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
 import GameAssets.DefaultRiskMode.DefaultRiskTerritory;
+import GameAssets.DefaultRiskMode.DefaultRiskVisualCard;
 import GameAssets.DefaultRiskMode.DefaultRiskVisualTerritory;
+import ModelClasses.Card;
+import ModelClasses.Card.CARD_TYPES;
 import ModelClasses.Territory;
 import ModelClasses.TerritoryGraph;
 import UIComponents.Coordinate;
+import UIComponents.VisualCard;
 import UIComponents.VisualTerritory;
 
-public class Test {
-
+public class Test{
+	
+	//static VisualCard vc = new VisualCard(TERRITORIES.WESTERN_EUROPE, 100, 100, 2);
+	static PixelString pl = new PixelString(10, 10, 10, "imam hatipler kapatilsin", Color.CYAN);
+	static MouseMotionListener mml;
+	static int  mouseX = 0, mouseY = 0;
+	static Timer t;
+	
 	public static void main(String[] args) {
+	
+		processDefaultRiskData();
 		
+	}
+	
+	public static void cardGUI() {
+		JFrame frame = new JFrame();
+		frame.setPreferredSize(new Dimension(1920, 1080));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setUndecorated(true);
+		frame.setVisible(true);
+		frame.pack();
+		///////////
+		
+		JPanel panel = new JPanel() {
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				//vc.paint(g);
+				pl.paint(g);
+			}
+		};
+		panel.setBackground(Color.BLACK);
+		panel.setPreferredSize(new Dimension(1920, 1080));
+		frame.add(panel);
+		frame.repaint();
+		/////////////////
+		mml = new MouseMotionListener() {
+			public void mouseMoved(MouseEvent e) {
+				mouseX = e.getX();
+				mouseY = e.getY();		
+			}
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+		panel.addMouseMotionListener(mml);
+		t = new Timer(16, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pl.setNewCoordinate(mouseX, mouseY);
+				panel.repaint();
+			}
+		});
+		t.start();
+		
+	}
+	
+	public static void processDefaultRiskData() {
 		processDefaultRiskTerritoryGraph(DefaultRiskMode.MODEL_DATA_FILENAME);
 		processDefaultRiskVisualTerritories(DefaultRiskMode.PIXEL_MAP_FILENAME, DefaultRiskMode.VISUAL_DATA_FILENAME);
-		System.out.println("Terminated");
+		processDefaultRiskCardSet(DefaultRiskMode.CARD_SET_FILENAME);
+		processDefaultRiskVisualCards(DefaultRiskMode.VISUAL_CARDS_FILENAME);
+	}
+	
+	public static void processDefaultRiskCardSet(String dataFile) {
+		ArrayList<Card> cardSet = new ArrayList<>();
 		
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NOTHERN_EUROPE, CARD_TYPES.EXTREME_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NORTH_WEST_TERRITORY, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EASTERN_UNITED_STATES, CARD_TYPES.EXTREME_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.INDONESIA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SIBERIA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SOUTH_AFRICA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.JAPAN, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.AFGHANISTAN, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.MADAGASCAR, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.VENEZUELA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EGYPT, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EASTERN_CANADA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.ALBERIA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.WESTERN_AUSTRALIA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.IRKUTSK, CARD_TYPES.EXTREME_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.KAMCHATKA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.INDIA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.BRAZIL, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.ICELAND, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.YAKUTSK, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.URAL, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.WESTERN_UNITED_STATES, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.WESTERN_EUROPE, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.ARGENTINA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.ONTARIO, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NORTH_AFRICA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.CENTRAL_AFRICA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.MONGOLA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.GREENLAND, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EASTERN_AUSTRALIA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SOUTHEAST_ASIA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.GREAT_BRITAIN, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SOUTHERN_EUROPE, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.ALASKA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.CHINA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SCANDINAVIA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NEW_GUINESS, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.CENTRAL_AFRICA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EAST_AFRICA, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.PERU, CARD_TYPES.EASY_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.RUSIA, CARD_TYPES.MODERATE_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.MIDDLE_EAST, CARD_TYPES.EXTREME_UNIT));
+		
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.ASIA, CARD_TYPES.EXTREME_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.EUROPE, CARD_TYPES.HARD_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.NORTH_AMERICA, CARD_TYPES.HARD_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.AFRICA, CARD_TYPES.MODERATE_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.SOUTH_AMERICA, CARD_TYPES.EASY_CONTINENT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.CONTINENTS.AUSTRALIA, CARD_TYPES.EASY_CONTINENT));
+		
+		ArrayList<Serializable> objects = new ArrayList<Serializable>();
+		for(Card currElement : cardSet)
+			objects.add(currElement);
+		
+		FileHandler fileHandler = new FileHandler(dataFile);
+		fileHandler.saveDataToFile(objects);
+		
+		cardSet = new ArrayList<Card>();
+		for(Serializable currElement : objects)
+			cardSet.add((Card)currElement);
+		
+		Scanner scan = new Scanner(System.in);
+		for(Card currElement : cardSet) {
+			currElement.print();
+			scan.nextLine();
+		}
 	}
 	
 	public static void processDefaultRiskTerritoryGraph(String dataFile) {
@@ -285,7 +425,7 @@ public class Test {
 		visualTerritories.get(40).mainCoordinate = new Coordinate(1654, 836);
 		visualTerritories.get(41).mainCoordinate = new Coordinate(1779, 813);
 		
-		TerritorialImageAnalyzer.constructTerritorialData(visualTerritories);
+		TerritorialImageAnalyzer.constructVisualTerritorialData(visualTerritories);
 		
 		ArrayList<Serializable> objects = new ArrayList<Serializable>();
 		for(VisualTerritory currElement : visualTerritories)
@@ -307,6 +447,59 @@ public class Test {
 			scan.nextLine();
 		}
 		System.out.println("Total Territory: " + visualTerritories.size() + "\tSurrounded with " + pixelCount + " pixels");
+	}
+	
+	public static void processDefaultRiskVisualCards(String dataFile) {
+		FileHandler fileHandler = new FileHandler(DefaultRiskMode.CARD_SET_FILENAME);
+		ArrayList<Serializable> objects = fileHandler.loadDataFromFile();
+		
+		ArrayList<Card> cardSet = new ArrayList<Card>();
+		for(Serializable currElement : objects)
+			cardSet.add((Card)currElement);
+		
+		ArrayList<VisualCard> visualCards = new ArrayList<VisualCard>();
+		for(Card card : cardSet) {
+			try {
+				DefaultRiskMode.TERRITORIES territory = DefaultRiskMode.TERRITORIES.valueOf(card.getCorrespondingTag());
+				if(territory != null)
+					visualCards.add(new DefaultRiskVisualCard(territory, card.cardType));
+			} 
+			catch(IllegalArgumentException exception) {}
+		}
+		
+		fileHandler = new FileHandler(DefaultRiskMode.VISUAL_DATA_FILENAME);
+		objects = fileHandler.loadDataFromFile();
+		
+		ArrayList<VisualTerritory> visualTerritories = new ArrayList<VisualTerritory>();
+		for(Serializable currElement : objects)
+			visualTerritories.add((VisualTerritory)currElement);
+		
+		for(VisualCard visualCard : visualCards) {
+			VisualTerritory processVisualTerritory = null;
+			for(VisualTerritory vt : visualTerritories)
+				if(vt.checkItsCorresponding(visualCard.getCorrespondingTag()))
+					processVisualTerritory = vt;
+			((DefaultRiskVisualCard)visualCard).characteristicVisualData = TerritorialImageAnalyzer
+					.extractVisualCardCharacteristicData(processVisualTerritory);
+		}		
+		
+		objects = new ArrayList<Serializable>();
+		for(VisualCard currElement : visualCards)
+			objects.add(currElement);
+		
+		fileHandler = new FileHandler(dataFile);
+		fileHandler.saveDataToFile(objects);
+		objects = fileHandler.loadDataFromFile();
+		
+		visualCards = new ArrayList<VisualCard>();
+		for(Serializable currElement : objects)
+			visualCards.add((VisualCard)currElement);
+		
+		Scanner scan = new Scanner(System.in);
+		for(VisualCard currElement : visualCards) {
+			currElement.print();
+			scan.nextLine();
+		}
 	}
 
 }

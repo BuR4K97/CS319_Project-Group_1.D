@@ -20,9 +20,7 @@ public class ApplicationFrame extends JFrame {
 	
 	public void initializeMenu() {
 		removePanel();
-		
-		//focusPanel = new ApplicationPanel();
-		
+		focusPanel = new ApplicationPanel();
 		updatePanel();
 	}
 	

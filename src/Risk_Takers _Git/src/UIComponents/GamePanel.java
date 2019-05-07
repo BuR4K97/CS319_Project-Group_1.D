@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import AnimationComponents.AnimationHandler;
 import Controller.GameController;
 import GameAssets.GameConstants;
 import HelperTools.ImageHandler;
+import ModelClasses.Card;
 import ModelClasses.Territory;
 
 public class GamePanel extends DynamicPanel {
@@ -20,6 +22,7 @@ public class GamePanel extends DynamicPanel {
 	private VisualTerritoryVisualization visualTerritoryPanel;
 	private InteractionPanel interactionPanel;
 	private TextualInGamePanel textualInGamePanel;
+	private VisualCardPanel visualCardPanel;
 	private BufferedImage backgroundTexture;
 	
 	public GamePanel() {
@@ -31,89 +34,47 @@ public class GamePanel extends DynamicPanel {
 		visualTerritoryPanel = new VisualTerritoryVisualization();
 		visualTerritoryPanel.initialize();
 		interactionPanel = new InteractionPanel();
-		interactionPanel.initialize(visualTerritoryPanel.getFocusTerritories());
+		interactionPanel.initialize(visualTerritoryPanel);
 		textualInGamePanel = new TextualInGamePanel();
 		textualInGamePanel.initialize();
-		
-		attackTillCapture = new JButton("Attack TillCapture");
-		attackPerRoll = new JButton("Attack PerRoll");
-		terminateAttack = new JButton("Terminate Attack");
-		attackTillCapture.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				GameController.interactions.requestAttackTillCapture();
-			}
-			
-		});
-		attackPerRoll.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				GameController.interactions.requestAttackPerRoll();
-			}
-			
-		});
-		terminateAttack.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				GameController.interactions.terminateCombat();
-			}
-		
-		});
-		attackTillCapture.setVisible(false);
-		attackTillCapture.setEnabled(false);
-		attackPerRoll.setVisible(false);
-		attackPerRoll.setEnabled(false);
-		terminateAttack.setVisible(false);
-		terminateAttack.setEnabled(false);
+		visualCardPanel = new VisualCardPanel();
 		
 		visualTerritoryPanel.insertMouseListeners(this);
 		textualInGamePanel.insertLabels(this);
 		interactionPanel.insertButtons(this);
-		add(attackTillCapture) ;
-		add(attackPerRoll);
-		add(terminateAttack);
 	}
 	
-	private JButton attackTillCapture; 
-	private JButton attackPerRoll;
-	private JButton terminateAttack;
 	public void initializeAttackScenario(Territory[] combatTerritories) {
-		interactionPanel.deactivate();
-		attackTillCapture.setVisible(true);
-		attackTillCapture.setEnabled(true);
-		attackPerRoll.setVisible(true);
-		attackPerRoll.setEnabled(true);
-		terminateAttack.setVisible(true);
-		terminateAttack.setEnabled(true);
-		
+		interactionPanel.activateCombatMode();
 		visualTerritoryPanel.inCombatMode(combatTerritories);
 	}
 	
 	public void terminateAttackScenario() {
-		interactionPanel.activate();
-		attackTillCapture.setVisible(false);
-		attackTillCapture.setEnabled(false);
-		attackPerRoll.setVisible(false);
-		attackPerRoll.setEnabled(false);
-		terminateAttack.setVisible(false);
-		terminateAttack.setEnabled(false);
-			
+		interactionPanel.deactivateCombatMode();
 		visualTerritoryPanel.outCombatMode();
+	}
+	
+	public void initializeCardMode() {
+		interactionPanel.activateCardMode();
+	}
+	
+	public void terminateCardMode() {
+		interactionPanel.deactivateCardMode();
 	}
 	
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
 		//painter.drawImage(backgroundTexture, 0, 0, this);
 		visualTerritoryPanel.paint(painter);
+		visualCardPanel.paint(painter);
 	}
 	
 	public void update() {
 		visualTerritoryPanel.update();
-		if(interactionPanel.getTextualPanelUpdateRequest())
+		if(GameController.interactions.getTextualPanelUpdateRequest())
 			textualInGamePanel.update(); 
+		if(GameController.interactions.getVisualCardPanelUpdateRequest())
+			visualCardPanel.update();	
 	}
 	
 	public void destroy() {

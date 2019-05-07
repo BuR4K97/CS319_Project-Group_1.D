@@ -1,25 +1,143 @@
 package HelperTools;
 
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import UIComponents.ApplicationFrame;
 import UIComponents.Coordinate;
+import UIComponents.VisualCard;
 import UIComponents.VisualTerritory;
 
 public class TerritorialImageAnalyzer {
 	
 	public static BufferedImage image;
 	
-	public static boolean constructTerritorialData(ArrayList<VisualTerritory> visualTerritories) {
+	public static void constructScaledTerritorialData(ArrayList<VisualTerritory> visualTerritories) {
+		final double upScaledTarget = 480;
+		
+		ArrayList<Coordinate[][]> visualBuffers = new ArrayList<>();
+		ArrayList<Integer> minXCoords = new ArrayList<Integer>(), minYCoords = new ArrayList<Integer>();
+		Coordinate [][] tempBuffer;
+		int minXCoord, maxXCoord, minYCoord, maxYCoord;
+		for(VisualTerritory vt : visualTerritories) {
+			maxXCoord = 0; maxYCoord = 0;
+			minXCoord = ApplicationFrame.width;
+			minYCoord = ApplicationFrame.height;
+			
+			for(Coordinate c : vt.coordinates) {
+				if(c.xCoord < minXCoord)
+					minXCoord = c.xCoord;
+				if(c.xCoord > maxXCoord)
+					maxXCoord = c.xCoord;
+				if(c.yCoord < minYCoord)
+					minYCoord = c.yCoord;
+				if(c.yCoord > maxYCoord)
+					maxYCoord = c.yCoord;
+			}
+			tempBuffer = new Coordinate[(maxXCoord - minXCoord) / VisualTerritory.PIXEL_JUMP + 1]
+					[(maxYCoord - minYCoord) / VisualTerritory.PIXEL_JUMP + 1];
+			
+			for(Coordinate c : vt.coordinates) {
+				tempBuffer[(c.xCoord - minXCoord) / VisualTerritory.PIXEL_JUMP]
+						[(c.yCoord - minYCoord) / VisualTerritory.PIXEL_JUMP] = c;
+			}
+			visualBuffers.add(tempBuffer);
+			minXCoords.add(minXCoord);
+			minYCoords.add(minYCoord);
+		}
+		
+		int scaleModifier;
+		for(int i = 0; i < visualTerritories.size(); i++) {
+			scaleModifier = (int)Math.floor(Math.sqrt(upScaledTarget / visualTerritories.get(i).coordinates.size()) + 1);
+			tempBuffer = new Coordinate[visualBuffers.get(i).length * scaleModifier]
+					[visualBuffers.get(i)[0].length * scaleModifier];
+			for(int n = 0; n < visualBuffers.get(i).length; n++) {
+				for(int k = 0; k < visualBuffers.get(i)[n].length; k++) {
+					if(visualBuffers.get(i)[n][k] != null) {
+						Coordinate process = visualBuffers.get(i)[n][k];
+						int xCoord = minXCoords.get(i) + ((process.xCoord - minXCoords.get(i)) * scaleModifier);
+						int yCoord = minYCoords.get(i) + ((process.yCoord - minYCoords.get(i)) * scaleModifier);
+						for(int j = 0; j < scaleModifier; j++) {
+							for(int l = 0; l < scaleModifier; l++) {
+								tempBuffer[n * scaleModifier + j][k * scaleModifier + l]
+										= new Coordinate(xCoord + j * VisualTerritory.PIXEL_JUMP
+												, yCoord + l * VisualTerritory.PIXEL_JUMP);
+							}
+						}
+					}
+				}
+			}
+			for(int n = 0; n < tempBuffer.length; n++) {
+				for(int k = 0; k < tempBuffer[n].length; k++) { 
+					if(tempBuffer[n][k] != null) 
+						visualTerritories.get(i).upScaledCoordinates.add(tempBuffer[n][k]);
+				}
+			}
+		}
+	}
+	
+	public static ArrayList<Coordinate> extractVisualCardCharacteristicData(VisualTerritory visualTerritory) {
+		final double cardTarget = 48;
+		
+		Coordinate[][] visualBuffer;
+		int minXCoord, maxXCoord, minYCoord, maxYCoord;
+		maxXCoord = 0; maxYCoord = 0;
+		minXCoord = ApplicationFrame.width;
+		minYCoord = ApplicationFrame.height;
+			
+		for(Coordinate c : visualTerritory.coordinates) {
+			if(c.xCoord < minXCoord)
+				minXCoord = c.xCoord;
+			if(c.xCoord > maxXCoord)
+				maxXCoord = c.xCoord;
+			if(c.yCoord < minYCoord)
+				minYCoord = c.yCoord;
+			if(c.yCoord > maxYCoord)
+				maxYCoord = c.yCoord;
+		}
+		visualBuffer = new Coordinate[(maxXCoord - minXCoord) / VisualTerritory.PIXEL_JUMP + 1]
+				[(maxYCoord - minYCoord) / VisualTerritory.PIXEL_JUMP + 1];
+			
+		for(Coordinate c : visualTerritory.coordinates) {
+			visualBuffer[(c.xCoord - minXCoord) / VisualTerritory.PIXEL_JUMP]
+					[(c.yCoord - minYCoord) / VisualTerritory.PIXEL_JUMP] = c;
+		}
+		
+		int scaleModifier = (int)Math.floor(Math.sqrt(visualTerritory.coordinates.size() / cardTarget) + 1);
+		Coordinate[][] tempBuffer = new Coordinate[visualBuffer.length / scaleModifier + 1]
+				[visualBuffer[0].length / scaleModifier + 1];
+		for(int n = 0; n < visualBuffer.length; n += scaleModifier) {
+			for(int k = 0; k < visualBuffer[n].length; k += scaleModifier) {
+				if(visualBuffer[n][k] != null) {
+					Coordinate process = visualBuffer[n][k];
+					int xCoord = minXCoord + ((process.xCoord - minXCoord) / scaleModifier);
+					int yCoord = minYCoord + ((process.yCoord - minYCoord) / scaleModifier);
+					tempBuffer[n / scaleModifier][k / scaleModifier] = new Coordinate(xCoord, yCoord);
+				}
+			}
+		}
+		
+		ArrayList<Coordinate> visualCardCharacteristicData = new ArrayList<Coordinate>();
+		for(int n = 0; n < tempBuffer.length; n++) {
+			for(int k = 0; k < tempBuffer[n].length; k++) { 
+				if(tempBuffer[n][k] != null) 
+					visualCardCharacteristicData.add(tempBuffer[n][k]);
+			}
+		}
+		return visualCardCharacteristicData;
+	}
+	
+	public static boolean constructVisualTerritorialData(ArrayList<VisualTerritory> visualTerritories) {
 		if(image == null) return false;
 		
 		int pixelJump = VisualTerritory.PIXEL_JUMP;
 
 		Color pixelColor;
-		for (int i = 0; i < 1920; i += pixelJump) {
-			pixelCheck: for(int j = 0; j < 1080; j += pixelJump) {
+		for (int i = 0; i < ApplicationFrame.width; i += pixelJump) {
+			pixelCheck: for(int j = 0; j < ApplicationFrame.height; j += pixelJump) {
 				pixelColor = new Color(image.getRGB(i, j));
 
 				for(int k = 0; k < visualTerritories.size() - 1; k++) {

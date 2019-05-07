@@ -34,5 +34,23 @@ public class DefaultRiskVisualTerritory extends VisualTerritory {
 		}
 		return vt;
 	}
+
+	@Override
+	public boolean checkItsCorresponding(String checkTag) {
+		try {
+			DefaultRiskMode.TERRITORIES check = DefaultRiskMode.TERRITORIES.valueOf(checkTag);
+			if(check == null) return false;
+			
+			return territory == check;
+		}
+		catch(IllegalArgumentException exception) {
+			return false;
+		}
+	}
+
+	@Override
+	public String getCorrespondingTag() {
+		return territory.toString();
+	}
 	
 }

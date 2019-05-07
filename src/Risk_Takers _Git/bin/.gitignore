@@ -1,4 +1,5 @@
-/GameAssets/
-/ModelClasses/
+/HelperTools/
 /UIComponents/
-/AnimationComponents/
+/GameAssets/
+/Controller/
+/ModelClasses/

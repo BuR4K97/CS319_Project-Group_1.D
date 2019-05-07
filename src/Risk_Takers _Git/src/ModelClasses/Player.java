@@ -7,6 +7,7 @@ public class Player {
 	private String playerName;
 	private Color playerColor;
 	private ArrayList<Territory> territories = new ArrayList<Territory>();
+	private UnitPocket unitPocket = new UnitPocket();
 
 	public Player(String playerName, int red, int green, int blue) {
 		this.playerName = playerName;
@@ -16,6 +17,16 @@ public class Player {
 	
 	public String getName() { return this.playerName; }
 	public Color getColor() { return this.playerColor; }
+	public int getAvailableUnitAmount() { return this.unitPocket.getUnitAmount(); }
+	public ArrayList<Card> getCardSet() { return this.unitPocket.getCardSet(); }
+	
+	public void insertCard(Card insert) {
+		unitPocket.getCardSet().add(insert);
+	}
+	
+	public boolean activateCards(ArrayList<Card> activates) {
+		return unitPocket.activateCards(activates);
+	}
 	
 	public boolean captureTerritory(Territory targetTerritory) {
 		for(Territory currTerritory : territories)

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 public abstract class VisualTerritory implements Serializable {
 
 	public ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
+	public ArrayList<Coordinate> upScaledCoordinates = new ArrayList<Coordinate>();
+	public ArrayList<Coordinate> cardCoordinates = new ArrayList<Coordinate>();
+	
 	public Coordinate[][] visualBuffer;
 	public ArrayList<Coordinate> border = new ArrayList<Coordinate>();
 	public Coordinate mainCoordinate;
@@ -33,7 +36,7 @@ public abstract class VisualTerritory implements Serializable {
 	public int drawSize = DEFAULT_DRAW_SIZE;
 	public void paint(Graphics painter, boolean selected) {
 		for(Coordinate a: coordinates)
-			painter.fillRect(a.xCoord , a.yCoord, drawSize, drawSize);
+			painter.fillRect(a.xCoord , a.yCoord, drawSize, drawSize); 
 	}
 	
 	public static Coordinate getIndexedCoordinate(double xRate, double yRate) {
@@ -49,11 +52,12 @@ public abstract class VisualTerritory implements Serializable {
 	}
 	
 	public static boolean checkPixelJumpHierarchy(Coordinate check) {
-		return check.xCoord % 12 == 0 && check.yCoord % 12 == 0;
+		return check.xCoord % PIXEL_JUMP == 0 && check.yCoord % PIXEL_JUMP == 0;
 	}
 
-	
 	public abstract VisualTerritory copy();
 	public abstract void print();
+	public abstract boolean checkItsCorresponding(String checkTag);
+	public abstract String getCorrespondingTag();
 	
 }

@@ -1,7 +1,6 @@
 package GameAssets.DefaultRiskMode;
 
 import ModelClasses.Territory;
-import UIComponents.VisualTerritory;
 
 public class DefaultRiskTerritory extends Territory {
 
@@ -25,12 +24,16 @@ public class DefaultRiskTerritory extends Territory {
 	
 
 	@Override
-	public boolean checkItsCorresponding(VisualTerritory check) {
-		if(!(check instanceof DefaultRiskVisualTerritory)) return false;
-		
-		DefaultRiskVisualTerritory corresponding = (DefaultRiskVisualTerritory)check;
-		if(corresponding.territory == territory) return true;
-		return false;
+	public boolean checkItsCorresponding(String checkTag) {
+		try {
+			DefaultRiskMode.TERRITORIES check = DefaultRiskMode.TERRITORIES.valueOf(checkTag);
+			if(check == null) return false;
+			
+			return territory == check;
+		}
+		catch(IllegalArgumentException exception) {
+			return false;
+		}
 	}
 
 	@Override
@@ -42,7 +45,10 @@ public class DefaultRiskTerritory extends Territory {
 			System.out.print("The unit: " + unitNumber);
 		
 	}
-	
-	
+
+	@Override
+	public String getCorrespondingTag() {
+		return territory.toString();
+	}	
 	
 }
