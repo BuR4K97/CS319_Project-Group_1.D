@@ -48,6 +48,18 @@ public class EnvanterBox{
 
 
 	public EnvanterBox() {
+		movingBoxes = new Timer(MainApplication.ONE_SEC / MainApplication.ANIMATION_UPDATE_FREQUENCY
+				,  new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				for(int i = 0; i < list.size(); i++) {
+					list.get(i).move(new Rectangle(x, y, borderLength, borderLength));
+				}
+			}
+
+		});
+		movingBoxes.start();
+		
 		opening = new Timer(16,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(Math.abs(openingAmountLeft - OPENING_AMOUNT_LEFT_OPEN) <= movingAmount) {
@@ -172,17 +184,7 @@ public class EnvanterBox{
 		for(int i = 0; i < player.getAvailableUnitAmount(); i++)
 			list.add(new SmallBox(x + borderLength/2, y + borderLength/2));
 		
-		movingBoxes = new Timer(MainApplication.ONE_SEC / MainApplication.ANIMATION_UPDATE_FREQUENCY
-				,  new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				for(int i = 0; i < list.size(); i++) {
-					list.get(i).move(new Rectangle(x, y, borderLength, borderLength));
-				}
-			}
-
-		});
-		movingBoxes.restart();
+		
 		unitsInHand.clear();
 	}
 
@@ -263,5 +265,10 @@ public class EnvanterBox{
 		if(x >= this.x && (x <= this.x + borderLength) && y >= this.y && (y <= this.y + borderLength))
 			return true;
 		return false;
+	}
+
+	public void flushState() {
+		addUnit(unitsInHand.size());
+		unitsInHand.clear();
 	}
 }

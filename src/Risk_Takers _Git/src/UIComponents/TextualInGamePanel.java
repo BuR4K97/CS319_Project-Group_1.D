@@ -58,7 +58,7 @@ public class TextualInGamePanel {
 	}
 	
 	public void flushPrevState() {
-		
+		envanterBox.flushState();
 	}
 	
 	//paint method
