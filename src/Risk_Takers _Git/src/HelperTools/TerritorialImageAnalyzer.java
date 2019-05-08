@@ -80,7 +80,7 @@ public class TerritorialImageAnalyzer {
 	}
 	
 	public static ArrayList<Coordinate> extractVisualCardCharacteristicData(VisualTerritory visualTerritory) {
-		final double cardTarget = 48;
+		final double cardTarget = 24;
 		
 		Coordinate[][] visualBuffer;
 		int minXCoord, maxXCoord, minYCoord, maxYCoord;
@@ -113,8 +113,8 @@ public class TerritorialImageAnalyzer {
 			for(int k = 0; k < visualBuffer[n].length; k += scaleModifier) {
 				if(visualBuffer[n][k] != null) {
 					Coordinate process = visualBuffer[n][k];
-					int xCoord = minXCoord + ((process.xCoord - minXCoord) / scaleModifier);
-					int yCoord = minYCoord + ((process.yCoord - minYCoord) / scaleModifier);
+					int xCoord = ((process.xCoord - minXCoord) / scaleModifier);
+					int yCoord = ((process.yCoord - minYCoord) / scaleModifier);
 					tempBuffer[n / scaleModifier][k / scaleModifier] = new Coordinate(xCoord, yCoord);
 				}
 			}

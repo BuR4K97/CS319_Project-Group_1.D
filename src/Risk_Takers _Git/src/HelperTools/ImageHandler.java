@@ -29,4 +29,14 @@ public class ImageHandler {
 		return this.bufferedData; 
 	}
 
+	public void writeDataBack() {
+		try {
+			File imageFile = new File(fileName);
+			ImageIO.write(bufferedData, "png", imageFile);
+		}
+		catch(Exception exception) {
+			System.out.println(exception.getMessage());
+		}
+	}
+	
 }

@@ -8,10 +8,10 @@ public class Player {
 	private Color playerColor;
 	private ArrayList<Territory> territories = new ArrayList<Territory>();
 	private UnitPocket unitPocket = new UnitPocket();
-
-	public Player(String playerName, int red, int green, int blue) {
+	
+	public Player(String playerName, Color playerColor) {
 		this.playerName = playerName;
-		playerColor = new Color(red, green, blue);
+		this.playerColor = playerColor;
 		territories = new ArrayList<Territory>();
 	}
 	
@@ -39,6 +39,7 @@ public class Player {
 	public void addUnitsToTerritory(Territory targetTerritory, int unitToAdd) {
 		if(targetTerritory.getPlayer() != this) return;
 		targetTerritory.addUnits(unitToAdd);
+		unitPocket.removeUnit(unitToAdd);
 	}
 	
 	public boolean moveUnits(Territory sourceTerritory, Territory targetTerritory, int unitToMove) {

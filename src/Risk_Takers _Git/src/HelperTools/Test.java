@@ -7,10 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -30,66 +32,18 @@ import UIComponents.VisualTerritory;
 
 public class Test{
 	
-	//static VisualCard vc = new VisualCard(TERRITORIES.WESTERN_EUROPE, 100, 100, 2);
-	static PixelString pl = new PixelString(10, 10, 10, "imam hatipler kapatilsin", Color.CYAN);
-	static MouseMotionListener mml;
-	static int  mouseX = 0, mouseY = 0;
-	static Timer t;
-	
 	public static void main(String[] args) {
 	
 		processDefaultRiskData();
-		
-	}
 	
-	public static void cardGUI() {
-		JFrame frame = new JFrame();
-		frame.setPreferredSize(new Dimension(1920, 1080));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.setUndecorated(true);
-		frame.setVisible(true);
-		frame.pack();
-		///////////
-		
-		JPanel panel = new JPanel() {
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				//vc.paint(g);
-				pl.paint(g);
-			}
-		};
-		panel.setBackground(Color.BLACK);
-		panel.setPreferredSize(new Dimension(1920, 1080));
-		frame.add(panel);
-		frame.repaint();
-		/////////////////
-		mml = new MouseMotionListener() {
-			public void mouseMoved(MouseEvent e) {
-				mouseX = e.getX();
-				mouseY = e.getY();		
-			}
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-		panel.addMouseMotionListener(mml);
-		t = new Timer(16, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pl.setNewCoordinate(mouseX, mouseY);
-				panel.repaint();
-			}
-		});
-		t.start();
-		
 	}
-	
+
 	public static void processDefaultRiskData() {
 		processDefaultRiskTerritoryGraph(DefaultRiskMode.MODEL_DATA_FILENAME);
 		processDefaultRiskVisualTerritories(DefaultRiskMode.PIXEL_MAP_FILENAME, DefaultRiskMode.VISUAL_DATA_FILENAME);
 		processDefaultRiskCardSet(DefaultRiskMode.CARD_SET_FILENAME);
 		processDefaultRiskVisualCards(DefaultRiskMode.VISUAL_CARDS_FILENAME);
+		processDefaultRiskVisualCardSymbols();
 	}
 	
 	public static void processDefaultRiskCardSet(String dataFile) {
@@ -501,5 +455,20 @@ public class Test{
 			scan.nextLine();
 		}
 	}
-
+	
+	public static void processDefaultRiskVisualCardSymbols() {
+		ImageHandler imageBuffer; BufferedImage visualBuffer;
+		for(int i = 0; i < Card.COMBINATIONAL_VARIANTS; i++) {
+			imageBuffer = new ImageHandler(DefaultRiskMode.CARD_SYMBOLS_FILENAME[i]);
+			imageBuffer.constructData();
+			visualBuffer = imageBuffer.getBufferedData();
+			for(int j = 0; j < visualBuffer.getWidth(); j++) {
+				for(int k = 0; k < visualBuffer.getHeight(); k++) {
+					if(Math.abs(visualBuffer.getRGB(j, k) - Color.BLACK.getRGB()) < 1000000)
+						visualBuffer.setRGB(j, k, Color.LIGHT_GRAY.getRGB());
+				}
+			}
+			imageBuffer.writeDataBack();
+		}
+	}
 }

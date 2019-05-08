@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Controller.GameController;
 import Controller.GameInteractions;
+import GameAssets.GameConstants;
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
 import ModelClasses.Card.CARD_ACTIVATION;
 import ModelClasses.Turn.TURN_PHASE;
@@ -19,6 +20,7 @@ import UIComponents.VisualTerritory;
 public class Game {
 	
 	public static final int MIN_PLAYER_NUMBER = 2;
+	public static final int MAX_PLAYER_NUMBER = 4;
 	public static ArrayList<Player> players;
 	public static ArrayList<Territory> territories;
 	
@@ -45,7 +47,7 @@ public class Game {
 			if(Turn.activePhase == TURN_PHASE.DRAFT) {
 				if(focusTerritory[0] != null) {
 					Turn.activePlayer.addUnitsToTerritory(focusTerritory[0], actionAmount);
-					//GameController.interactions.requestTextualPanelUpdateRequest();
+					GameController.interactions.requestTextualPanelUpdateRequest();
 				}
 			}
 			else if(Turn.activePhase == TURN_PHASE.ATTACK) {
@@ -76,12 +78,12 @@ public class Game {
 	 */
 	public static boolean initialize(int playerNumber) {
 		if(playerNumber < MIN_PLAYER_NUMBER) return false;
+		if(playerNumber > MAX_PLAYER_NUMBER) return false;
 		if(GameController.activeMode == null) return false;
 		
 		players = new ArrayList<Player>();
 		for(int i = 0; i < playerNumber; i++)
-			players.add(new Player(("Player" + (i + 1)), randColor()
-					, randColor(), randColor()));
+			players.add(new Player(("Player " + (i + 1)), GameConstants.PLAYER_COLORS[i]));
 		
 		territories = GameController.activeMode.territoryGraph.getTerritories();
 		
@@ -99,12 +101,12 @@ public class Game {
 			else i--;
 		}
 		
-		final double INITIAL_UNIT_MODIFIER = 10;
+		final double INITIAL_UNIT_MODIFIER = 3;
 		ArrayList<Card> cardSet = GameController.activeMode.cardSet;
 		ArrayList<Card> activates = new ArrayList<Card>();
 		for(Player player : players) {
 			for(int i = 0; i < cardSet.size() / (playerNumber * INITIAL_UNIT_MODIFIER); i++) {
-				for(int n = 0; n < CARD_ACTIVATION.COMBINATIONAL.activation; n++) {
+				for(int n = 0; n < CARD_ACTIVATION.COMBINATIONAL.activation - 2; n++) {
 					player.insertCard(cardSet.get(i));
 					activates.add(cardSet.get(i));
 				}
@@ -151,14 +153,10 @@ public class Game {
 	public static boolean activateCards(ArrayList<Card> activates) {
 		if(Turn.activePlayer.activateCards(activates)) {
 			GameController.interactions.requestVisualCardPanelUpdateRequest();
+			GameController.interactions.requestTextualPanelUpdateRequest();
 			return true;
 		}
 		return false;
-	}
-	
-	private static int randColor() {
-		final int COLOR_CAP = 256;
-		return (int)(Math.random() * COLOR_CAP);
 	}
 
 	public static ArrayList<Card> extractActivePlayerCards() {

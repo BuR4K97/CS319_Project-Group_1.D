@@ -25,13 +25,14 @@ public class DefaultRiskMode extends GameMode {
 	public static final String CARD_SET_FILENAME = "GameAssets\\DefaultRiskMode\\DefaultRiskCardSet.so";
 	public static final String VISUAL_CARDS_FILENAME = "GameAssets\\DefaultRiskMode\\DefaultRiskVisualCards.so";
 	public static final String[] CARD_SYMBOLS_FILENAME = new String[Card.COMBINATIONAL_VARIANTS];
-	public static final BufferedImage[] CARD_SYMBOLS = new BufferedImage[Card.COMBINATIONAL_VARIANTS];
 	static {
 		CARD_SYMBOLS_FILENAME[0] = "GameAssets\\DefaultRiskMode\\CardSymbols\\Soldier.jpg";
 		CARD_SYMBOLS_FILENAME[1] = "GameAssets\\DefaultRiskMode\\CardSymbols\\Tank.jpg";
 		CARD_SYMBOLS_FILENAME[2] = "GameAssets\\DefaultRiskMode\\CardSymbols\\Plane.jpg";
 		CARD_SYMBOLS_FILENAME[3] = "GameAssets\\DefaultRiskMode\\CardSymbols\\Medal.jpg";
-		
+	}
+	
+	public final BufferedImage[] CARD_SYMBOLS = new BufferedImage[Card.COMBINATIONAL_VARIANTS]; {
 		ImageHandler cardSymbol;
 		for(int i = 0; i < Card.COMBINATIONAL_VARIANTS; i++) {
 			cardSymbol = new ImageHandler(CARD_SYMBOLS_FILENAME[i]);
