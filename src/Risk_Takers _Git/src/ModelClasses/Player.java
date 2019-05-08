@@ -39,6 +39,7 @@ public class Player {
 	public void addUnitsToTerritory(Territory targetTerritory, int unitToAdd) {
 		if(targetTerritory.getPlayer() != this) return;
 		targetTerritory.addUnits(unitToAdd);
+		unitPocket.removeUnit(unitToAdd);
 	}
 	
 	public boolean moveUnits(Territory sourceTerritory, Territory targetTerritory, int unitToMove) {

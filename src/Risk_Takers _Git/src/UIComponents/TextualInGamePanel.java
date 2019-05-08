@@ -36,7 +36,7 @@ public class TextualInGamePanel {
 		interactionStringList = new ArrayList<VisualString>();
 		interactionStringList.add(new VisualString(860, 0, 14, phaseLabel.getText()));
 		
-		envanterBox = new EnvanterBox(Turn.activePlayer);
+		envanterBox = new EnvanterBox();
 		
 		this.mouseTracer = mouseTracer;
 	}
@@ -52,9 +52,13 @@ public class TextualInGamePanel {
 			playerLabel.setText(GameController.interactions.getActivePlayer().toString());
 			Color playerColor = GameController.interactions.getActivePlayer().getColor();
 			playerLabel.setForeground(new Color(playerColor.getRed(), playerColor.getGreen(), playerColor.getBlue(), 255));
+			envanterBox.updatePlayer(GameController.interactions.getActivePlayer());
 		}
-		// envanterbox
-		envanterBox.update(mouseTracer, Turn.activePlayer);
+		envanterBox.updateMouseEvent(mouseTracer);
+	}
+	
+	public void flushPrevState() {
+		
 	}
 	
 	//paint method

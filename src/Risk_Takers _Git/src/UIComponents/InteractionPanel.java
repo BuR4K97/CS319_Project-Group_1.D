@@ -33,7 +33,7 @@ public class InteractionPanel {
 	private JLabel activateCards;
 	private JLabel cardModeBackButton;
 
-	public void initialize(VisualTerritoryPanel visualTerritoryPanel) {
+	public void initialize() {
 		
 		nextPhaseLabel = new JLabel("Next Phase");
 		nextPhaseLabel.setBounds(815, 1013, 185, 29);
@@ -62,6 +62,7 @@ public class InteractionPanel {
 				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
 				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
+				((GamePanel)MainApplication.frame.focusPanel).requestFlushTextualInGamePanel();
 			}
 		});
 
@@ -158,6 +159,11 @@ public class InteractionPanel {
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {
 				((GamePanel)MainApplication.frame.focusPanel).initializeCardMode();
+				VisualTerritory[] focusTerritories = ((GamePanel)MainApplication.frame.focusPanel).getFocusVisualTerritories(); 
+				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
+				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
+				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
+				((GamePanel)MainApplication.frame.focusPanel).requestFlushTextualInGamePanel();
 			}
 		});
 		
@@ -181,7 +187,8 @@ public class InteractionPanel {
 			public void mouseExited(MouseEvent e) {}
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {
-				GameInteractions.requestCardActivation(((GamePanel)MainApplication.frame.focusPanel).getFocusVisualCards());
+				if(GameInteractions.requestCardActivation(((GamePanel)MainApplication.frame.focusPanel).getFocusVisualCards()))
+					((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualCardPanel();
 			}
 		});
 		
@@ -193,13 +200,13 @@ public class InteractionPanel {
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {
 				((GamePanel)MainApplication.frame.focusPanel).terminateCardMode();
+				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualCardPanel();
 			}
 		});
 		activateCards.setVisible(false);
 		activateCards.setEnabled(false);
 		cardModeBackButton.setVisible(false);
 		cardModeBackButton.setEnabled(false);
-
 	}
 
 	public void insertButtons(JPanel target) {

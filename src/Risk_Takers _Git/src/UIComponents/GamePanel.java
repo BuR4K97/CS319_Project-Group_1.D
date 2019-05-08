@@ -31,7 +31,7 @@ public class GamePanel extends DynamicPanel {
 		visualTerritoryPanel = new VisualTerritoryPanel();
 		visualTerritoryPanel.initialize(mouseTracer);
 		interactionPanel = new InteractionPanel();
-		interactionPanel.initialize(visualTerritoryPanel);
+		interactionPanel.initialize();
 		textualInGamePanel = new TextualInGamePanel();
 		textualInGamePanel.initialize(mouseTracer);
 		visualCardPanel = new VisualCardPanel();
@@ -57,14 +57,12 @@ public class GamePanel extends DynamicPanel {
 	public void initializeCardMode() {
 		currState = PANEL_STATES.CARD;
 		interactionPanel.activateCardMode();
-		visualCardPanel.inCardMode();
 		visualCardPanel.update();
 	}
 
 	public void terminateCardMode() {
 		currState = PANEL_STATES.NORMAL;
 		interactionPanel.deactivateCardMode();
-		visualCardPanel.outCardMode();
 	}
 
 	public void paintComponent(Graphics painter) {
@@ -90,6 +88,14 @@ public class GamePanel extends DynamicPanel {
 	
 	public void requestFlushVisualTerritoryPanel() {
 		visualTerritoryPanel.flushPrevState();
+	}
+	
+	public void requestFlushVisualCardPanel() {
+		visualCardPanel.flushPrevState();
+	}
+	
+	public void requestFlushTextualInGamePanel() {
+		textualInGamePanel.flushPrevState();
 	}
 
 	public void destroy() {

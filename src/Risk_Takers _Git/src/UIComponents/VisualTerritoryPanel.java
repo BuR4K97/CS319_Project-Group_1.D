@@ -51,9 +51,7 @@ public class VisualTerritoryPanel {
 	}
 	
 	public void flushPrevState() {
-		focusTerritories[0] = null;
-		focusTerritories[1] = null;
-		selectableTerritory = null;
+		popOutFocusTerritory(focusTerritories[0]);
 	}
 	
 	public void destroy() {
