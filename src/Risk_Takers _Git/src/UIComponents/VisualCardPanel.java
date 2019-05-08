@@ -3,6 +3,8 @@ package UIComponents;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+
+import Controller.GameController;
 import Controller.GameInteractions;
 import ModelClasses.Card;
 import ModelClasses.Card.CARD_TYPES;
@@ -12,6 +14,11 @@ public class VisualCardPanel {
 	
 	private ArrayList<VisualCard> visualCards;
 	private VisualCard[] focusVisualCards = new VisualCard[CARD_ACTIVATION.COMBINATIONAL.activation];
+	private MouseInGameListener mouseTracer;
+	
+	public void initialize(MouseInGameListener mouseTracer) {
+		this.mouseTracer = mouseTracer;
+	}
 	
 	private static final int yDrawCoord = 240;
 	private static final int xDrawCoord = 40;
@@ -29,14 +36,18 @@ public class VisualCardPanel {
 	private ArrayList<Coordinate> drawCoordinates = new ArrayList<Coordinate>();
 	
 	public void update() {
-		flushPrevState();
-		
-		visualCards = GameInteractions.extractActivePlayerVisualCards();
-		int xDistance = (VisualCard.width * visualCards.size()) + (xCoordCardGap * (visualCards.size() - 1));
-		int initialXCoord = xDrawCoord + (((ApplicationFrame.width - 2 * xDrawCoord) - xDistance) / 2);
-		for(VisualCard card : visualCards) {
-			drawCoordinates.add(new Coordinate(initialXCoord, yDrawCoord));
-			initialXCoord += xCoordCardGap + VisualCard.width;
+		if(GameController.interactions.getVisualCardPanelUpdateRequest()) {
+			flushPrevState();
+			visualCards = GameInteractions.extractActivePlayerVisualCards();
+			int xDistance = (VisualCard.width * visualCards.size()) + (xCoordCardGap * (visualCards.size() - 1));
+			int initialXCoord = xDrawCoord + (((ApplicationFrame.width - 2 * xDrawCoord) - xDistance) / 2);
+			for(VisualCard card : visualCards) {
+				drawCoordinates.add(new Coordinate(initialXCoord, yDrawCoord));
+				initialXCoord += xCoordCardGap + VisualCard.width;
+			}
+		}
+		if(cardMode) {
+			
 		}
 	}
 	

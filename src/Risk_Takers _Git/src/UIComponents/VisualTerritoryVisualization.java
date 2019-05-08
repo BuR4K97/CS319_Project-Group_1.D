@@ -47,11 +47,7 @@ public class VisualTerritoryVisualization {
 	
 	private VisualTerritory checkClicked; private boolean alreadyFocused = false;
 	public void update() {
-		if(AnimationHandler.suspendVisualTerritoryPanel()) {
-			mouseTracer.mouseReleased = false;
-			mouseTracer.mousePressed = false;
-			return;
-		}
+		if(AnimationHandler.suspendVisualTerritoryPanel()) return;
 		
 		VisualTerritory focusTerritory = mouseTracer.getFocusTerritory();
 		if(mouseTracer.mouseReleased) { 
@@ -63,19 +59,16 @@ public class VisualTerritoryVisualization {
 				alreadyFocused = false;
 				checkClicked = null;
 			}
-			mouseTracer.mouseReleased = false;
 		}
 		
 		if(selectableTerritory != focusTerritories[0] && selectableTerritory != focusTerritories[1])
 			AnimationHandler.terminateMouseOnTerritoryAnimation(selectableTerritory);
 		selectableTerritory = null;
 		if(focusTerritory == null) {
-			mouseTracer.mousePressed = false;
 			GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]);
 			return;
 		}
-		if(!pushIntoSelectableTerritories(focusTerritory)) {
-			mouseTracer.mousePressed = false; 
+		if(!pushIntoSelectableTerritories(focusTerritory)) { 
 			GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]);
 			return;
 		}
@@ -84,8 +77,7 @@ public class VisualTerritoryVisualization {
 				alreadyFocused = true;
 			else
 				pushIntoFocusTerritories(focusTerritory);
-			checkClicked = focusTerritory;
-			mouseTracer.mousePressed = false; 
+			checkClicked = focusTerritory; 
 		}
 		GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]);
 	}

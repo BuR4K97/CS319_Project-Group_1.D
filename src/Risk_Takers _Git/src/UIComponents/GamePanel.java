@@ -38,8 +38,9 @@ public class GamePanel extends DynamicPanel {
 		interactionPanel = new InteractionPanel();
 		interactionPanel.initialize(visualTerritoryPanel);
 		textualInGamePanel = new TextualInGamePanel();
-		textualInGamePanel.initialize();
+		textualInGamePanel.initialize(mouseTracer);
 		visualCardPanel = new VisualCardPanel();
+		visualCardPanel.initialize(mouseTracer);
 
 		visualTerritoryPanel.insertMouseListeners(this);
 		textualInGamePanel.insertLabels(this);
@@ -78,10 +79,12 @@ public class GamePanel extends DynamicPanel {
 
 	public void update() {
 		visualTerritoryPanel.update();
-		if(GameController.interactions.getTextualPanelUpdateRequest())
-			textualInGamePanel.update();
-		if(GameController.interactions.getVisualCardPanelUpdateRequest())
-			visualCardPanel.update();
+		textualInGamePanel.update();
+		visualCardPanel.update();
+		
+		mouseTracer.mouseReleased = false;
+		mouseTracer.mousePressed = false;
+		mouseTracer.mouseClicked = false;
 	}
 
 	public void destroy() {

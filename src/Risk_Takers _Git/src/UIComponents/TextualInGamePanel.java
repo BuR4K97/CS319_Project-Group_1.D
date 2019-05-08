@@ -19,9 +19,10 @@ public class TextualInGamePanel {
 	private JLabel phaseLabel;
 	private JLabel playerLabel;
 	private ArrayList<VisualString> interactionStringList;
-	EnvanterBox envanterBox;
+	private EnvanterBox envanterBox;
+	private MouseInGameListener mouseTracer;
 	
-	public void initialize() {
+	public void initialize(MouseInGameListener mouseTracer) {
 		phaseLabel = new JLabel();
 		phaseLabel.setFont(new Font("Calibri", Font.BOLD, 32));
 		phaseLabel.setForeground(Color.WHITE);
@@ -36,20 +37,22 @@ public class TextualInGamePanel {
 		
 		envanterBox = new EnvanterBox();
 		
+		this.mouseTracer = mouseTracer;
 	}
 
 	public void insertLabels(JPanel target) {
 		target.add(phaseLabel);
 		target.add(playerLabel);
 		target.add(envanterBox);
-
 	}
 
 	public void update() {
-		phaseLabel.setText(GameController.interactions.getActivePhase().toString());
-		playerLabel.setText(GameController.interactions.getActivePlayer().toString());
-		Color playerColor = GameController.interactions.getActivePlayer().getColor();
-		playerLabel.setForeground(new Color(playerColor.getRed(), playerColor.getGreen(), playerColor.getBlue(), 255));
+		if(GameController.interactions.getTextualPanelUpdateRequest()) {
+			phaseLabel.setText(GameController.interactions.getActivePhase().toString());
+			playerLabel.setText(GameController.interactions.getActivePlayer().toString());
+			Color playerColor = GameController.interactions.getActivePlayer().getColor();
+			playerLabel.setForeground(new Color(playerColor.getRed(), playerColor.getGreen(), playerColor.getBlue(), 255));
+		}
 	}
 	
 	//paint method
