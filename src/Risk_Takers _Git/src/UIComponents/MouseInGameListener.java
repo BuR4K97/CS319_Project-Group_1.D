@@ -6,6 +6,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
 import Controller.GameController;
 
 public class MouseInGameListener implements MouseMotionListener, MouseListener {
@@ -35,6 +37,8 @@ public class MouseInGameListener implements MouseMotionListener, MouseListener {
 	public boolean mousePressed;
 	public boolean mouseReleased;
 	public boolean mouseClicked;
+	public boolean leftButtonClicked;
+	public boolean rightButtonClicked;
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {}
@@ -47,6 +51,14 @@ public class MouseInGameListener implements MouseMotionListener, MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(SwingUtilities.isLeftMouseButton(e)) {
+			leftButtonClicked = true;
+			rightButtonClicked = false;
+		}
+		else {
+			leftButtonClicked = false;
+			rightButtonClicked = true;
+		}
 		mouseClicked = true;
 	}
 	

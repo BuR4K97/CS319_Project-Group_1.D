@@ -2,6 +2,8 @@ package UIComponents.EnvanterBoxUI;
 
 import java.awt.Rectangle;
 
+import HelperTools.PixelString.Rect;
+
 public class SmallBox {
 	int x, xTarget;
 	int y, yTarget;
@@ -13,6 +15,11 @@ public class SmallBox {
 	public SmallBox(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	public boolean isInRectangle(Rectangle rect) {
+		if(y >= rect.getY() && x + length <= rect.getX() + rect.getWidth() && y + length <= rect.getY() + rect.getHeight() && x >= rect.getX())
+			return true;
+		return false;
 	}
 	public void goTarget(int xTarget, int yTarget) {
 		this.xTarget = xTarget;
@@ -32,6 +39,7 @@ public class SmallBox {
 		}else if(y < yTarget) {
 			y += movementOnMouse;
 		}
+		
 	}
 	public void move(Rectangle rect) {
 		// top

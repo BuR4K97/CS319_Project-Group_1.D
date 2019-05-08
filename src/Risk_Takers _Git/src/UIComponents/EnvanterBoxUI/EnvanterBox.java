@@ -17,48 +17,36 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-public class EnvanterBox extends JLabel{
+import ModelClasses.Player;
+import UIComponents.Coordinate;
+import UIComponents.MouseInGameListener;
+import UIComponents.VisualString;
 
-	int x = 80;
-	int y = 880;
+public class EnvanterBox{
+
+	int x = 60;
 	int borderLength = 120;// 120
+	int y = 1080 - borderLength - 20 ;
 	int openingAmountLeft = 0; // 0   -50
 	int openingAmountRigth = borderLength / 2; // 50  100
 	final int OPENING_AMOUNT_LEFT_OPEN = -borderLength/2;
 	final int OPENING_AMOUNT_LEFT_CLOSE = 0;
 	final int OPENING_AMOUNT_RIGHT_OPEN = borderLength;
 	final int OPENING_AMOUNT_RIGHT_CLOSE = borderLength/2;
-	int movingAmount = 10;
+	int movingAmount = 7;
 	boolean inOpening = false;
 	Timer opening, closing;
 	Timer movingBoxes;
-	Color color = Color.WHITE;
-	int unitNumber = 50;
+	Color color;
+	int unitNumber;
 	ArrayList<SmallBox> list = new ArrayList<SmallBox>();
 	ArrayList<SmallBox> unitsInHand = new ArrayList<SmallBox>();
-	int mouseX = 0, mouseY = 0;
-	
-	public EnvanterBox() {
-		super();
+	ArrayList<SmallBox> returnToBoxAnimation = new ArrayList<SmallBox>();
 
-		this.setBounds(x, y, borderLength, borderLength);
-		this.setForeground(new Color(0, 0, 0, 0));
-		this.setBackground(new Color(0, 0, 0, 0));
-		//this.setFont(new Font("Calibri", Font.BOLD, 32));
 
-		Timer t = new Timer(16, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(mouseOnBox(mouseX, mouseY))
-					open();
-				else
-					close();
-
-				for(int i = 0; i < unitsInHand.size();i++) {
-					unitsInHand.get(i).goTarget(mouseX + i * 20, mouseY);
-				}
-			}
-		});
-		t.start();
+	public EnvanterBox(Player player) {
+		unitNumber = 40;
+		color = player.getColor();
 
 		for(int i = 0; i < unitNumber; i++)
 			list.add(new SmallBox(x + borderLength/2, y + borderLength/2));
@@ -109,16 +97,13 @@ public class EnvanterBox extends JLabel{
 	}
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
-		g2d.setStroke(new BasicStroke(3));
 		g2d.setColor(color);
 		// boxes
 		for(int i = 0; i < list.size(); i++) {
 			g2d.fillRect(list.get(i).x, list.get(i).y, list.get(i).length, list.get(i).length);
 		}
-		// semi transparent panel rear unit number
-		g2d.setColor(new Color(0, 0, 0, 200));
-		g2d.fillRect(x, y, borderLength, borderLength);
-		g2d.setColor(color);
+		g2d.setStroke(new BasicStroke(3));
+		g2d.setColor(Color.LIGHT_GRAY);
 		// left border
 		g2d.drawLine(x, y, x, y + borderLength);
 		// bottom border
@@ -130,17 +115,94 @@ public class EnvanterBox extends JLabel{
 		//right open close
 		g2d.drawLine(x + openingAmountRigth, y, x + openingAmountRigth + borderLength/2, y);
 
-
 		// unit number
-		g2d.setColor(color);
-		g2d.setFont(new Font("Calibri", Font.BOLD, borderLength/2));
-		g2d.drawString("" + unitNumber, x + borderLength/4, y + 2*borderLength/3);
-		
+		g2d.setFont(new Font("pixel", Font.PLAIN, borderLength));
+		g2d.drawString("" + unitNumber, x + borderLength + 5, y + borderLength);
 		// box in hand
-		for(int i = 0; i < unitsInHand.size();i++) {
-			g.fillRect(unitsInHand.get(i).x, unitsInHand.get(i).y, 15, 15);
+		g2d.setColor(Color.LIGHT_GRAY);
+		if(unitsInHand.size() < 10) {
+			for(int i = 0; i < unitsInHand.size();i++) {
+				g.fillRect(unitsInHand.get(i).x, unitsInHand.get(i).y, 15, 15);
+			}
+		} else {
+			g2d.setFont(new Font("pixel", Font.BOLD, borderLength/2));
+			g2d.drawString("" + unitsInHand.size(), unitsInHand.get(0).x, unitsInHand.get(0).y + borderLength/2 - 10);
+		}
+		// return to box
+		if(returnToBoxAnimation.size() < 10) {
+			for(int i = 0; i < returnToBoxAnimation.size();i++) {
+				g.fillRect(returnToBoxAnimation.get(i).x, returnToBoxAnimation.get(i).y, 15, 15);
+			}
+		} else {
+			g2d.setFont(new Font("pixel", Font.BOLD, borderLength/2));
+			g2d.drawString("" + returnToBoxAnimation.size(), returnToBoxAnimation.get(0).x, returnToBoxAnimation.get(0).y);
 		}
 
+	}
+	public void update(MouseInGameListener mouseTracer, Player player) {
+		color = player.getColor();
+		if(mouseOnBox(mouseTracer.mousePosition.xCoord, mouseTracer.mousePosition.yCoord))
+			open();
+		else
+			close();
+		// units in hand
+		for(int i = 0; i < unitsInHand.size();i++) {
+			if(i < 3) {
+				unitsInHand.get(i).goTarget(mouseTracer.mousePosition.xCoord + i * 20, mouseTracer.mousePosition.yCoord);
+			} else if(i < 6) {
+				unitsInHand.get(i).goTarget(mouseTracer.mousePosition.xCoord + (i-3) * 20, mouseTracer.mousePosition.yCoord + 1 * 20);
+			}else if(i < 9) {
+				unitsInHand.get(i).goTarget(mouseTracer.mousePosition.xCoord + (i -6)  * 20, mouseTracer.mousePosition.yCoord + 2 * 20);
+			} else {
+				unitsInHand.get(i).goTarget(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord);
+			}
+		}
+		
+		// return to box
+		for(int i = 0; i < returnToBoxAnimation.size();i++) {
+			returnToBoxAnimation.get(i).goTarget(x + borderLength / 2, y + returnToBoxAnimation.get(i).length/2);
+			if(returnToBoxAnimation.get(i).isInRectangle(new Rectangle(x, y, borderLength, borderLength))) {
+				addUnit(1);
+				returnToBoxAnimation.remove(i);
+				break;
+			}
+				
+		}
+		
+		// mouse
+		if(mouseOnBox(mouseTracer.mousePosition.xCoord, mouseTracer.mousePosition.yCoord)) {
+			if(mouseTracer.leftButtonClicked) {
+				if(unitNumber > 0) {
+					removeUnit(1);
+					//unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
+					if(unitsInHand.size() < 3) {
+						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
+					} else if(unitsInHand.size() < 6) {
+						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + (unitsInHand.size() -3) * 20, mouseTracer.mousePosition.yCoord + 1 * 20));
+					}else if(unitsInHand.size() < 9) {
+						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + (unitsInHand.size() -6) * 20, mouseTracer.mousePosition.yCoord + 2 * 20));
+					} else {
+						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
+					}
+
+				}
+			} else if(mouseTracer.rightButtonClicked){
+				if(unitsInHand.size() > 0) {
+					addUnit(1);
+					unitsInHand.remove(unitsInHand.size()-1);
+				}
+			}	
+		} else {
+			if(mouseTracer.rightButtonClicked){
+				//addUnit(unitsInHand.size());
+				//unitsInHand.clear();
+				for(int i = 0; i < unitsInHand.size();i++) {
+					returnToBoxAnimation.add(unitsInHand.get(i));
+					returnToBoxAnimation.get(i).goTarget(x + borderLength / 2, y + returnToBoxAnimation.get(i).length/2);
+				}
+				unitsInHand.clear();
+			}	
+		}
 	}
 	public void open() {
 		closing.stop();
@@ -170,7 +232,7 @@ public class EnvanterBox extends JLabel{
 		list = new ArrayList<SmallBox>();
 	}
 	public boolean mouseOnBox(int x, int y) {
-		if(x > this.x && (x < this.x + borderLength) && y > this.y && (y < this.y + borderLength))
+		if(x >= this.x && (x <= this.x + borderLength) && y >= this.y && (y <= this.y + borderLength))
 			return true;
 		return false;
 	}

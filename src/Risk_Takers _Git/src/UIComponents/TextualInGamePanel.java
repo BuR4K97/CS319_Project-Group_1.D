@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Controller.GameController;
+import ModelClasses.Turn;
 import UIComponents.EnvanterBoxUI.EnvanterBox;
 
 public class TextualInGamePanel {
@@ -19,7 +20,7 @@ public class TextualInGamePanel {
 	private JLabel phaseLabel;
 	private JLabel playerLabel;
 	private ArrayList<VisualString> interactionStringList;
-	private EnvanterBox envanterBox;
+	public EnvanterBox envanterBox;
 	private MouseInGameListener mouseTracer;
 	
 	public void initialize(MouseInGameListener mouseTracer) {
@@ -35,7 +36,7 @@ public class TextualInGamePanel {
 		interactionStringList = new ArrayList<VisualString>();
 		interactionStringList.add(new VisualString(860, 0, 14, phaseLabel.getText()));
 		
-		envanterBox = new EnvanterBox();
+		envanterBox = new EnvanterBox(Turn.activePlayer);
 		
 		this.mouseTracer = mouseTracer;
 	}
@@ -43,7 +44,6 @@ public class TextualInGamePanel {
 	public void insertLabels(JPanel target) {
 		target.add(phaseLabel);
 		target.add(playerLabel);
-		target.add(envanterBox);
 	}
 
 	public void update() {
@@ -53,6 +53,8 @@ public class TextualInGamePanel {
 			Color playerColor = GameController.interactions.getActivePlayer().getColor();
 			playerLabel.setForeground(new Color(playerColor.getRed(), playerColor.getGreen(), playerColor.getBlue(), 255));
 		}
+		// envanterbox
+		envanterBox.update(mouseTracer, Turn.activePlayer);
 	}
 	
 	//paint method

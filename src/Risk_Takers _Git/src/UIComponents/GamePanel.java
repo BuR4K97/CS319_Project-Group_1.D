@@ -85,6 +85,8 @@ public class GamePanel extends DynamicPanel {
 		mouseTracer.mouseReleased = false;
 		mouseTracer.mousePressed = false;
 		mouseTracer.mouseClicked = false;
+		mouseTracer.leftButtonClicked = false;
+		mouseTracer.rightButtonClicked = false;
 	}
 
 	public void destroy() {
