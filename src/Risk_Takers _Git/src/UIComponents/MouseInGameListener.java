@@ -10,9 +10,7 @@ import Controller.GameController;
 
 public class MouseInGameListener implements MouseMotionListener, MouseListener {
 
-	private Coordinate mousePosition;
-	private PixelMap pixelMap;
-	private ArrayList<VisualTerritory> visualTerritories;
+	public Coordinate mousePosition;
 	
 	public boolean initialize() {
 		if(GameController.activeMode == null) return false;
@@ -23,6 +21,8 @@ public class MouseInGameListener implements MouseMotionListener, MouseListener {
 		return true;
 	}
 	
+	private PixelMap pixelMap;
+	private ArrayList<VisualTerritory> visualTerritories;
 	public VisualTerritory getFocusTerritory() {
 		Color focusColor = pixelMap.getPixelColor(mousePosition.xCoord, mousePosition.yCoord);
 		if(focusColor == null) return null;
@@ -34,6 +34,7 @@ public class MouseInGameListener implements MouseMotionListener, MouseListener {
 	
 	public boolean mousePressed;
 	public boolean mouseReleased;
+	public boolean mouseClicked;
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {}
@@ -45,7 +46,9 @@ public class MouseInGameListener implements MouseMotionListener, MouseListener {
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+		mouseClicked = true;
+	}
 	
 	@Override
 	public void mouseEntered(MouseEvent e) {}

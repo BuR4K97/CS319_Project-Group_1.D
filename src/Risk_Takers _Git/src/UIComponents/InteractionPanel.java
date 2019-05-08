@@ -179,6 +179,7 @@ public class InteractionPanel {
 			public void mouseExited(MouseEvent e) {}
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {
+				GameInteractions.requestCardActivation(((GamePanel)MainApplication.frame.focusPanel).getFocusVisualCards());
 			}
 		});
 		
@@ -192,8 +193,6 @@ public class InteractionPanel {
 				((GamePanel)MainApplication.frame.focusPanel).terminateCardMode();
 			}
 		});
-		
-		
 		activateCards.setVisible(false);
 		activateCards.setEnabled(false);
 		cardModeBackButton.setVisible(false);

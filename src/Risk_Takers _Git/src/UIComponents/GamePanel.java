@@ -24,17 +24,17 @@ public class GamePanel extends DynamicPanel {
 	private InteractionPanel interactionPanel;
 	private TextualInGamePanel textualInGamePanel;
 	private VisualCardPanel visualCardPanel;
-	private BufferedImage backgroundTexture;
+	private MouseInGameListener mouseTracer;
 	
 	public GamePanel() {
 		if(GameController.activeMode == null) return;
 		setLayout(null);
-
 		setBackground(Color.BLACK);
-		backgroundTexture = GameConstants.backgroundTexture;
-
+		
+		mouseTracer = new MouseInGameListener();
+		mouseTracer.initialize();
 		visualTerritoryPanel = new VisualTerritoryVisualization();
-		visualTerritoryPanel.initialize();
+		visualTerritoryPanel.initialize(mouseTracer);
 		interactionPanel = new InteractionPanel();
 		interactionPanel.initialize(visualTerritoryPanel);
 		textualInGamePanel = new TextualInGamePanel();
@@ -68,7 +68,6 @@ public class GamePanel extends DynamicPanel {
 
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
-		//painter.drawImage(backgroundTexture, 0, 0, this);
 		painter.setFont(new Font("pixel", Font.BOLD, 20));
 		visualTerritoryPanel.paint(painter);
 		visualCardPanel.paint(painter);
@@ -86,6 +85,10 @@ public class GamePanel extends DynamicPanel {
 
 	public void destroy() {
 		visualTerritoryPanel.destroy();
+	}
+	
+	public ArrayList<VisualCard> getFocusVisualCards() {
+		return visualCardPanel.getFocusVisualCards();
 	}
 
 	public void setStringList() {

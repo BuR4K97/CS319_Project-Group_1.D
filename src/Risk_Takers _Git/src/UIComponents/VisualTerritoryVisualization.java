@@ -20,12 +20,11 @@ public class VisualTerritoryVisualization {
 	private VisualTerritory[] focusTerritories = new VisualTerritory[GameInteractions.MAX_OPARABLE_ELEMENT];
 	private VisualTerritory selectableTerritory;
 	
-	public boolean initialize() {
+	public boolean initialize(MouseInGameListener mouseTracer) {
 		if(GameController.activeMode == null) return false;
 		
 		visualTerritories = GameController.activeMode.visualTerritories;
-		mouseTracer = new MouseInGameListener();
-		mouseTracer.initialize();
+		this.mouseTracer = mouseTracer;
 		
 		AnimationHandler.requestMapBuildingAnimation(visualTerritories);
 		return true;
@@ -75,7 +74,7 @@ public class VisualTerritoryVisualization {
 			GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]);
 			return;
 		}
-		if(!pushIntoSelectableTerritory(focusTerritory)) {
+		if(!pushIntoSelectableTerritories(focusTerritory)) {
 			mouseTracer.mousePressed = false; 
 			GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]);
 			return;
@@ -155,7 +154,7 @@ public class VisualTerritoryVisualization {
 		return false;
 	}
 	
-	private boolean pushIntoSelectableTerritory(VisualTerritory push) {
+	private boolean pushIntoSelectableTerritories(VisualTerritory push) {
 		if(focusTerritories[0] == null) {
 			if(GameInteractions.isSelectable(push, push)) {
 				AnimationHandler.requestMouseOnTerritoryAnimation(push);

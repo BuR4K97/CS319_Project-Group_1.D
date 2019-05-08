@@ -11,12 +11,7 @@ import ModelClasses.Card.CARD_ACTIVATION;
 public class VisualCardPanel {
 	
 	private ArrayList<VisualCard> visualCards;
-	private boolean cardMode = false;
-	
-	public void update() {
-		visualCards = GameInteractions.extractActivePlayerVisualCards();
-	}
-	
+	private VisualCard[] focusVisualCards = new VisualCard[CARD_ACTIVATION.COMBINATIONAL.activation];
 	
 	private static final int yDrawCoord = 240;
 	private static final int xDrawCoord = 40;
@@ -26,15 +21,17 @@ public class VisualCardPanel {
 		int xDistance = (VisualCard.width * slotCoordinates.length) + (xCoordCardGap * (slotCoordinates.length - 1));
 		int initialXCoord = xDrawCoord + (((ApplicationFrame.width - 2 * xDrawCoord) - xDistance) / 2);
 		for(int i = 0; i < slotCoordinates.length; i++) {
-			slotCoordinates[i] = new Coordinate(initialXCoord, yDrawCoord + xCoordCardGap + VisualCard.height);
+			slotCoordinates[i] = new Coordinate(initialXCoord, yDrawCoord + 2*xCoordCardGap + VisualCard.height);
 			initialXCoord += xCoordCardGap + VisualCard.width;
 		}
-	} 
+	}
 	
 	private ArrayList<Coordinate> drawCoordinates = new ArrayList<Coordinate>();
-	//private ArrayList<Coordinate> 
-	public void inCardMode() {
-		cardMode = true;
+	
+	public void update() {
+		flushPrevState();
+		
+		visualCards = GameInteractions.extractActivePlayerVisualCards();
 		int xDistance = (VisualCard.width * visualCards.size()) + (xCoordCardGap * (visualCards.size() - 1));
 		int initialXCoord = xDrawCoord + (((ApplicationFrame.width - 2 * xDrawCoord) - xDistance) / 2);
 		for(VisualCard card : visualCards) {
@@ -43,9 +40,15 @@ public class VisualCardPanel {
 		}
 	}
 	
+	private boolean cardMode = false;
+	 
+	public void inCardMode() {
+		cardMode = true;
+	}
+	
 	public void outCardMode() {
 		cardMode = false;
-		drawCoordinates.clear();
+		flushPrevState();
 	}
 	
 	public void paint(Graphics painter) {
@@ -53,11 +56,45 @@ public class VisualCardPanel {
 			for(Coordinate coord : slotCoordinates)
 				painter.drawRect(coord.xCoord, coord.yCoord, VisualCard.width, VisualCard.height);
 			
-			for(int i = 0; i < visualCards.size(); i++)
-				visualCards.get(i).paint(painter, drawCoordinates.get(i));
+			cardLoop:for(int i = 0; i < visualCards.size(); i++) {
+				for(int n = 0; n < focusVisualCards.length; n++)
+					if(focusVisualCards[n] == visualCards.get(i)) {
+						visualCards.get(i).paint(painter, slotCoordinates[n]); 
+						continue cardLoop;
+					}
+				visualCards.get(i).paint(painter, drawCoordinates.get(i)); 
+			}
 		}
 	}
 
+	public ArrayList<VisualCard> getFocusVisualCards() {
+		ArrayList<VisualCard> focus = new ArrayList<VisualCard>();
+		for(VisualCard vc : focusVisualCards)
+			focus.add(vc);
+		return focus;
+	}
 	
+	private void pushIntoFocusVisualCards(VisualCard push) {
+		int availableIndex = -1;
+		for(int n = 0; n < focusVisualCards.length; n++) {
+			if(focusVisualCards[n] == push) return;
+			if(focusVisualCards[n] == null && availableIndex == -1)
+				availableIndex = n;
+		}
+		if(availableIndex != -1)
+			focusVisualCards[availableIndex] = push;
+	}
+	
+	private void popOutFocusVisualCard(VisualCard pop) {
+		for(int n = 0; n < focusVisualCards.length; n++)
+			if(focusVisualCards[n] == pop)
+				focusVisualCards = null;
+	}
+	
+	private void flushPrevState() {
+		drawCoordinates.clear();
+		for(VisualCard vc : focusVisualCards)
+			vc = null;
+	}
 
 }
