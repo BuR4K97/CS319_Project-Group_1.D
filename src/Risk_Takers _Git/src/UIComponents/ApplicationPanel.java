@@ -19,6 +19,7 @@ public class ApplicationPanel extends DynamicPanel {
 	private JPanel howToPlayPanel;
 	private JPanel aboutUsPanel;
 	private JPanel gamePanelTest;
+	private JPanel selectGameModePanel;
 	
 	public ApplicationPanel() {
 		// current panel in the frame
@@ -31,16 +32,24 @@ public class ApplicationPanel extends DynamicPanel {
 		settingsPanel = new OptionsPanel();
 		howToPlayPanel = new HowToPlayPanel();
 		aboutUsPanel = new AboutUsPanel();
+		selectGameModePanel = new SelectGameModePanel();
 		
 		add(menuPanel, "menuPanel");
 		add(settingsPanel, "settingsPanel");
 		add(howToPlayPanel, "howToPlayPanel");
 		add(aboutUsPanel, "aboutUsPanel");
+		add(selectGameModePanel, "selectGameModePanel");
 		
 		// beginning of the game
+		/*
 		layout.show(this, "menuPanel");
 		menuPanel.requestFocusInWindow();
-		((MenuPanel)menuPanel).initialize();
+		((MenuPanel)menuPanel).initialize();**/
+		
+		layout.show(this, "selectGameModePanel");
+		selectGameModePanel.requestFocusInWindow();
+		((SelectGameModePanel)selectGameModePanel).initialize();
+		
 		
 		/**---------------------------------------------------LISTENERS---------------------------------------*/
 		
@@ -138,6 +147,7 @@ public class ApplicationPanel extends DynamicPanel {
 		((OptionsPanel)settingsPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsPanel);
 		((HowToPlayPanel)howToPlayPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsPanel);
 		((AboutUsPanel)aboutUsPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsPanel);
+		((SelectGameModePanel)selectGameModePanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsPanel);
 	}
 
 	@Override
