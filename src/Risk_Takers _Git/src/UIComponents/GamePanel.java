@@ -97,6 +97,15 @@ public class GamePanel extends DynamicPanel {
 	public void requestFlushTextualInGamePanel() {
 		textualInGamePanel.flushPrevState();
 	}
+	
+	public void requestAttackButtonState(boolean activate) {
+		if(activate) interactionPanel.activateAttackButton();
+		else interactionPanel.deactivateAttackButton();
+	}
+	
+	public void requestFortifyInteractionEffect(VisualTerritory focusTerritory, int effectAmount) {
+		visualTerritoryPanel.requestFortifyInteractionEffect(focusTerritory, effectAmount);
+	}
 
 	public void destroy() {
 		visualTerritoryPanel.destroy();

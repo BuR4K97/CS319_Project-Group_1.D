@@ -12,7 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Controller.GameController;
+import Controller.GameInteractions;
 import ModelClasses.Turn;
+import ModelClasses.Turn.TURN_PHASE;
 import UIComponents.EnvanterBoxUI.EnvanterBox;
 
 public class TextualInGamePanel {
@@ -21,8 +23,9 @@ public class TextualInGamePanel {
 	private JLabel playerLabel;
 	private ArrayList<VisualString> interactionStringList;
 	public EnvanterBox envanterBox;
+	private FortifyInteraction foritfyInteraction;
 	private MouseInGameListener mouseTracer;
-	
+
 	public void initialize(MouseInGameListener mouseTracer) {
 		phaseLabel = new JLabel();
 		phaseLabel.setFont(new Font("Calibri", Font.BOLD, 32));
@@ -37,6 +40,7 @@ public class TextualInGamePanel {
 		interactionStringList.add(new VisualString(860, 0, 14, phaseLabel.getText()));
 		
 		envanterBox = new EnvanterBox();
+		foritfyInteraction = new FortifyInteraction();
 		
 		this.mouseTracer = mouseTracer;
 	}
@@ -48,21 +52,33 @@ public class TextualInGamePanel {
 
 	public void update() {
 		if(GameController.interactions.getTextualPanelUpdateRequest()) {
-			phaseLabel.setText(GameController.interactions.getActivePhase().toString());
-			playerLabel.setText(GameController.interactions.getActivePlayer().toString());
-			Color playerColor = GameController.interactions.getActivePlayer().getColor();
+			phaseLabel.setText(GameInteractions.getActivePhase().toString());
+			playerLabel.setText(GameInteractions.getActivePlayer().toString());
+			Color playerColor = GameInteractions.getActivePlayer().getColor();
 			playerLabel.setForeground(new Color(playerColor.getRed(), playerColor.getGreen(), playerColor.getBlue(), 255));
-			envanterBox.updatePlayer(GameController.interactions.getActivePlayer());
+			envanterBox.updatePlayer(GameInteractions.getActivePlayer());
 		}
-		envanterBox.updateMouseEvent(mouseTracer);
+		if(!suspendEnvanterBox())
+			envanterBox.updateMouseEvent(mouseTracer);
+		if(!suspendFortifyInteraction())
+			foritfyInteraction.update(mouseTracer);
 	}
 	
 	public void flushPrevState() {
 		envanterBox.flushState();
+		foritfyInteraction.flushState();
 	}
 	
-	//paint method
-	public void paint(Graphics g) {
-		envanterBox.paint(g);
+	public void paint(Graphics painter) {
+		envanterBox.paint(painter);
+		foritfyInteraction.paint(painter);
+	}
+	
+	private boolean suspendEnvanterBox() {
+		return GameInteractions.getActivePhase() != TURN_PHASE.DRAFT;
+	}
+	
+	private boolean suspendFortifyInteraction() {
+		return GameInteractions.getActivePhase() != TURN_PHASE.FORTIFY;
 	}
 }

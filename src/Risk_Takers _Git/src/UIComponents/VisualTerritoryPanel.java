@@ -12,6 +12,7 @@ import AnimationComponents.AnimationHandler;
 import Controller.GameController;
 import Controller.GameInteractions;
 import ModelClasses.Territory;
+import ModelClasses.Turn.TURN_PHASE;
 
 public class VisualTerritoryPanel {
 	
@@ -19,6 +20,7 @@ public class VisualTerritoryPanel {
 	private MouseInGameListener mouseTracer;
 	private VisualTerritory[] focusTerritories = new VisualTerritory[GameInteractions.MAX_OPARABLE_ELEMENT];
 	private VisualTerritory selectableTerritory;
+	
 	
 	public boolean initialize(MouseInGameListener mouseTracer) {
 		if(GameController.activeMode == null) return false;
@@ -48,6 +50,8 @@ public class VisualTerritoryPanel {
 	public void update() {
 		mouseEventUpdate();
 		GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]);
+		if(GameInteractions.getActivePhase() != TURN_PHASE.ATTACK)
+			flushPrevState();
 	}
 	
 	public void flushPrevState() {
@@ -56,6 +60,13 @@ public class VisualTerritoryPanel {
 	
 	public void destroy() {
 		visualTerritories = null;
+	}
+	
+	ArrayList<VisualTerritory> effectedTerritories = new ArrayList<>();
+	ArrayList<Integer> effectAmounts = new ArrayList<>();
+	public void requestFortifyInteractionEffect(VisualTerritory focusTerritory, int effectAmount) {
+		effectedTerritories.add(focusTerritory);
+		effectAmounts.add(effectAmount);
 	}
 	
 	public void paint(Graphics painter) {
@@ -82,8 +93,16 @@ public class VisualTerritoryPanel {
 					painter.fillRect(currElement.mainCoordinate.xCoord - 1, currElement.mainCoordinate.yCoord - VisualTerritory.PIXEL_JUMP
 							- 6, 1 * VisualTerritory.PIXEL_JUMP,  2 *VisualTerritory.PIXEL_JUMP);
 					painter.setColor(Color.BLACK);
-					painter.drawString("" + corresponding.getUnitNumber(), currElement.mainCoordinate.xCoord
-							, currElement.mainCoordinate.yCoord);
+					if(effectedTerritories.contains(currElement)) {
+						painter.drawString(Integer.toString(corresponding.getUnitNumber()
+								- effectAmounts.get(effectedTerritories.indexOf(currElement)))
+								, currElement.mainCoordinate.xCoord, currElement.mainCoordinate.yCoord);
+						effectAmounts.remove(effectedTerritories.indexOf(currElement));
+						effectedTerritories.remove(currElement);
+					}
+					else
+						painter.drawString(Integer.toString(corresponding.getUnitNumber())
+								, currElement.mainCoordinate.xCoord, currElement.mainCoordinate.yCoord);
 				}
 			}
 		}
@@ -172,13 +191,16 @@ public class VisualTerritoryPanel {
 	
 	private void popOutFocusTerritory(VisualTerritory pop) {
 		if(focusTerritories[0] == pop) {
-			AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
-			focusTerritories[0] = null; 
-			AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
+			if(selectableTerritory != focusTerritories[0])
+				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
+			focusTerritories[0] = null;
+			if(selectableTerritory != focusTerritories[1])
+				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
 			focusTerritories[1] = null;
 		}
 		else if(focusTerritories[1] == pop) {
-			AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
+			if(selectableTerritory != focusTerritories[1])
+				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
 			focusTerritories[1] = null; 
 		}
 	}

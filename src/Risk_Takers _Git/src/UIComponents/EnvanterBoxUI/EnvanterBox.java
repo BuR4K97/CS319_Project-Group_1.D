@@ -29,7 +29,7 @@ import UIComponents.VisualTerritory;
 
 public class EnvanterBox{
 
-	int x = 60;
+	int x = 20;
 	int borderLength = 120;// 120
 	int y = 1080 - borderLength - 20 ;
 	int openingAmountLeft = 0; // 0   -50
@@ -40,12 +40,14 @@ public class EnvanterBox{
 	final int OPENING_AMOUNT_RIGHT_CLOSE = borderLength/2;
 	int movingAmount = 7;
 	boolean inOpening = false;
+	private double openAngle = 0;
+	private double openRate = 7 * Math.PI / 180;
 	Timer opening, closing;
 	Timer movingBoxes;
 	ArrayList<SmallBox> list = new ArrayList<SmallBox>();
 	ArrayList<SmallBox> unitsInHand = new ArrayList<SmallBox>();
 	ArrayList<SmallBox> returnToBoxAnimation = new ArrayList<SmallBox>();
-
+	
 
 	public EnvanterBox() {
 		movingBoxes = new Timer(MainApplication.ONE_SEC / MainApplication.ANIMATION_UPDATE_FREQUENCY
@@ -62,38 +64,16 @@ public class EnvanterBox{
 		
 		opening = new Timer(16,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(Math.abs(openingAmountLeft - OPENING_AMOUNT_LEFT_OPEN) <= movingAmount) {
-					openingAmountLeft = OPENING_AMOUNT_LEFT_OPEN;
-				} else if(openingAmountLeft > OPENING_AMOUNT_LEFT_OPEN) {
-					openingAmountLeft -= movingAmount;
-				} else if(openingAmountLeft < OPENING_AMOUNT_LEFT_OPEN) {
-					openingAmountLeft += movingAmount;
-				}
-				if(Math.abs(openingAmountRigth - OPENING_AMOUNT_RIGHT_OPEN) <= movingAmount) {
-					openingAmountRigth = OPENING_AMOUNT_RIGHT_OPEN;
-				} else if(openingAmountRigth < OPENING_AMOUNT_RIGHT_OPEN) {
-					openingAmountRigth += movingAmount;
-				} else if(openingAmountRigth > OPENING_AMOUNT_RIGHT_OPEN) {
-					openingAmountRigth -= movingAmount;
-				}
+				openAngle += openRate;
+				if(openAngle > Math.PI / 2)
+					openAngle = Math.PI / 2;
 			}
 		});
 		closing = new Timer(16,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(Math.abs(openingAmountLeft - OPENING_AMOUNT_LEFT_CLOSE) <= movingAmount) {
-					openingAmountLeft = OPENING_AMOUNT_LEFT_CLOSE;
-				} else if(openingAmountLeft > OPENING_AMOUNT_LEFT_CLOSE) {
-					openingAmountLeft -= movingAmount;
-				} else if(openingAmountLeft < OPENING_AMOUNT_LEFT_CLOSE) {
-					openingAmountLeft += movingAmount;
-				}
-				if(Math.abs(openingAmountRigth - OPENING_AMOUNT_RIGHT_CLOSE) <= movingAmount) {
-					openingAmountRigth = OPENING_AMOUNT_RIGHT_CLOSE;
-				} else if(openingAmountRigth < OPENING_AMOUNT_RIGHT_CLOSE) {
-					openingAmountRigth += movingAmount;
-				} else if(openingAmountRigth > OPENING_AMOUNT_RIGHT_CLOSE) {
-					openingAmountRigth -= movingAmount;
-				}
+				openAngle -= openRate;
+				if(openAngle < 0)
+					openAngle = 0;
 			}
 		});
 	}
@@ -124,7 +104,7 @@ public class EnvanterBox{
 
 		// return to box
 		if(returnToBoxAnimation.size() < 10) {
-			for(int i = 0; i < returnToBoxAnimation.size();i++) {
+			for(int i = 0; i < returnToBoxAnimation.size(); i++) {
 				returnToBoxAnimation.get(i).goTarget(x + borderLength / 2, y + returnToBoxAnimation.get(i).length/2);
 				if(returnToBoxAnimation.get(i).isInRectangle(new Rectangle(x, y, borderLength, borderLength))) {
 					addUnit(1);
@@ -163,7 +143,8 @@ public class EnvanterBox{
 					unitsInHand.remove(unitsInHand.size()-1);
 				}
 			}	
-		} else {
+		} 
+		else if(unitsInHand.size() > 0) {
 			if(mouseTracer.rightButtonClicked){
 				for(int i = 0; i < unitsInHand.size();i++) {
 					returnToBoxAnimation.add(unitsInHand.get(i));
@@ -183,8 +164,6 @@ public class EnvanterBox{
 		list.clear();
 		for(int i = 0; i < player.getAvailableUnitAmount(); i++)
 			list.add(new SmallBox(x + borderLength/2, y + borderLength/2));
-		
-		
 		unitsInHand.clear();
 	}
 
@@ -204,14 +183,12 @@ public class EnvanterBox{
 		g2d.drawLine(x, y + borderLength, x + borderLength, y + borderLength);
 		// right border
 		g2d.drawLine(x + borderLength, y + borderLength, x + borderLength, y);
-		// left open close
-		g2d.drawLine(x + openingAmountLeft, y, x + openingAmountLeft + borderLength/2, y);
-		//right open close
-		g2d.drawLine(x + openingAmountRigth, y, x + openingAmountRigth + borderLength/2, y);
-
+		//angle based moving border
+		g2d.drawLine(x, y, x + (int)(borderLength * Math.cos(openAngle)), y - (int)(borderLength * Math.sin(openAngle)));
+		
 		// unit number
 		g2d.setFont(new Font("pixel", Font.PLAIN, borderLength));
-		g2d.drawString("" + list.size(), x + borderLength + 5, y + borderLength);
+		g2d.drawString("" + list.size(), x + borderLength + 15, y + borderLength);
 		// box in hand
 		g2d.setColor(Color.LIGHT_GRAY);
 		if(unitsInHand.size() < 10) {

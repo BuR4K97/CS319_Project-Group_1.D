@@ -5,8 +5,9 @@ import java.awt.Rectangle;
 import HelperTools.PixelString.Rect;
 
 public class SmallBox {
-	int x, xTarget;
-	int y, yTarget;
+	
+	public int x, xTarget;
+	public int y, yTarget;
 	int length = 15;
 	int movementInBox = 3;
 	int movementOnMouse = (int)(Math.random() * movementInBox* 4) + movementInBox* 3;
