@@ -17,10 +17,15 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import AnimationComponents.AnimationHandler;
+import Controller.GameController;
+import Controller.MainApplication;
 import ModelClasses.Player;
 import UIComponents.Coordinate;
+import UIComponents.GamePanel;
 import UIComponents.MouseInGameListener;
 import UIComponents.VisualString;
+import UIComponents.VisualTerritory;
 
 public class EnvanterBox{
 
@@ -37,27 +42,24 @@ public class EnvanterBox{
 	boolean inOpening = false;
 	Timer opening, closing;
 	Timer movingBoxes;
-	Color color;
-	int unitNumber;
 	ArrayList<SmallBox> list = new ArrayList<SmallBox>();
 	ArrayList<SmallBox> unitsInHand = new ArrayList<SmallBox>();
 	ArrayList<SmallBox> returnToBoxAnimation = new ArrayList<SmallBox>();
 
 
-	public EnvanterBox(Player player) {
-		unitNumber = 40;
-		color = player.getColor();
+	public EnvanterBox() {
+		movingBoxes = new Timer(MainApplication.ONE_SEC / MainApplication.ANIMATION_UPDATE_FREQUENCY
+				,  new ActionListener() {
 
-		for(int i = 0; i < unitNumber; i++)
-			list.add(new SmallBox(x + borderLength/2, y + borderLength/2));
-		movingBoxes = new Timer(16,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for(int i = 0; i < list.size(); i++) {
 					list.get(i).move(new Rectangle(x, y, borderLength, borderLength));
 				}
 			}
+
 		});
 		movingBoxes.start();
+		
 		opening = new Timer(16,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(Math.abs(openingAmountLeft - OPENING_AMOUNT_LEFT_OPEN) <= movingAmount) {
@@ -95,52 +97,14 @@ public class EnvanterBox{
 			}
 		});
 	}
-	public void paint(Graphics g) {
-		Graphics2D g2d = (Graphics2D)g;
-		g2d.setColor(color);
-		// boxes
-		for(int i = 0; i < list.size(); i++) {
-			g2d.fillRect(list.get(i).x, list.get(i).y, list.get(i).length, list.get(i).length);
-		}
-		g2d.setStroke(new BasicStroke(3));
-		g2d.setColor(Color.LIGHT_GRAY);
-		// left border
-		g2d.drawLine(x, y, x, y + borderLength);
-		// bottom border
-		g2d.drawLine(x, y + borderLength, x + borderLength, y + borderLength);
-		// right border
-		g2d.drawLine(x + borderLength, y + borderLength, x + borderLength, y);
-		// left open close
-		g2d.drawLine(x + openingAmountLeft, y, x + openingAmountLeft + borderLength/2, y);
-		//right open close
-		g2d.drawLine(x + openingAmountRigth, y, x + openingAmountRigth + borderLength/2, y);
 
-		// unit number
-		g2d.setFont(new Font("pixel", Font.PLAIN, borderLength));
-		g2d.drawString("" + unitNumber, x + borderLength + 5, y + borderLength);
-		// box in hand
-		g2d.setColor(Color.LIGHT_GRAY);
-		if(unitsInHand.size() < 10) {
-			for(int i = 0; i < unitsInHand.size();i++) {
-				g.fillRect(unitsInHand.get(i).x, unitsInHand.get(i).y, 15, 15);
-			}
-		} else {
-			g2d.setFont(new Font("pixel", Font.BOLD, borderLength/2));
-			g2d.drawString("" + unitsInHand.size(), unitsInHand.get(0).x, unitsInHand.get(0).y + borderLength/2 - 10);
-		}
-		// return to box
-		if(returnToBoxAnimation.size() < 10) {
-			for(int i = 0; i < returnToBoxAnimation.size();i++) {
-				g.fillRect(returnToBoxAnimation.get(i).x, returnToBoxAnimation.get(i).y, 15, 15);
-			}
-		} else {
-			g2d.setFont(new Font("pixel", Font.BOLD, borderLength/2));
-			g2d.drawString("" + returnToBoxAnimation.size(), returnToBoxAnimation.get(0).x, returnToBoxAnimation.get(0).y);
-		}
-
+	private Player player;
+	public void updatePlayer(Player activePlayer) {
+		this.player = activePlayer;
+		resetPlayerNumber();
 	}
-	public void update(MouseInGameListener mouseTracer, Player player) {
-		color = player.getColor();
+
+	public void updateMouseEvent(MouseInGameListener mouseTracer) {
 		if(mouseOnBox(mouseTracer.mousePosition.xCoord, mouseTracer.mousePosition.yCoord))
 			open();
 		else
@@ -179,7 +143,7 @@ public class EnvanterBox{
 		// mouse
 		if(mouseOnBox(mouseTracer.mousePosition.xCoord, mouseTracer.mousePosition.yCoord)) {
 			if(mouseTracer.leftButtonClicked) {
-				if(unitNumber > 0) {
+				if(list.size() > 0) {
 					removeUnit(1);
 					//unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
 					if(unitsInHand.size() < 3) {
@@ -201,46 +165,110 @@ public class EnvanterBox{
 			}	
 		} else {
 			if(mouseTracer.rightButtonClicked){
-				//addUnit(unitsInHand.size());
-				//unitsInHand.clear();
 				for(int i = 0; i < unitsInHand.size();i++) {
 					returnToBoxAnimation.add(unitsInHand.get(i));
 					returnToBoxAnimation.get(i).goTarget(x + borderLength / 2, y + returnToBoxAnimation.get(i).length/2);
 				}
 				unitsInHand.clear();
-			}	
+				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
+			}
+			else if(mouseTracer.leftButtonClicked) {
+				GameController.interactions.requestAction(unitsInHand.size());
+				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
+			}
 		}
 	}
+
+	private void resetPlayerNumber() {
+		list.clear();
+		for(int i = 0; i < player.getAvailableUnitAmount(); i++)
+			list.add(new SmallBox(x + borderLength/2, y + borderLength/2));
+		
+		
+		unitsInHand.clear();
+	}
+
+	public void paint(Graphics g) {
+		Graphics2D g2d = (Graphics2D)g;
+		if(player != null)
+			g2d.setColor(player.getColor());
+		// boxes
+		for(int i = 0; i < list.size(); i++) {
+			g2d.fillRect(list.get(i).x, list.get(i).y, list.get(i).length, list.get(i).length);
+		}
+		g2d.setStroke(new BasicStroke(3));
+		g2d.setColor(Color.LIGHT_GRAY);
+		// left border
+		g2d.drawLine(x, y, x, y + borderLength);
+		// bottom border
+		g2d.drawLine(x, y + borderLength, x + borderLength, y + borderLength);
+		// right border
+		g2d.drawLine(x + borderLength, y + borderLength, x + borderLength, y);
+		// left open close
+		g2d.drawLine(x + openingAmountLeft, y, x + openingAmountLeft + borderLength/2, y);
+		//right open close
+		g2d.drawLine(x + openingAmountRigth, y, x + openingAmountRigth + borderLength/2, y);
+
+		// unit number
+		g2d.setFont(new Font("pixel", Font.PLAIN, borderLength));
+		g2d.drawString("" + list.size(), x + borderLength + 5, y + borderLength);
+		// box in hand
+		g2d.setColor(Color.LIGHT_GRAY);
+		if(unitsInHand.size() < 10) {
+			for(int i = 0; i < unitsInHand.size();i++) {
+				g.fillRect(unitsInHand.get(i).x, unitsInHand.get(i).y, 15, 15);
+			}
+		} else {
+			g2d.setFont(new Font("pixel", Font.BOLD, borderLength/2));
+			g2d.drawString("" + unitsInHand.size(), unitsInHand.get(0).x, unitsInHand.get(0).y + borderLength/2 - 10);
+		}
+		// return to box
+		if(returnToBoxAnimation.size() < 10) {
+			for(int i = 0; i < returnToBoxAnimation.size();i++) {
+				g.fillRect(returnToBoxAnimation.get(i).x, returnToBoxAnimation.get(i).y, 15, 15);
+			}
+		} else {
+			g2d.setFont(new Font("pixel", Font.BOLD, borderLength/2));
+			g2d.drawString("" + returnToBoxAnimation.size(), returnToBoxAnimation.get(0).x, returnToBoxAnimation.get(0).y);
+		}
+	}
+
 	public void open() {
 		closing.stop();
 		opening.start();
 	}
+	
 	public void close() {
 		opening.stop();
 		closing.start();
 	}
+	
 	public void addUnit(int number) {
-		unitNumber += number;
 		for(int i = 0; i < number; i++)
 			list.add(new SmallBox(x + borderLength/2, y + borderLength/2));
 	}
+	
 	public void removeUnit(int number) {
-		if((unitNumber - number) > 0) {
-			unitNumber -= number;
+		if((list.size() - number) > 0) {
 			for(int i = 0; i < number; i++)
 				list.remove(list.size()-1);
 		} else {
-			unitNumber = 0;
 			list = new ArrayList<SmallBox>();
 		}
 	}
+	
 	public void removeAll() {
-		unitNumber = 0;
 		list = new ArrayList<SmallBox>();
 	}
+	
 	public boolean mouseOnBox(int x, int y) {
 		if(x >= this.x && (x <= this.x + borderLength) && y >= this.y && (y <= this.y + borderLength))
 			return true;
 		return false;
+	}
+
+	public void flushState() {
+		addUnit(unitsInHand.size());
+		unitsInHand.clear();
 	}
 }

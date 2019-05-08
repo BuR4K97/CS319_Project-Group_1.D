@@ -16,6 +16,12 @@ public class UnitPocket {
 		return cardSet;
 	}
 	
+	public void removeUnit(int amount) {
+		unitAmount -= amount;
+		if(unitAmount < 0)
+			unitAmount = 0;
+	}
+	
 	public int getUnitAmount() {
 		return unitAmount;
 	}

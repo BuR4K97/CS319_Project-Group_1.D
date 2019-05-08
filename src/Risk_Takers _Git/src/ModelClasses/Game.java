@@ -47,7 +47,7 @@ public class Game {
 			if(Turn.activePhase == TURN_PHASE.DRAFT) {
 				if(focusTerritory[0] != null) {
 					Turn.activePlayer.addUnitsToTerritory(focusTerritory[0], actionAmount);
-					//GameController.interactions.requestTextualPanelUpdateRequest();
+					GameController.interactions.requestTextualPanelUpdateRequest();
 				}
 			}
 			else if(Turn.activePhase == TURN_PHASE.ATTACK) {
@@ -153,14 +153,10 @@ public class Game {
 	public static boolean activateCards(ArrayList<Card> activates) {
 		if(Turn.activePlayer.activateCards(activates)) {
 			GameController.interactions.requestVisualCardPanelUpdateRequest();
+			GameController.interactions.requestTextualPanelUpdateRequest();
 			return true;
 		}
 		return false;
-	}
-	
-	private static int randColor() {
-		final int COLOR_CAP = 256;
-		return (int)(Math.random() * COLOR_CAP);
 	}
 
 	public static ArrayList<Card> extractActivePlayerCards() {

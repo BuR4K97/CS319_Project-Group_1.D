@@ -37,7 +37,6 @@ public class VisualCardPanel {
 
 	public void update() {
 		if(GameController.interactions.getVisualCardPanelUpdateRequest()) {
-			flushPrevState(true);
 			visualCards = GameInteractions.extractActivePlayerVisualCards();
 			resetDrawCoordinates();
 		}
@@ -45,17 +44,16 @@ public class VisualCardPanel {
 			mouseEventUpdate();
 	}
 
-	public void inCardMode() {}
-
-	public void outCardMode() {
-		flushPrevState(false);
+	public void flushPrevState() {
+		for(int i = 0; i < focusVisualCards.length; i++)
+			focusVisualCards[i] = null;
 	}
 
 	public void paint(Graphics painter) {
 		for(Coordinate coord : slotCoordinates)
 			painter.drawRect(coord.xCoord, coord.yCoord, VisualCard.width, VisualCard.height);
 
-		cardLoop:for(int i = 0; i < drawCoordinates.size(); i++) {
+		cardLoop:for(int i = 0; i < visualCards.size(); i++) {
 			for(int n = 0; n < focusVisualCards.length; n++)
 				if(focusVisualCards[n] == visualCards.get(i)) {
 					visualCards.get(i).paint(painter, slotCoordinates[n]); 
@@ -74,6 +72,7 @@ public class VisualCardPanel {
 	}
 
 	private void resetDrawCoordinates() {
+		drawCoordinates.clear();
 		int xDistance = (VisualCard.width * visualCards.size()) + (xCoordCardGap * (visualCards.size() - 1));
 		int initialXCoord = xDrawCoord + (((ApplicationFrame.width - 2 * xDrawCoord) - xDistance) / 2);
 		for(VisualCard card : visualCards) {
@@ -123,11 +122,5 @@ public class VisualCardPanel {
 			if(focusVisualCards[n] == pop)
 				focusVisualCards[n] = null;
 	}
-
-	private void flushPrevState(boolean flushDrawCoords) {
-		if(flushDrawCoords) drawCoordinates.clear();
-		for(int i = 0; i < focusVisualCards.length; i++)
-			focusVisualCards[i] = null;
-	}
-
+	
 }
