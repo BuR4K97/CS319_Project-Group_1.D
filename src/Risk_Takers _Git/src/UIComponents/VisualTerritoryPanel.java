@@ -13,7 +13,7 @@ import Controller.GameController;
 import Controller.GameInteractions;
 import ModelClasses.Territory;
 
-public class VisualTerritoryVisualization {
+public class VisualTerritoryPanel {
 	
 	private ArrayList<VisualTerritory> visualTerritories;
 	private MouseInGameListener mouseTracer;
@@ -45,41 +45,15 @@ public class VisualTerritoryVisualization {
 		target.addMouseMotionListener(mouseTracer);
 	}
 	
-	private VisualTerritory checkClicked; private boolean alreadyFocused = false;
 	public void update() {
-		if(AnimationHandler.suspendVisualTerritoryPanel()) return;
-		
-		VisualTerritory focusTerritory = mouseTracer.getFocusTerritory();
-		if(mouseTracer.mouseReleased) { 
-			if(checkClicked != null) {
-				if(focusTerritory != checkClicked)
-					popOutFocusTerritory(checkClicked);
-				if(alreadyFocused)
-					popOutFocusTerritory(focusTerritory);
-				alreadyFocused = false;
-				checkClicked = null;
-			}
-		}
-		
-		if(selectableTerritory != focusTerritories[0] && selectableTerritory != focusTerritories[1])
-			AnimationHandler.terminateMouseOnTerritoryAnimation(selectableTerritory);
-		selectableTerritory = null;
-		if(focusTerritory == null) {
-			GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]);
-			return;
-		}
-		if(!pushIntoSelectableTerritories(focusTerritory)) { 
-			GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]);
-			return;
-		}
-		if(mouseTracer.mousePressed) {
-			if(focusTerritories[0] == focusTerritory || focusTerritories[1] == focusTerritory) 
-				alreadyFocused = true;
-			else
-				pushIntoFocusTerritories(focusTerritory);
-			checkClicked = focusTerritory; 
-		}
+		mouseEventUpdate();
 		GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]);
+	}
+	
+	public void flushPrevState() {
+		focusTerritories[0] = null;
+		focusTerritories[1] = null;
+		selectableTerritory = null;
 	}
 	
 	public void destroy() {
@@ -88,6 +62,7 @@ public class VisualTerritoryVisualization {
 	
 	public void paint(Graphics painter) {
 		AnimationHandler.visualBuffer.paint(painter);
+		painter.setFont(new Font("pixel", Font.BOLD, 20));
 		
 		Territory corresponding;
 		for(VisualTerritory currElement : visualTerritories) {
@@ -119,6 +94,35 @@ public class VisualTerritoryVisualization {
 	private static Color colorLightener(Color source) { return source.brighter(); }
 	
 	private static Color colorDarkener(Color source) { return source.darker(); }
+	
+	private VisualTerritory checkClicked; private boolean alreadyFocused = false;
+	private void mouseEventUpdate() {
+		VisualTerritory focusTerritory = mouseTracer.getFocusTerritory();
+		if(mouseTracer.mouseReleased) { 
+			if(checkClicked != null) {
+				if(focusTerritory != checkClicked)
+					popOutFocusTerritory(checkClicked);
+				if(alreadyFocused)
+					popOutFocusTerritory(focusTerritory);
+				alreadyFocused = false;
+				checkClicked = null;
+			}
+		}
+		
+		if(selectableTerritory != focusTerritories[0] && selectableTerritory != focusTerritories[1])
+			AnimationHandler.terminateMouseOnTerritoryAnimation(selectableTerritory);
+		selectableTerritory = null;
+		
+		if(focusTerritory == null)  return;
+		if(!pushIntoSelectableTerritories(focusTerritory)) return;
+		if(mouseTracer.mousePressed) {
+			if(focusTerritories[0] == focusTerritory || focusTerritories[1] == focusTerritory) 
+				alreadyFocused = true;
+			else
+				pushIntoFocusTerritories(focusTerritory);
+			checkClicked = focusTerritory; 
+		}
+	}
 	
 	private boolean pushIntoFocusTerritories(VisualTerritory push) {
 		if(focusTerritories[0] == null) {

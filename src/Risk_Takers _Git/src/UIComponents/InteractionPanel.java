@@ -33,7 +33,7 @@ public class InteractionPanel {
 	private JLabel activateCards;
 	private JLabel cardModeBackButton;
 
-	public void initialize(VisualTerritoryVisualization visualTerritoryPanel) {
+	public void initialize(VisualTerritoryPanel visualTerritoryPanel) {
 		
 		nextPhaseLabel = new JLabel("Next Phase");
 		nextPhaseLabel.setBounds(815, 1013, 185, 29);
@@ -58,9 +58,10 @@ public class InteractionPanel {
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.requestNextPhase();
-				AnimationHandler.terminateMouseOnTerritoryAnimation(visualTerritoryPanel.getFocusTerritories()[0]);
-				AnimationHandler.terminateMouseOnTerritoryAnimation(visualTerritoryPanel.getFocusTerritories()[1]);
-				visualTerritoryPanel.getFocusTerritories()[0] = null; visualTerritoryPanel.getFocusTerritories()[1] = null;
+				VisualTerritory[] focusTerritories = ((GamePanel)MainApplication.frame.focusPanel).getFocusVisualTerritories(); 
+				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
+				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
+				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
 			}
 		});
 
@@ -73,9 +74,10 @@ public class InteractionPanel {
 				try {
 					int actionAmount = Integer.parseInt(actionAmountField.getText());
 					GameController.interactions.requestAction(actionAmount);
-					AnimationHandler.terminateMouseOnTerritoryAnimation(visualTerritoryPanel.getFocusTerritories()[0]);
-					AnimationHandler.terminateMouseOnTerritoryAnimation(visualTerritoryPanel.getFocusTerritories()[1]);
-					visualTerritoryPanel.getFocusTerritories()[0] = null; visualTerritoryPanel.getFocusTerritories()[1] = null;
+					VisualTerritory[] focusTerritories = ((GamePanel)MainApplication.frame.focusPanel).getFocusVisualTerritories(); 
+					AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
+					AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
+					((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
 				}
 				catch(NumberFormatException exception) {
 					System.out.println("Enter an action amount!!!");

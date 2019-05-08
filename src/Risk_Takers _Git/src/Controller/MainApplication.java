@@ -13,8 +13,8 @@ import UIComponents.GamePanel;
 public class MainApplication {
 	
 	public static ApplicationFrame frame;
-	public static final int FRAME_PER_SECOND = 60;
-	public static final int MODEL_UPDATE_FREQUENCY = 60;
+	public static final int FRAME_PER_SECOND = 30;
+	public static final int MODEL_UPDATE_FREQUENCY = 120;
 	public static final int ANIMATION_UPDATE_FREQUENCY = 60;
 	public static final int ONE_SEC = 1000;
 	
