@@ -73,6 +73,7 @@ public class GamePanel extends DynamicPanel {
 		visualCardPanel.paint(painter);
 		
 		//call textual ingamepanel paint method
+		textualInGamePanel.paint(painter);
 	}
 
 	public void update() {

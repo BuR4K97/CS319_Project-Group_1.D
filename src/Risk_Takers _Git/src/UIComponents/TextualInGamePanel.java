@@ -2,19 +2,24 @@ package UIComponents;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Controller.GameController;
+import UIComponents.EnvanterBoxUI.EnvanterBox;
 
 public class TextualInGamePanel {
 
 	private JLabel phaseLabel;
 	private JLabel playerLabel;
 	private ArrayList<VisualString> interactionStringList;
-
+	EnvanterBox envanterBox;
 	
 	public void initialize() {
 		phaseLabel = new JLabel();
@@ -28,11 +33,15 @@ public class TextualInGamePanel {
 		
 		interactionStringList = new ArrayList<VisualString>();
 		interactionStringList.add(new VisualString(860, 0, 14, phaseLabel.getText()));
+		
+		envanterBox = new EnvanterBox();
+		
 	}
 
 	public void insertLabels(JPanel target) {
 		target.add(phaseLabel);
 		target.add(playerLabel);
+		target.add(envanterBox);
 
 	}
 
@@ -44,4 +53,7 @@ public class TextualInGamePanel {
 	}
 	
 	//paint method
+	public void paint(Graphics g) {
+		envanterBox.paint(g);
+	}
 }
