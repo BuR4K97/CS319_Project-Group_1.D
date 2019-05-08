@@ -26,7 +26,7 @@ public class EnvanterBox{
 
 	int x = 60;
 	int borderLength = 120;// 120
-	int y = 1080 - borderLength - 20 ;
+	int y = 1080 - borderLength -30;
 	int openingAmountLeft = 0; // 0   -50
 	int openingAmountRigth = borderLength / 2; // 50  100
 	final int OPENING_AMOUNT_LEFT_OPEN = -borderLength/2;

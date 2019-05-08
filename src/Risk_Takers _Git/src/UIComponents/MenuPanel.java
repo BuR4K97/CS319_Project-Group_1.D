@@ -20,14 +20,16 @@ public class MenuPanel extends JPanel {
 	private Pixel mapAnimation;
 	private ArrayList<VisualString> stringList;
 	private Fireworks fireWorks;
-	int mouseX = 0, mouseY = 0;
+	private int mouseX, mouseY;
 
 	public MenuPanel() {
 		this.setPreferredSize(new Dimension(1920, 1080));
 		setLayout(null);
 
 		stringList = new ArrayList<VisualString>();
-
+		mouseX = 0;
+		mouseY = 0;
+		
 		lblPlayGame = new JLabel("");
 		lblPlayGame.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
 		lblPlayGame.setBounds(50, 737, 245, 51);
