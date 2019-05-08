@@ -157,18 +157,25 @@ public class EnvanterBox{
 				unitsInHand.get(i).goTarget(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord);
 			}
 		}
-		
+
 		// return to box
-		for(int i = 0; i < returnToBoxAnimation.size();i++) {
-			returnToBoxAnimation.get(i).goTarget(x + borderLength / 2, y + returnToBoxAnimation.get(i).length/2);
-			if(returnToBoxAnimation.get(i).isInRectangle(new Rectangle(x, y, borderLength, borderLength))) {
-				addUnit(1);
-				returnToBoxAnimation.remove(i);
-				break;
+		if(returnToBoxAnimation.size() < 10) {
+			for(int i = 0; i < returnToBoxAnimation.size();i++) {
+				returnToBoxAnimation.get(i).goTarget(x + borderLength / 2, y + returnToBoxAnimation.get(i).length/2);
+				if(returnToBoxAnimation.get(i).isInRectangle(new Rectangle(x, y, borderLength, borderLength))) {
+					addUnit(1);
+					returnToBoxAnimation.remove(i);
+					break;
+				}	
 			}
-				
+		} else {
+			returnToBoxAnimation.get(0).goTarget(x + borderLength / 2, y + returnToBoxAnimation.get(0).length/2);
+			if(returnToBoxAnimation.get(0).isInRectangle(new Rectangle(x, y, borderLength, borderLength))) {
+				addUnit(returnToBoxAnimation.size());
+				returnToBoxAnimation = new ArrayList<SmallBox>();
+			}	
 		}
-		
+
 		// mouse
 		if(mouseOnBox(mouseTracer.mousePosition.xCoord, mouseTracer.mousePosition.yCoord)) {
 			if(mouseTracer.leftButtonClicked) {
