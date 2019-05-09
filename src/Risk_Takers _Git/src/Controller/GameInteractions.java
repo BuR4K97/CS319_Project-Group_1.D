@@ -56,6 +56,10 @@ public class GameInteractions {
 		visualCardPanelUpdateRequest  = true;
 	}
 	
+	public static void requestAttackButtonState(boolean activate) {
+		((GamePanel)MainApplication.frame.focusPanel).requestAttackButtonState(activate);
+	}
+	
 	public void activateCombat(Combat activated) {
 		if(activated != null) {
 			activeCombat = activated;
@@ -145,11 +149,11 @@ public class GameInteractions {
 		return activeCombat;
 	}
 	
-	public TURN_PHASE getActivePhase() {
+	public static TURN_PHASE getActivePhase() {
 		return Turn.activePhase;
 	}
 	
-	public Player getActivePlayer() {
+	public static Player getActivePlayer() {
 		return Turn.activePlayer;
 	}
 	

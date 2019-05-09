@@ -1,6 +1,7 @@
 package ModelClasses;
 
 import Controller.GameController;
+import Controller.GameInteractions;
 
 public class Turn {
 	
@@ -20,6 +21,7 @@ public class Turn {
 	public static void nextPhase() {
 		if(activePhase == TURN_PHASE.DRAFT) {
 			activePhase = TURN_PHASE.ATTACK;
+			GameInteractions.requestAttackButtonState(true);
 		}
 		else if(activePhase == TURN_PHASE.ATTACK) {
 			currState = GameState.extractGameState();
@@ -27,6 +29,7 @@ public class Turn {
 			GameController.interactions.requestVisualCardPanelUpdateRequest();
 			prevState = currState;
 			activePhase = TURN_PHASE.FORTIFY;
+			GameInteractions.requestAttackButtonState(false);
 		}
 		else {
 			nextPlayer();
