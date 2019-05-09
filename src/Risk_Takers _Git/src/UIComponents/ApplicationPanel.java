@@ -9,7 +9,9 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import javax.swing.JPanel;
 
+import Controller.GameController.GAME_MODE;
 import Controller.MainApplication;
+import ModelClasses.Game.PLAYER_MODE;
 
 public class ApplicationPanel extends DynamicPanel {
 	
@@ -146,7 +148,7 @@ public class ApplicationPanel extends DynamicPanel {
 				((SelectGameModePanel)selectGameModePanel).setStringList();
 				layout.show(self, "gamePanel");
 				MainApplication.destroyMenu();
-				MainApplication.initializeGame();
+				MainApplication.initializeGame(PLAYER_MODE.SINGLEPLAYER, SelectGameModePanel.totalNumber);
 			}
 		};
 				
@@ -160,7 +162,7 @@ public class ApplicationPanel extends DynamicPanel {
 				((SelectGameModePanel)selectGameModePanel).setStringList();
 				layout.show(self, "gamePanel");
 				MainApplication.destroyMenu();
-				MainApplication.initializeGame();
+				MainApplication.initializeGame(PLAYER_MODE.MULTIPLAYER, SelectGameModePanel.totalNumber);
 			}
 		};
 		

@@ -1,8 +1,10 @@
 package Controller;
 
+import ArtificialIntelligenceComponents.ArtificialIntelligenceHandler;
 import GameAssets.GameConstants;
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
 import ModelClasses.Game;
+import ModelClasses.Game.PLAYER_MODE;
 import UIComponents.GamePanel;
 
 public class GameController {
@@ -11,10 +13,10 @@ public class GameController {
 	public static GameMode activeMode;
 	public static GameInteractions interactions;
 	
-	public static boolean initializeGame(int playerNumber, GAME_MODE loadMode) {
+	public static boolean initializeGame(PLAYER_MODE playerMode, int playerNumber, GAME_MODE loadMode) {
 		loadGameMode(loadMode);
 		interactions = new GameInteractions();
-		if(!Game.initialize(playerNumber)) {
+		if(!Game.initialize(playerMode, playerNumber)) {
 			interactions = null;
 			return false;
 		}
@@ -22,6 +24,7 @@ public class GameController {
 	}
 	
 	public static void updateGame() {
+		ArtificialIntelligenceHandler.update();
 		Game.update();
 		MainApplication.frame.focusPanel.update();
 	}

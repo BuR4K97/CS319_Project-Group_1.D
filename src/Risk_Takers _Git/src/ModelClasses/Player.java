@@ -15,6 +15,7 @@ public class Player {
 		territories = new ArrayList<Territory>();
 	}
 	
+	public void setName(String playerName) { this.playerName = playerName; }
 	public String getName() { return this.playerName; }
 	public Color getColor() { return this.playerColor; }
 	public int getAvailableUnitAmount() { return this.unitPocket.getUnitAmount(); }

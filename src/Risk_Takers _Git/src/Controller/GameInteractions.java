@@ -216,4 +216,8 @@ public class GameInteractions {
 		GameController.requestManualGameUpdate();
 	}
 	
+	public static void requestResetMultiplayerMode(int playerNumber) {
+		Game.requestResetMultiplayerMode(playerNumber);
+	}
+	
 }

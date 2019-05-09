@@ -13,7 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import Controller.GameInteractions;
 import GameAssets.GameConstants;
+import ModelClasses.Game;
 import UIComponents.BoxAni.JumpingBox;
 import UIComponents.Fireworks.Fireworks;
 
@@ -28,9 +30,9 @@ public class SelectGameModePanel extends JPanel{
 	private ArrayList<VisualString> stringList;
 	private JumpingBox jumpingBox;
 	// new
-	public static int maxNumberOfHuman = 4;
-	public static int minNumberOfHuman = 2;
-	public static int totalNumberOfHuman = 2;
+	public static int maxNumberOfHuman = Game.MAX_PLAYER_NUMBER;
+	public static int minNumberOfHuman = Game.MIN_PLAYER_NUMBER;
+	public static int totalNumberOfHuman = Game.PLAYER_MODE.MULTIPLAYER.playerNumber;
 	public static int totalNumber = 2;
 	public static int totalNumberOfAI = totalNumber - totalNumberOfHuman;
 
@@ -92,6 +94,7 @@ public class SelectGameModePanel extends JPanel{
 
 					}
 				}
+				GameInteractions.requestResetMultiplayerMode(totalNumberOfHuman);
 			}
 		};
 		this.addMouseListener(ml);
@@ -122,7 +125,6 @@ public class SelectGameModePanel extends JPanel{
 		for(int i = 0; i < stringList.size(); i++)
 			stringList.get(i).paint(g);
 		jumpingBox.paint(g);
-		System.out.println(totalNumber + " " + totalNumberOfHuman);
 	}
 
 	public JLabel getSingleplayerLabel()
