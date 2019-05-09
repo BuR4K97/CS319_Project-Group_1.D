@@ -113,7 +113,49 @@ public class VisualString {
 		mexicoWave.start();
 	}
 
+	public VisualString(int x, int y, int maxLength, String string, boolean noAnimation) {
+		 // width = maxlength*5
 
+		this.maxLength = maxLength;
+		this.minLength = (int)(maxLength * 6 / 7);
+		mexicoWaveLength = maxLength - minLength;
+		this.x = x;
+		this.y = y;
+		this.string = string;
+		mexicoWaveCoordinate = 0;
+		this.color = Color.WHITE;
+
+		for(int i = 0; i < string.length(); i++)
+			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
+		for(int i = 0; i < list.size(); i++) {
+			list.get(i).xCurrent = list.get(i).x;
+		}
+		mexicoWave = new Timer(mexicoWaveDelay, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*
+				if(mexicoWaveCoordinate < (x + string.length() * 4 * maxLength) + mexicoWaveLength)
+					mexicoWaveCoordinate+=mexicoWaveLength;
+				else
+					mexicoWaveCoordinate =-mexicoWaveLength*2+ x;
+				 */
+				if(mexicoWaveCoordinate < (1920) + mexicoWaveLength * 2)
+					mexicoWaveCoordinate += mexicoWaveLength * 2;
+				else
+					mexicoWaveCoordinate = - mexicoWaveLength * 2;
+				for(int i = 0; i < list.size(); i++) {
+					for(int j = 0; j <= mexicoWaveLength;j++) {
+						if(Math.abs(list.get(i).x - mexicoWaveCoordinate) <= maxLength * (j+1) && Math.abs(list.get(i).x - mexicoWaveCoordinate) > maxLength * (j)) {
+							list.get(i).border = maxLength - j;
+							break;
+						} 
+					}
+				}
+			}
+
+		});
+		mexicoWave.start();
+	
+	}
 	public VisualString(int x, int y, int maxLength, String string) { // width = maxlength*5
 
 		this.maxLength = maxLength;
@@ -176,7 +218,22 @@ public class VisualString {
 		});
 		mexicoWave.start();
 	}	
-	
+	public void updateStringNoAnimation(String s) {
+		list.clear();
+		string = s;
+		for(int i = 0; i < string.length(); i++)
+			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
+		for(int i = 0; i < list.size(); i++) {
+			list.get(i).xCurrent = list.get(i).x;
+		}
+	}
+	public void updateString(String s) {
+		list.clear();
+		string = s;
+		for(int i = 0; i < string.length(); i++)
+			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
+		startAnimation.start();
+	}
 	public void paint(Graphics g) {
 		g.setColor(color);
 
@@ -1031,6 +1088,48 @@ public class VisualString {
 
 			makeAreaB(new Rect(topLeft.x, topLeft.y + blockLength * 4), blockLength);
 			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		else if(ch == '>') {
+			makeAreaB(new Rect(topLeft.x, topLeft.y), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaS(new Rect(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaS(new Rect(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaS(new Rect(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Rect(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		else if(ch == '<') {
+			makeAreaS(new Rect(topLeft.x, topLeft.y), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaS(new Rect(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Rect(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaS(new Rect(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaS(new Rect(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
 			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
 		}
 	}
