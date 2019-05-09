@@ -5,20 +5,22 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Box {
-	final int yMoveRand = 10;
-	final int xMoveRand = 10;
+	final int yMoveRand = 6;
+	final int xMoveRand = 6;
 	// single
 	int yMove;
 	int length = 15;
 	int x;
 
-	int currMoveY;
+	double currMoveY;
 	int boxXcurr;
-	int boxYcurr;
-	int gravity = 1;
+	double boxYcurr;
+	double gravity = 0.4;
 
 	int xMove;
 	Color color;
+	boolean allowedToJump = true;
+	boolean deleteThis = false;
 
 	public Box(int xCoor, Color color) {
 		this.color = color;
@@ -29,14 +31,17 @@ public class Box {
 		x = xCoor;
 		currMoveY = yMove;
 		boxXcurr = x;
-		boxYcurr = JumpingBox.y - length - (int)(Math.random() * yMoveRand);
+		boxYcurr = JumpingBox.y - length*5 - (int)(Math.random() * yMoveRand);
 	}
 	public void update() {
 		boxYcurr += currMoveY;
-		if(boxYcurr + length> JumpingBox.y) {
-			boxYcurr = JumpingBox.y - length;
-			currMoveY = yMove;
-			//yMove = -yMoveRand - (int)(Math.random() * yMoveRand);
+		if(allowedToJump) {
+			if(boxYcurr + length> JumpingBox.y) {
+				boxYcurr = JumpingBox.y - length;
+				currMoveY = yMove;
+			}
+		} else if(boxYcurr > 1080){
+			deleteThis = true;
 		}
 		currMoveY += gravity;
 		// x move for single cube
@@ -73,6 +78,6 @@ public class Box {
 	public void paint(Graphics g) {
 		// single cube
 		g.setColor(color);
-		g.fillRect(boxXcurr, boxYcurr, length, length);
+		g.fillRect(boxXcurr, (int)boxYcurr, length, length);
 	}
 }
