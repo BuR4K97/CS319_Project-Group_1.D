@@ -182,14 +182,6 @@ public class VisualString {
 		g.setColor(color);
 
 		for(int i = 0; i < list.size(); i++) {
-			if(list.get(i).border == minLength)
-				g.setColor(color);
-			else if(list.get(i).border == minLength + 1)
-				g.setColor(new Color(color.getRed() - colorChanger, color.getGreen() - colorChanger, color.getBlue()));
-			else if(list.get(i).border == minLength + 2)
-				g.setColor(new Color(color.getRed() - colorChanger*2, color.getGreen() - colorChanger*2, color.getBlue()));
-			else if(list.get(i).border == minLength + 3)
-				g.setColor(new Color(color.getRed() - colorChanger*3, color.getGreen() - colorChanger*3, color.getBlue()));
 			g.fillRect(list.get(i).xCurrent, list.get(i).y, list.get(i).border, list.get(i).border);
 		}
 	}
