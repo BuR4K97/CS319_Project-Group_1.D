@@ -41,14 +41,13 @@ public class ApplicationPanel extends DynamicPanel {
 		add(selectGameModePanel, "selectGameModePanel");
 		
 		// beginning of the game
-		/*
 		layout.show(this, "menuPanel");
 		menuPanel.requestFocusInWindow();
-		((MenuPanel)menuPanel).initialize();**/
+		((MenuPanel)menuPanel).initialize();
 		
-		layout.show(this, "selectGameModePanel");
-		selectGameModePanel.requestFocusInWindow();
-		((SelectGameModePanel)selectGameModePanel).initialize();
+//		layout.show(this, "selectGameModePanel");
+//		selectGameModePanel.requestFocusInWindow();
+//		((SelectGameModePanel)selectGameModePanel).initialize();
 		
 		
 		/**---------------------------------------------------LISTENERS---------------------------------------*/
@@ -61,6 +60,34 @@ public class ApplicationPanel extends DynamicPanel {
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {
 				((MenuPanel)menuPanel).setStringList();
+				layout.show(self, "selectGameModePanel");
+				((SelectGameModePanel)selectGameModePanel).requestFocusInWindow();
+				((SelectGameModePanel)selectGameModePanel).initialize();
+			}
+		};
+		
+		// Mouse Listener to the Single Player label in Main Panel
+		MouseListener listenerToSinglePlayerLabelInSelectGameModePanel = new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				((SelectGameModePanel)selectGameModePanel).setStringList();
+				layout.show(self, "gamePanel");
+				MainApplication.destroyMenu();
+				MainApplication.initializeGame();
+			}
+		};
+		
+		// Mouse Listener to the Multiplayer label in Main Panel
+		MouseListener listenerToMultiplayerLabelInSelectGameModePanel = new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				((SelectGameModePanel)selectGameModePanel).setStringList();
 				layout.show(self, "gamePanel");
 				MainApplication.destroyMenu();
 				MainApplication.initializeGame();
@@ -121,7 +148,7 @@ public class ApplicationPanel extends DynamicPanel {
 		};		
 				
 		// Mouse Listener to the About Us label in Main Panel
-		MouseListener listenerToBackLabelInSettingsHowTPAboutUsPanel = new MouseListener() {
+		MouseListener listenerToBackLabelInSettingsHowTPAboutUsSelectGameModePanel = new MouseListener() {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
@@ -130,6 +157,7 @@ public class ApplicationPanel extends DynamicPanel {
 				((HowToPlayPanel)howToPlayPanel).setStringList();
 				((AboutUsPanel)aboutUsPanel).setStringList();
 				((OptionsPanel)settingsPanel).setStringList();
+				((SelectGameModePanel)selectGameModePanel).setStringList();
 				layout.show(self, "menuPanel");
 				((MenuPanel)menuPanel).requestFocusInWindow();
 				((MenuPanel)menuPanel).initialize();
@@ -144,10 +172,12 @@ public class ApplicationPanel extends DynamicPanel {
 		((MenuPanel)menuPanel).getSettingsLabel().addMouseListener(listenerToSettingsLabelInMenuPanel);
 		((MenuPanel)menuPanel).getHowToPlayLabel().addMouseListener(listenerToHowToPlayLabelInMenuPanel);
 		((MenuPanel)menuPanel).getAboutUsLabel().addMouseListener(listenerToAboutUsLabelInMenuPanel);
-		((OptionsPanel)settingsPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsPanel);
-		((HowToPlayPanel)howToPlayPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsPanel);
-		((AboutUsPanel)aboutUsPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsPanel);
-		((SelectGameModePanel)selectGameModePanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsPanel);
+		((OptionsPanel)settingsPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsSelectGameModePanel);
+		((HowToPlayPanel)howToPlayPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsSelectGameModePanel);
+		((AboutUsPanel)aboutUsPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsSelectGameModePanel);
+		((SelectGameModePanel)selectGameModePanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsSelectGameModePanel);
+		((SelectGameModePanel)selectGameModePanel).getMultiplayerLabel().addMouseListener(listenerToMultiplayerLabelInSelectGameModePanel);
+		((SelectGameModePanel)selectGameModePanel).getSingleplayerLabel().addMouseListener(listenerToMultiplayerLabelInSelectGameModePanel);
 	}
 
 	@Override

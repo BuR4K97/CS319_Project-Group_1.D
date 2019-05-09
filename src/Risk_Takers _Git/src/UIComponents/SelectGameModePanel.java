@@ -31,12 +31,12 @@ public class SelectGameModePanel extends JPanel{
 
 		singlePaleyr = new JLabel("");
 		singlePaleyr.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
-		singlePaleyr.setBounds(50, 737, 245, 51);
+		singlePaleyr.setBounds(265, 500, 245, 51);
 		add(singlePaleyr);
 
 		multiPlayer = new JLabel("");
 		multiPlayer.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
-		multiPlayer.setBounds(50, 991, 104, 51);
+		multiPlayer.setBounds(1210, 500, 430, 51);
 		add(multiPlayer);
 		
 		lblBack = new JLabel("");
@@ -68,7 +68,7 @@ public class SelectGameModePanel extends JPanel{
 		return singlePaleyr;
 	}
 
-	public JLabel getMulJLabelLabel()
+	public JLabel getMultiplayerLabel()
 	{
 		return multiPlayer;
 	}

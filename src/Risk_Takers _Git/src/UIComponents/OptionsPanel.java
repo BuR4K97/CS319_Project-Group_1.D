@@ -37,7 +37,7 @@ public class OptionsPanel extends JPanel {
 		labelSettingsGif = new JLabel("");
 		labelSettingsGif.setBackground(new Color(0,0,0,0));
 		labelSettingsGif.setForeground(new Color(0,0,0,0));
-		labelSettingsGif.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\My Changes\\buttonImages\\settings.gif"));
+		labelSettingsGif.setIcon(new ImageIcon("images\\settings.gif"));
 		labelSettingsGif.setBounds(436, 480, 148, 126);
 		add(labelSettingsGif);
 
