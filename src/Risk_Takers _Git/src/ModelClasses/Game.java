@@ -102,8 +102,16 @@ public class Game {
 			players.add(new Player(("Player " + (i + 1)), GameConstants.PLAYER_COLORS[i]));
 		
 		if(playerMode == PLAYER_MODE.SINGLEPLAYER) {
-			for(int i = PLAYER_MODE.SINGLEPLAYER.playerNumber; i < playerNumber; i++)
-				ArtificialIntelligenceHandler.requestArtificialIntelligenceBinding(players.get(i));
+			for(int i = PLAYER_MODE.SINGLEPLAYER.playerNumber; i < playerNumber; i++) {
+				ArtificialIntelligenceHandler.requestArtificialIntelligenceBinding(players.get(i)); 
+				players.get(i).setName("AI " + Integer.toString(i + 1 - PLAYER_MODE.SINGLEPLAYER.playerNumber));
+			}	
+		}
+		else {
+			for(int i = PLAYER_MODE.MULTIPLAYER.playerNumber; i < playerNumber; i++) {
+				ArtificialIntelligenceHandler.requestArtificialIntelligenceBinding(players.get(i)); 
+				players.get(i).setName("AI " + Integer.toString(i + 1 - PLAYER_MODE.MULTIPLAYER.playerNumber));
+			}
 		}
 		
 		territories = GameController.activeMode.territoryGraph.getTerritories();

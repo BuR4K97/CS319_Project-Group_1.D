@@ -4,6 +4,7 @@ import ArtificialIntelligenceComponents.ArtificialIntelligenceHandler;
 import GameAssets.GameConstants;
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
 import ModelClasses.Game;
+import ModelClasses.Game.PLAYER_MODE;
 import UIComponents.GamePanel;
 
 public class GameController {
@@ -15,7 +16,7 @@ public class GameController {
 	public static boolean initializeGame(int playerNumber, GAME_MODE loadMode) {
 		loadGameMode(loadMode);
 		interactions = new GameInteractions();
-		if(!Game.initialize(playerNumber)) {
+		if(!Game.initialize(PLAYER_MODE.SINGLEPLAYER, playerNumber)) {
 			interactions = null;
 			return false;
 		}

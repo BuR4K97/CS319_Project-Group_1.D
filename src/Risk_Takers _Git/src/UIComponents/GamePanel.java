@@ -106,10 +106,6 @@ public class GamePanel extends DynamicPanel {
 			for(int i = 0; i < currentStateStrToDraw.size(); i++)
 				currentStateStrToDraw.get(i).paint(painter);
 		}
-		for(int i = 0; i < currentStateStrToDraw.size(); i++)
-			currentStateStrToDraw.get(i).paint(painter);
-		
-		drawStringBorders(painter);
 //		int width, height;
 //		width = 800;
 //		height = 400;
