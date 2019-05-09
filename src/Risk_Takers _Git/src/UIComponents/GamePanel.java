@@ -19,6 +19,7 @@ public class GamePanel extends DynamicPanel {
 	private TextualInGamePanel textualInGamePanel;
 	private VisualCardPanel visualCardPanel;
 	private MouseInGameListener mouseTracer;
+	
 	private ArrayList<VisualString> draftPhaseStr;
 	private ArrayList<VisualString> attackPhaseStr;
 	private ArrayList<VisualString> fortifyPhaseStr;
@@ -96,16 +97,16 @@ public class GamePanel extends DynamicPanel {
 
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
-		for(int i = 0; i < currentStateStrToDraw.size(); i++)
-			currentStateStrToDraw.get(i).paint(painter);
-		
-		drawStringBorders(painter);
 		
 		visualTerritoryPanel.paint(painter);
-		if(currState == PANEL_STATES.CARD)
+		if(!suspendVisualCardPanelPaintEvent())
 			visualCardPanel.paint(painter);
-		if(currState == PANEL_STATES.NORMAL)
+		if(!suspendTextualInGamePanelPaintEvent()) {
 			textualInGamePanel.paint(painter);
+			drawStringBorders(painter);
+			for(int i = 0; i < currentStateStrToDraw.size(); i++)
+				currentStateStrToDraw.get(i).paint(painter);
+		}
 	}
 	
 	public void drawStringBorders(Graphics g) {
@@ -144,7 +145,7 @@ public class GamePanel extends DynamicPanel {
 
 	public void update() {
 		if(!suspendVisualTerritoryPanelUpdate()) visualTerritoryPanel.update();
-		if(!suspendTextualInGamePanel()) textualInGamePanel.update();
+		if(!suspendTextualInGamePanelUpdate()) textualInGamePanel.update();
 		if(!suspendVisualCardPanelUpdate()) visualCardPanel.update();
 		
 		mouseTracer.mouseReleased = false;
@@ -203,10 +204,22 @@ public class GamePanel extends DynamicPanel {
 		return false;
 	}
 	
-	private boolean suspendTextualInGamePanel() {
+	private boolean suspendTextualInGamePanelUpdate() {
 		if(currState != PANEL_STATES.NORMAL)
 			return true;
-		return false;
+		return AnimationHandler.suspendTextualInGamePanelUpdate();
+	}
+	
+	private boolean suspendTextualInGamePanelPaintEvent() {
+		if(currState != PANEL_STATES.NORMAL)
+			return true;
+		return AnimationHandler.suspendTextualInGamePanelPaintEvent();
+	}
+	
+	private boolean suspendVisualCardPanelPaintEvent() {
+		if(currState != PANEL_STATES.CARD)
+			return true;
+		return AnimationHandler.suspendVisualCardPanelPaintEvent();
 	}
 
 	public void setShowCardsModeStr() {

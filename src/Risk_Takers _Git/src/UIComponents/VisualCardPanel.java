@@ -13,7 +13,7 @@ import ModelClasses.Card.CARD_ACTIVATION;
 public class VisualCardPanel {
 
 	private ArrayList<VisualCard> visualCards;
-	private VisualCard[] focusVisualCards = new VisualCard[CARD_ACTIVATION.COMBINATIONAL.activation];
+	private Integer[] focusIndex = new Integer[CARD_ACTIVATION.COMBINATIONAL.activation];
 	private MouseInGameListener mouseTracer;
 
 	public void initialize(MouseInGameListener mouseTracer) {
@@ -45,8 +45,8 @@ public class VisualCardPanel {
 	}
 
 	public void flushPrevState() {
-		for(int i = 0; i < focusVisualCards.length; i++)
-			focusVisualCards[i] = null;
+		for(int i = 0; i < focusIndex.length; i++)
+			focusIndex[i] = null;
 	}
 
 	public void paint(Graphics painter) {
@@ -54,8 +54,8 @@ public class VisualCardPanel {
 			painter.drawRect(coord.xCoord, coord.yCoord, VisualCard.width, VisualCard.height);
 
 		cardLoop:for(int i = 0; i < visualCards.size(); i++) {
-			for(int n = 0; n < focusVisualCards.length; n++)
-				if(focusVisualCards[n] == visualCards.get(i)) {
+			for(int n = 0; n < focusIndex.length; n++)
+				if(new Integer(i).equals(focusIndex[n])) {
 					visualCards.get(i).paint(painter, slotCoordinates[n]); 
 					continue cardLoop;
 				}
@@ -65,9 +65,9 @@ public class VisualCardPanel {
 
 	public ArrayList<VisualCard> getFocusVisualCards() {
 		ArrayList<VisualCard> focus = new ArrayList<VisualCard>();
-		for(VisualCard vc : focusVisualCards)
-			if(vc != null)
-				focus.add(vc);
+		for(Integer index : focusIndex)
+			if(focus != null && visualCards != null)
+				focus.add(visualCards.get(index));
 		return focus;
 	}
 
@@ -86,41 +86,41 @@ public class VisualCardPanel {
 		if(yCoordDifferential > 0) {
 			if(yCoordDifferential < VisualCard.height) {
 				int xCoordDifferential = mouseTracer.mousePosition.xCoord - drawCoordinates.get(0).xCoord;
-				int focusIndex = xCoordDifferential / (VisualCard.width + xCoordCardGap);
-				if(visualCards.size() > focusIndex && focusIndex > -1) {
+				int focusedIndex = xCoordDifferential / (VisualCard.width + xCoordCardGap);
+				if(visualCards.size() > focusedIndex && focusedIndex > -1) {
 					xCoordDifferential %= (VisualCard.width + xCoordCardGap);
 					if(xCoordDifferential < VisualCard.width)
-						if(mouseTracer.mouseClicked) pushIntoFocusVisualCards(visualCards.get(focusIndex));
+						if(mouseTracer.mouseClicked) pushIntoFocusIndex(new Integer(focusedIndex));
 				}
 			}
 			else if(yCoordDifferential < 2*VisualCard.height + 2*xCoordCardGap
 					&& yCoordDifferential > VisualCard.height + 2*xCoordCardGap) {
 				int xCoordDifferential = mouseTracer.mousePosition.xCoord - slotCoordinates[0].xCoord;
-				int focusIndex = xCoordDifferential / (VisualCard.width + xCoordCardGap);
-				if(focusVisualCards.length > focusIndex && focusIndex > -1) {
+				int focusedIndex = xCoordDifferential / (VisualCard.width + xCoordCardGap);
+				if(focusIndex.length > focusedIndex && focusedIndex > -1) {
 					xCoordDifferential %= (VisualCard.width + xCoordCardGap);
 					if(xCoordDifferential < VisualCard.width)
-						if(mouseTracer.mouseClicked) popOutFocusVisualCard(focusVisualCards[focusIndex]);
+						if(mouseTracer.mouseClicked) popOutFocusIndex(focusIndex[focusedIndex]);
 				}
 			}
 		}
 	}
 
-	private void pushIntoFocusVisualCards(VisualCard push) {
+	private void pushIntoFocusIndex(Integer index) {
 		int availableIndex = -1;
-		for(int n = 0; n < focusVisualCards.length; n++) {
-			if(focusVisualCards[n] == push) return;
-			if(focusVisualCards[n] == null && availableIndex == -1)
+		for(int n = 0; n < focusIndex.length; n++) {
+			if(index.equals(focusIndex[n])) return;
+			if(focusIndex[n] == null && availableIndex == -1)
 				availableIndex = n;
 		}
 		if(availableIndex != -1)
-			focusVisualCards[availableIndex] = push;
+			focusIndex[availableIndex] = 	index;
 	}
 
-	private void popOutFocusVisualCard(VisualCard pop) {
-		for(int n = 0; n < focusVisualCards.length; n++)
-			if(focusVisualCards[n] == pop)
-				focusVisualCards[n] = null;
+	private void popOutFocusIndex(Integer pop) {
+		for(int n = 0; n < focusIndex.length; n++)
+			if(pop == focusIndex[n])
+				focusIndex[n] = null;
 	}
 	
 }

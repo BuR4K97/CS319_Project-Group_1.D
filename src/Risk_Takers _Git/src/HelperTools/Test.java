@@ -86,7 +86,7 @@ public class Test{
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.CHINA, CARD_TYPES.EASY_UNIT));
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.SCANDINAVIA, CARD_TYPES.MODERATE_UNIT));
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.NEW_GUINESS, CARD_TYPES.EASY_UNIT));
-		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.CENTRAL_AFRICA, CARD_TYPES.HARD_UNIT));
+		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.CENTRAL_AMERICA, CARD_TYPES.HARD_UNIT));
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.EAST_AFRICA, CARD_TYPES.EASY_UNIT));
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.PERU, CARD_TYPES.EASY_UNIT));
 		cardSet.add(new DefaultRiskCard(DefaultRiskMode.TERRITORIES.RUSIA, CARD_TYPES.MODERATE_UNIT));
@@ -120,24 +120,9 @@ public class Test{
 	public static void processDefaultRiskTerritoryGraph(String dataFile) {
 		
 		TerritoryGraph territoryGraph = new TerritoryGraph();
-		for(int i = 0; i < 9; i++)
-			territoryGraph.addTerritory(new DefaultRiskTerritory(DefaultRiskMode.TERRITORIES.values()[i]
-					, DefaultRiskMode.CONTINENTS.NORTH_AMERICA));
-		for(int i = 9; i < 13; i++)
-			territoryGraph.addTerritory(new DefaultRiskTerritory(DefaultRiskMode.TERRITORIES.values()[i]
-					, DefaultRiskMode.CONTINENTS.SOUTH_AMERICA));
-		for(int i = 13; i < 20; i++)
-			territoryGraph.addTerritory(new DefaultRiskTerritory(DefaultRiskMode.TERRITORIES.values()[i]
-					, DefaultRiskMode.CONTINENTS.EUROPE));
-		for(int i = 20; i < 26; i++)
-			territoryGraph.addTerritory(new DefaultRiskTerritory(DefaultRiskMode.TERRITORIES.values()[i]
-					, DefaultRiskMode.CONTINENTS.AFRICA));
-		for(int i = 26; i < 38; i++)
-			territoryGraph.addTerritory(new DefaultRiskTerritory(DefaultRiskMode.TERRITORIES.values()[i]
-					, DefaultRiskMode.CONTINENTS.ASIA));
-		for(int i = 38; i < 42; i++)
-			territoryGraph.addTerritory(new DefaultRiskTerritory(DefaultRiskMode.TERRITORIES.values()[i]
-					, DefaultRiskMode.CONTINENTS.AUSTRALIA));
+		for(DefaultRiskMode.CONTINENTS continent : DefaultRiskMode.CONTINENTS.values())
+			for(DefaultRiskMode.TERRITORIES territory : continent.territories)
+				territoryGraph.addTerritory(new DefaultRiskTerritory(territory, continent));
 		
 		ArrayList<Territory> territories = territoryGraph.getTerritories();
 		
@@ -175,8 +160,8 @@ public class Test{
 		territoryGraph.connectTerritory(territories.get(10), territories.get(11));
 		territoryGraph.connectTerritory(territories.get(10), territories.get(12));
 		
-		territoryGraph.connectTerritory(territories.get(10), territories.get(12));
-		territoryGraph.connectTerritory(territories.get(10), territories.get(20));
+		territoryGraph.connectTerritory(territories.get(11), territories.get(12));
+		territoryGraph.connectTerritory(territories.get(11), territories.get(20));
 		
 		territoryGraph.connectTerritory(territories.get(13), territories.get(14));
 		territoryGraph.connectTerritory(territories.get(13), territories.get(15));
@@ -258,7 +243,7 @@ public class Test{
 		
 		territoryGraph.connectTerritory(territories.get(39), territories.get(40));
 		
-		territoryGraph.connectTerritory(territories.get(38), territories.get(41));
+		territoryGraph.connectTerritory(territories.get(40), territories.get(41));
 		System.out.println(territoryGraph.checkConnect(territories.get(0), territories.get(1)));
 		
 		ArrayList<Serializable> objects = new ArrayList<Serializable>();
@@ -278,7 +263,6 @@ public class Test{
 			scan.nextLine();
 		}
 		System.out.println(territoryGraph.checkConnect(territories.get(0), territories.get(1)));
-		
 	}
 	
 	public static void processDefaultRiskVisualTerritories(String imageFile, String dataFile) {
@@ -378,8 +362,11 @@ public class Test{
 		visualTerritories.get(39).mainCoordinate = new Coordinate(1611, 625);
 		visualTerritories.get(40).mainCoordinate = new Coordinate(1654, 836);
 		visualTerritories.get(41).mainCoordinate = new Coordinate(1779, 813);
+		for(VisualTerritory vt : visualTerritories)
+			vt.resetDrawCoord();
 		
 		TerritorialImageAnalyzer.constructVisualTerritorialData(visualTerritories);
+		TerritorialImageAnalyzer.constructScaledTerritorialData(visualTerritories);
 		
 		ArrayList<Serializable> objects = new ArrayList<Serializable>();
 		for(VisualTerritory currElement : visualTerritories)

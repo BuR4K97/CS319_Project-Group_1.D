@@ -113,4 +113,32 @@ public class AnimationHandler {
 				animations.remove(i--);
 		}
 	}
+
+	public static boolean suspendTextualInGamePanelPaintEvent() {
+		for(Animation animation : animations) {
+			if(animation instanceof AnimationVisualBufferAttackAnimation)
+				return true;
+		}
+		return false;
+	}
+
+	public static boolean suspendVisualCardPanelPaintEvent() {
+		for(Animation animation : animations) {
+			if(animation instanceof AnimationVisualBufferAttackAnimation)
+				return true;
+			if(animation instanceof MapBuildingAnimation)
+				return true;
+		}
+		return false;
+	}
+
+	public static boolean suspendTextualInGamePanelUpdate() {
+		for(Animation animation : animations) {
+			if(animation instanceof AttackAnimation)
+				return true;
+			if(animation instanceof MapBuildingAnimation)
+				return true;
+		}
+		return false;
+	}
 }

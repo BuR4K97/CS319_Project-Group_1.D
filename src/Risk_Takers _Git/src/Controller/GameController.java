@@ -46,5 +46,9 @@ public class GameController {
 		activeMode.destroyGameMode();
 		activeMode = null;
 	}
+
+	protected static void requestManualGameUpdate() {
+		Game.update();
+	}
 	
 }//endClass

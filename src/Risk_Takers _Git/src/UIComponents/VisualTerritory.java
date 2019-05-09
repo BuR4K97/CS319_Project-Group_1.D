@@ -33,10 +33,25 @@ public abstract class VisualTerritory implements Serializable {
 	//private boolean even = true; int changeIndex = 0;
 	public static final int PIXEL_JUMP = 12;
 	public static final int DEFAULT_DRAW_SIZE = PIXEL_JUMP * 7 / 10;
+	public static enum SCALE_MODE { NORMAL, UPSCALED };
+	public Coordinate drawCoordinate = mainCoordinate;
 	public int drawSize = DEFAULT_DRAW_SIZE;
+	public SCALE_MODE scale = SCALE_MODE.NORMAL;
 	public void paint(Graphics painter, boolean selected) {
-		for(Coordinate a: coordinates)
-			painter.fillRect(a.xCoord , a.yCoord, drawSize, drawSize); 
+		int xCoord = ((drawCoordinate.xCoord - mainCoordinate.xCoord) / PIXEL_JUMP) * PIXEL_JUMP;
+		int yCoord = ((drawCoordinate.yCoord - mainCoordinate.yCoord) / PIXEL_JUMP) * PIXEL_JUMP;
+		if(scale == SCALE_MODE.NORMAL) {
+			for(Coordinate a: coordinates)
+				painter.fillRect(xCoord + a.xCoord, yCoord + a.yCoord, drawSize, drawSize); 
+		}
+		else {
+			for(Coordinate a: upScaledCoordinates)
+				painter.fillRect(xCoord + a.xCoord, yCoord + a.yCoord, drawSize, drawSize); 
+		}
+	}
+	
+	public void resetDrawCoord() {
+		drawCoordinate = mainCoordinate;
 	}
 	
 	public static Coordinate getIndexedCoordinate(double xRate, double yRate) {

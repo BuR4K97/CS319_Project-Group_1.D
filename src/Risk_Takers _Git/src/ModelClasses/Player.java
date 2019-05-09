@@ -31,9 +31,15 @@ public class Player {
 	public boolean captureTerritory(Territory targetTerritory) {
 		for(Territory currTerritory : territories)
 			if(currTerritory == targetTerritory) return false;
+		if(targetTerritory.playerCaptured != null)
+			targetTerritory.playerCaptured.removeTerritory(targetTerritory);
 		targetTerritory.setPlayer(this);
 		territories.add(targetTerritory);
 		return true;
+	}
+	
+	private void removeTerritory(Territory remove) {
+		territories.remove(remove);
 	}
 	
 	public void addUnitsToTerritory(Territory targetTerritory, int unitToAdd) {
@@ -43,7 +49,9 @@ public class Player {
 	}
 	
 	public boolean moveUnits(Territory sourceTerritory, Territory targetTerritory, int unitToMove) {
-		if(sourceTerritory.getUnitNumber() - unitToMove < 1) return false;
+		if(sourceTerritory.playerCaptured != this && targetTerritory.playerCaptured != this)
+			return false;
+		if(sourceTerritory.getUnitNumber() - unitToMove < Combat.MIN_DEFENSE_UNIT) return false;
 		sourceTerritory.removeUnits(unitToMove);
 		targetTerritory.addUnits(unitToMove);
 		return true;

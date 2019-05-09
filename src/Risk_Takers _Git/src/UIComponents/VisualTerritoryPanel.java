@@ -28,6 +28,9 @@ public class VisualTerritoryPanel {
 		visualTerritories = GameController.activeMode.visualTerritories;
 		this.mouseTracer = mouseTracer;
 		
+		for(VisualTerritory vt : visualTerritories)
+			effectAmounts.add(0);
+		
 		AnimationHandler.requestMapBuildingAnimation(visualTerritories);
 		return true;
 	}
@@ -49,9 +52,10 @@ public class VisualTerritoryPanel {
 	
 	public void update() {
 		mouseEventUpdate();
-		GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]);
 		if(GameInteractions.getActivePhase() != TURN_PHASE.ATTACK)
 			flushPrevState();
+		else
+			GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]); 
 	}
 	
 	public void flushPrevState() {
@@ -62,11 +66,9 @@ public class VisualTerritoryPanel {
 		visualTerritories = null;
 	}
 	
-	ArrayList<VisualTerritory> effectedTerritories = new ArrayList<>();
 	ArrayList<Integer> effectAmounts = new ArrayList<>();
 	public void requestFortifyInteractionEffect(VisualTerritory focusTerritory, int effectAmount) {
-		effectedTerritories.add(focusTerritory);
-		effectAmounts.add(effectAmount);
+		effectAmounts.set(visualTerritories.indexOf(focusTerritory), effectAmount);
 	}
 	
 	public void paint(Graphics painter) {
@@ -74,35 +76,27 @@ public class VisualTerritoryPanel {
 		painter.setFont(new Font("pixel", Font.BOLD, 20));
 		
 		Territory corresponding;
-		for(VisualTerritory currElement : visualTerritories) {
+		for(int i = 0; i < visualTerritories.size(); i++) {
 			painter.setColor(Color.WHITE);
-			corresponding = GameInteractions.findCorrespondingTerritory(currElement);
+			corresponding = GameInteractions.findCorrespondingTerritory(visualTerritories.get(i));
 			if(corresponding != null) {
 				if(corresponding.getPlayer() != null)
 					painter.setColor(corresponding.getPlayer().getColor());
 			}
 			boolean selected = false;
-			if(focusTerritories[0] == currElement) { painter.setColor(colorDarkener(painter.getColor())); selected = true;}
-			else if(focusTerritories[1] == currElement) { painter.setColor(colorDarkener(painter.getColor())); selected = true; }
-			else if(selectableTerritory == currElement) { painter.setColor(colorLightener(painter.getColor())); selected = true; }
-			currElement.paint(painter, selected);
+			if(focusTerritories[0] == visualTerritories.get(i)) { painter.setColor(colorDarkener(painter.getColor())); selected = true;}
+			else if(focusTerritories[1] == visualTerritories.get(i)) { painter.setColor(colorDarkener(painter.getColor())); selected = true; }
+			else if(selectableTerritory == visualTerritories.get(i)) { painter.setColor(colorLightener(painter.getColor())); selected = true; }
+			visualTerritories.get(i).paint(painter, selected);
 			
 			if(!AnimationHandler.suspendVisualTerritoryPanel()) {
-				if(currElement.mainCoordinate != null) { 
+				if(visualTerritories.get(i).mainCoordinate != null) { 
 					painter.setColor(Color.WHITE);
-					painter.fillRect(currElement.mainCoordinate.xCoord - 1, currElement.mainCoordinate.yCoord - VisualTerritory.PIXEL_JUMP
+					painter.fillRect(visualTerritories.get(i).mainCoordinate.xCoord - 1, visualTerritories.get(i).mainCoordinate.yCoord - VisualTerritory.PIXEL_JUMP
 							- 6, 1 * VisualTerritory.PIXEL_JUMP,  2 *VisualTerritory.PIXEL_JUMP);
 					painter.setColor(Color.BLACK);
-					if(effectedTerritories.contains(currElement)) {
-						painter.drawString(Integer.toString(corresponding.getUnitNumber()
-								- effectAmounts.get(effectedTerritories.indexOf(currElement)))
-								, currElement.mainCoordinate.xCoord, currElement.mainCoordinate.yCoord);
-						effectAmounts.remove(effectedTerritories.indexOf(currElement));
-						effectedTerritories.remove(currElement);
-					}
-					else
-						painter.drawString(Integer.toString(corresponding.getUnitNumber())
-								, currElement.mainCoordinate.xCoord, currElement.mainCoordinate.yCoord);
+					painter.drawString(Integer.toString(corresponding.getUnitNumber() - effectAmounts.get(i))
+							, visualTerritories.get(i).mainCoordinate.xCoord, visualTerritories.get(i).mainCoordinate.yCoord);
 				}
 			}
 		}
