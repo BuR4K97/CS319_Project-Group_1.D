@@ -110,13 +110,13 @@ public class GamePanel extends DynamicPanel {
 			currentStateStrToDraw.get(i).paint(painter);
 		
 		drawStringBorders(painter);
-		int width, height;
-		width = 800;
-		height = 400;
-		painter.setColor(new Color(0, 0, 0, 170));
-		painter.fillRect(1920/2 - width/2, 1080/2 - height/2, width, height);
-		painter.setColor(Color.CYAN);
-		painter.drawRect(1920/2 - width/2, 1080/2 - height/2, width, height);
+//		int width, height;
+//		width = 800;
+//		height = 400;
+//		painter.setColor(new Color(0, 0, 0, 170));
+//		painter.fillRect(1920/2 - width/2, 1080/2 - height/2, width, height);
+//		painter.setColor(Color.CYAN);
+//		painter.drawRect(1920/2 - width/2, 1080/2 - height/2, width, height);
 	}
 	
 	public void drawStringBorders(Graphics g) {
