@@ -18,7 +18,7 @@ public class RectAnimation {
 		moveRectTimer = new Timer(30, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if((int)(Math.random() * 100) > 96) {
+				if((int)(Math.random() * 100) > 90) {
 					int a = (int)(Math.random() * 4) + 1;
 					Color c = new Color((int)(Math.random()*255), (int)(Math.random()*255), (int)(Math.random()*255), 70);
 					if(a == 1) { // left of screen
