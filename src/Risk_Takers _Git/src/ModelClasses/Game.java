@@ -2,6 +2,7 @@ package ModelClasses;
 
 import java.util.ArrayList;
 
+import ArtificialIntelligenceComponents.ArtificialIntelligenceHandler;
 import Controller.GameController;
 import Controller.GameInteractions;
 import GameAssets.GameConstants;
@@ -21,6 +22,21 @@ public class Game {
 	
 	public static final int MIN_PLAYER_NUMBER = 2;
 	public static final int MAX_PLAYER_NUMBER = 4;
+	public static enum PLAYER_MODE { 
+		SINGLEPLAYER(1), MULTIPLAYER(2);
+		
+		private int playerNumber;
+		
+		private PLAYER_MODE(int playerNumber) {
+			this.playerNumber = playerNumber;
+		}
+		
+		private void setPlayerNumber(int playerNumber) {
+			if(this == MULTIPLAYER && playerNumber >= MIN_PLAYER_NUMBER && playerNumber <= MAX_PLAYER_NUMBER)
+				this.playerNumber = playerNumber;
+		}
+		
+	};
 	public static ArrayList<Player> players;
 	public static ArrayList<Territory> territories;
 	
@@ -75,8 +91,8 @@ public class Game {
 	 * In a sense, it will bind the Game class to the constant and loaded data of GameMode.
 	 * After game terminated, such binding also should be terminated for deallocation of memory from loaded data of GameMode.
 	 * See GameMode.destroyGameMode() and Game.destroy().
-	 */
-	public static boolean initialize(int playerNumber) {
+	**/
+	public static boolean initialize(PLAYER_MODE playerMode, int playerNumber) {
 		if(playerNumber < MIN_PLAYER_NUMBER) return false;
 		if(playerNumber > MAX_PLAYER_NUMBER) return false;
 		if(GameController.activeMode == null) return false;
@@ -84,6 +100,11 @@ public class Game {
 		players = new ArrayList<Player>();
 		for(int i = 0; i < playerNumber; i++)
 			players.add(new Player(("Player " + (i + 1)), GameConstants.PLAYER_COLORS[i]));
+		
+		if(playerMode == PLAYER_MODE.SINGLEPLAYER) {
+			for(int i = PLAYER_MODE.SINGLEPLAYER.playerNumber; i < playerNumber; i++)
+				ArtificialIntelligenceHandler.requestArtificialIntelligenceBinding(players.get(i));
+		}
 		
 		territories = GameController.activeMode.territoryGraph.getTerritories();
 		
@@ -162,6 +183,10 @@ public class Game {
 
 	public static ArrayList<Card> extractActivePlayerCards() {
 		return Turn.activePlayer.getCardSet();
+	}
+
+	public static void requestResetMultiplayerMode(int playerNumber) {
+		PLAYER_MODE.MULTIPLAYER.setPlayerNumber(playerNumber);
 	}
 	
 }//endClass

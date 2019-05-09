@@ -1,5 +1,6 @@
 package Controller;
 
+import ArtificialIntelligenceComponents.ArtificialIntelligenceHandler;
 import GameAssets.GameConstants;
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
 import ModelClasses.Game;
@@ -22,6 +23,7 @@ public class GameController {
 	}
 	
 	public static void updateGame() {
+		ArtificialIntelligenceHandler.update();
 		Game.update();
 		MainApplication.frame.focusPanel.update();
 	}
