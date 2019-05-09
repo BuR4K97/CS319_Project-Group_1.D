@@ -25,7 +25,7 @@ public class Game {
 	public static enum PLAYER_MODE { 
 		SINGLEPLAYER(1), MULTIPLAYER(2);
 		
-		private int playerNumber;
+		public int playerNumber;
 		
 		private PLAYER_MODE(int playerNumber) {
 			this.playerNumber = playerNumber;

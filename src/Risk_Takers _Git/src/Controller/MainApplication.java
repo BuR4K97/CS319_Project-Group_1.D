@@ -7,6 +7,7 @@ import javax.swing.Timer;
 
 import AnimationComponents.AnimationHandler;
 import Controller.GameController.GAME_MODE;
+import ModelClasses.Game.PLAYER_MODE;
 import UIComponents.ApplicationFrame;
 import UIComponents.GamePanel;
 
@@ -62,10 +63,10 @@ public class MainApplication {
 		frame.setVisible(true);
 	}
 	
-	public static boolean initializeGame() {
+	public static boolean initializeGame(PLAYER_MODE playerMode, int playerNumber) {
 		visualDisplayTimer.stop();
 		
-		if(!GameController.initializeGame(2, GAME_MODE.DEFAULT)) return false;
+		if(!GameController.initializeGame(playerMode, playerNumber, GAME_MODE.DEFAULT)) return false;
 		frame.initializeGame();
 		
 		animationTimer.restart();
