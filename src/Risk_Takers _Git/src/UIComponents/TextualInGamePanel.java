@@ -21,7 +21,6 @@ public class TextualInGamePanel {
 
 	private JLabel phaseLabel;
 	private JLabel playerLabel;
-	private ArrayList<VisualString> interactionStringList;
 	public EnvanterBox envanterBox;
 	private FortifyInteraction foritfyInteraction;
 	private MouseInGameListener mouseTracer;
@@ -35,10 +34,7 @@ public class TextualInGamePanel {
 		playerLabel = new JLabel();
 		playerLabel.setFont(new Font("Calibri", Font.BOLD, 32));
 		playerLabel.setBounds(715, 1013, 106, 29);
-		
-		interactionStringList = new ArrayList<VisualString>();
-		interactionStringList.add(new VisualString(860, 0, 14, phaseLabel.getText()));
-		
+				
 		envanterBox = new EnvanterBox();
 		foritfyInteraction = new FortifyInteraction();
 		
@@ -80,5 +76,13 @@ public class TextualInGamePanel {
 	
 	private boolean suspendFortifyInteraction() {
 		return GameInteractions.getActivePhase() != TURN_PHASE.FORTIFY;
+	}
+
+	public JLabel getPhaseLabel() {
+		return phaseLabel;
+	}
+
+	public JLabel getPlayerLabel() {
+		return playerLabel;
 	}
 }

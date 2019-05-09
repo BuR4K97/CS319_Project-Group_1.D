@@ -270,6 +270,49 @@ public VisualString(int x, int y, int maxLength, String string) { // width = max
 			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
 			makeAreaS(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
 		}
+		else if(ch == '.') {
+			makeAreaB(new Rect(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaB(new Rect(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Rect(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaS(new Rect(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Rect(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
+		
+		else if(ch == '|') {
+			makeAreaB(new Rect(topLeft.x, topLeft.y), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y), blockLength);
+
+			makeAreaB(new Rect(topLeft.x, topLeft.y + blockLength), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y + blockLength), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength), blockLength);
+
+			makeAreaB(new Rect(topLeft.x, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 2), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 2), blockLength);
+
+			makeAreaS(new Rect(topLeft.x, topLeft.y + blockLength * 3), blockLength);
+			makeAreaS(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 3), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 3), blockLength);
+
+			makeAreaB(new Rect(topLeft.x, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
+			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
+		}
 		else if(ch == 'Z') {
 			makeAreaB(new Rect(topLeft.x, topLeft.y), blockLength);
 			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y), blockLength);
@@ -1047,9 +1090,8 @@ public VisualString(int x, int y, int maxLength, String string) { // width = max
 			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
 			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
 		}
-
-
 	}
+	
 	public Rectangle getRectangle() {
 		return new Rectangle(x, y, maxLength * string.length() * 4 , maxLength*5);
 	}

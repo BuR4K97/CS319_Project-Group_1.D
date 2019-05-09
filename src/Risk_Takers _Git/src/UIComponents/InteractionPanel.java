@@ -27,7 +27,7 @@ public class InteractionPanel {
 	private JLabel attackRequestLabel;
 	private JLabel attackTillCapture;
 	private JLabel attackPerRoll;
-	private JLabel terminateAttack;//
+	private JLabel terminateAttack;
 	private JLabel cardButton;
 	private JLabel activateCards;
 	private JLabel cardModeBackButton;
