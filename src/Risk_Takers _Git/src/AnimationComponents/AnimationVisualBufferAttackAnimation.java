@@ -33,6 +33,7 @@ public class AnimationVisualBufferAttackAnimation extends Animation {
 		else terminateImmediate = true;
 	}
 
+	private static Color attackColor = new Color(155, 30, 30), defenseColor = new Color(30, 30, 155);
 	private boolean firstPhase = false;
 	private int leftCurrIndex = 0, rightCurrIndex = ApplicationFrame.width - VisualTerritory.PIXEL_JUMP;
 	private Coordinate targetCoordinate;
@@ -73,9 +74,9 @@ public class AnimationVisualBufferAttackAnimation extends Animation {
 			for(VisualCoordinate visualCoordinate : visualBuffer) {
 				if(updateIndex.contains(visualCoordinate.pixelPosition.xCoord)) {
 					if(visualCoordinate.pixelPosition.xCoord < targetCoordinate.xCoord)
-						visualCoordinate.pixelColor = Color.RED;
+						visualCoordinate.pixelColor = attackColor;
 					else
-						visualCoordinate.pixelColor = Color.BLUE;
+						visualCoordinate.pixelColor = defenseColor;
 				}
 			}
 			

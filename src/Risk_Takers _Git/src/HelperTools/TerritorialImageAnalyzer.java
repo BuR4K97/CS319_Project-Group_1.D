@@ -16,7 +16,7 @@ public class TerritorialImageAnalyzer {
 	public static BufferedImage image;
 	
 	public static void constructScaledTerritorialData(ArrayList<VisualTerritory> visualTerritories) {
-		final double upScaledTarget = 480;
+		final double upScaledTarget = 360;
 		
 		ArrayList<Coordinate[][]> visualBuffers = new ArrayList<>();
 		ArrayList<Integer> minXCoords = new ArrayList<Integer>(), minYCoords = new ArrayList<Integer>();

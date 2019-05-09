@@ -19,6 +19,7 @@ import javax.swing.Timer;
 
 import AnimationComponents.AnimationHandler;
 import Controller.GameController;
+import Controller.GameInteractions;
 import Controller.MainApplication;
 import ModelClasses.Player;
 import UIComponents.Coordinate;
@@ -82,6 +83,13 @@ public class EnvanterBox{
 	public void updatePlayer(Player activePlayer) {
 		this.player = activePlayer;
 		resetPlayerNumber();
+	}
+	
+	private void resetPlayerNumber() {
+		list.clear();
+		for(int i = 0; i < player.getAvailableUnitAmount(); i++)
+			list.add(new SmallBox(x + borderLength/2, y + borderLength/2));
+		unitsInHand.clear();
 	}
 
 	public void updateMouseEvent(MouseInGameListener mouseTracer) {
@@ -151,20 +159,19 @@ public class EnvanterBox{
 					returnToBoxAnimation.get(i).goTarget(x + borderLength / 2, y + returnToBoxAnimation.get(i).length/2);
 				}
 				unitsInHand.clear();
-				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
 			}
 			else if(mouseTracer.leftButtonClicked) {
-				GameController.interactions.requestAction(unitsInHand.size());
-				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
+				if(isSelectable(mouseTracer.getFocusTerritory())) {
+					GameController.interactions.synchronizeFocusTerritories(mouseTracer.getFocusTerritory(), null);
+					GameController.interactions.requestAction(unitsInHand.size()); 
+				}
 			}
 		}
 	}
-
-	private void resetPlayerNumber() {
-		list.clear();
-		for(int i = 0; i < player.getAvailableUnitAmount(); i++)
-			list.add(new SmallBox(x + borderLength/2, y + borderLength/2));
-		unitsInHand.clear();
+	
+	private boolean isSelectable(VisualTerritory check) {
+		if(check == null) return false;
+		return GameInteractions.isSelectable(check, check); 
 	}
 
 	public void paint(Graphics g) {
@@ -248,4 +255,5 @@ public class EnvanterBox{
 		addUnit(unitsInHand.size());
 		unitsInHand.clear();
 	}
+	
 }

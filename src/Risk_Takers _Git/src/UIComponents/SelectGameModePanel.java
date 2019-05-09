@@ -15,7 +15,7 @@ import UIComponents.Fireworks.Fireworks;
 
 public class SelectGameModePanel extends JPanel{
 	
-	private JLabel singlePaleyr;
+	private JLabel singlePlayer;
 	private JLabel multiPlayer;
 	private JLabel lblBack;
 	private ArrayList<VisualString> stringList;
@@ -33,10 +33,10 @@ public class SelectGameModePanel extends JPanel{
 		mouseY = 0;
 		
 
-		singlePaleyr = new JLabel("");
-		singlePaleyr.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
-		singlePaleyr.setBounds(265, 500, 245, 51);
-		add(singlePaleyr);
+		singlePlayer = new JLabel("");
+		singlePlayer.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
+		singlePlayer.setBounds(265, 500, 430, 51);
+		add(singlePlayer);
 
 		multiPlayer = new JLabel("");
 		multiPlayer.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
@@ -71,7 +71,7 @@ public class SelectGameModePanel extends JPanel{
 	
 	public JLabel getSingleplayerLabel()
 	{
-		return singlePaleyr;
+		return singlePlayer;
 	}
 
 	public JLabel getMultiplayerLabel()

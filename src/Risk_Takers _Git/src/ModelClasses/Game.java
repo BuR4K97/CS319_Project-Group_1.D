@@ -106,11 +106,12 @@ public class Game {
 		ArrayList<Card> activates = new ArrayList<Card>();
 		for(Player player : players) {
 			for(int i = 0; i < cardSet.size() / (playerNumber * INITIAL_UNIT_MODIFIER); i++) {
-				for(int n = 0; n < CARD_ACTIVATION.COMBINATIONAL.activation - 2; n++) {
+				for(int n = 0; n < cardSet.get(i).cardType.activationType.activation; n++) {
 					player.insertCard(cardSet.get(i));
 					activates.add(cardSet.get(i));
 				}
-				//player.activateCards(activates);
+				player.activateCards(activates);
+				activates.clear();
 			}
 		}
 		Turn.initialize();

@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 
 import ModelClasses.Card;
 import ModelClasses.GameState;
+import ModelClasses.Player;
+import ModelClasses.Territory;
 import Controller.GameMode;
 import HelperTools.FileHandler;
 import HelperTools.ImageHandler;
@@ -48,7 +50,47 @@ public class DefaultRiskMode extends GameMode {
 		, MIDDLE_EAST, AFGHANISTAN, URAL, SIBERIA, YAKUTSK, IRKUTSK, MONGOLA, CHINA, INDIA, SOUTHEAST_ASIA
 		, JAPAN, KAMCHATKA, NEW_GUINESS, INDONESIA, WESTERN_AUSTRALIA, EASTERN_AUSTRALIA, SEA };
 	
-	public static enum CONTINENTS { NORTH_AMERICA, SOUTH_AMERICA, EUROPE, AFRICA, ASIA, AUSTRALIA };
+	public static enum CONTINENTS {
+		NORTH_AMERICA, SOUTH_AMERICA, EUROPE, AFRICA, ASIA, AUSTRALIA;
+		static { initializeContinents(); }
+		
+		public TERRITORIES[] territories;
+		
+		public boolean contains(TERRITORIES territory) {
+			for(TERRITORIES subTerr : territories)
+				if(territory == subTerr) return true;
+			return false;
+		}
+		
+		private static void initializeContinents() {
+			int territoryIndex = 0;
+			
+			NORTH_AMERICA.territories = new TERRITORIES[9];
+			for(int i = 0; i < 9; i++)
+				NORTH_AMERICA.territories[i] = TERRITORIES.values()[territoryIndex++];
+			
+			SOUTH_AMERICA.territories = new TERRITORIES[4];
+			for(int i = 0; i < 4; i++)
+				SOUTH_AMERICA.territories[i] = TERRITORIES.values()[territoryIndex++];
+			
+			EUROPE.territories = new TERRITORIES[7];
+			for(int i = 0; i < 7; i++)
+				EUROPE.territories[i] = TERRITORIES.values()[territoryIndex++];
+			
+			AFRICA.territories = new TERRITORIES[6];
+			for(int i = 0; i < 6; i++)
+				AFRICA.territories[i] = TERRITORIES.values()[territoryIndex++];
+			
+			ASIA.territories = new TERRITORIES[12];
+			for(int i = 0; i < 12; i++)
+				ASIA.territories[i] = TERRITORIES.values()[territoryIndex++];
+			
+			AUSTRALIA.territories = new TERRITORIES[4];
+			for(int i = 0; i < 4; i++)
+				AUSTRALIA.territories[i] = TERRITORIES.values()[territoryIndex++];
+		}
+
+	};
 	
 	public VisualTerritory getVisualTerritory(TERRITORIES territory) {
 		for(int i = 0; i < TERRITORIES.values().length; i++) {
@@ -58,9 +100,32 @@ public class DefaultRiskMode extends GameMode {
 		return null;
 	}
 	
-	public void checkStates(GameState prevState, GameState currState) {
-		//Implement this
+	public void checkStatesModeSpecific(GameState prevState, GameState currState, Player recentPlayer) {
+		boolean [][] continentsCaptured = new boolean[CONTINENTS.values().length][];
+		for(int i = 0; i < CONTINENTS.values().length; i++)
+				continentsCaptured[i] = new boolean[CONTINENTS.values()[i].territories.length];
 		
+		for(Territory territory : currState.getTerritoriesState()) {
+			DefaultRiskTerritory normalizedTerritory = ((DefaultRiskTerritory)territory);
+			if(territory.getPlayer() == recentPlayer) {
+				int subIndex = -1;
+				for(int i = 0; i < normalizedTerritory.continent.territories.length; i++)
+					if(normalizedTerritory.territory == normalizedTerritory.continent.territories[i]) {	
+						subIndex = i; break;
+					}
+				
+				if(subIndex != -1) continentsCaptured[normalizedTerritory.continent.ordinal()][subIndex] = true;
+			}
+		}
+		
+		continentCheck:for(int i = 0; i < continentsCaptured.length; i++) {
+			for(boolean territoryCaptured : continentsCaptured[i])
+				if(!territoryCaptured) continue continentCheck;
+			Card insert = super.findItsCardCorresponding(CONTINENTS.values()[i].toString());
+			ArrayList<Card> inserted = new ArrayList<Card>(); inserted.add(insert);
+			recentPlayer.insertCard(insert);
+			recentPlayer.activateCards(inserted);
+		}
 	}
 	
 	@Override

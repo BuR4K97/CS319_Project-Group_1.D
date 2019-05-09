@@ -3,8 +3,10 @@ package AnimationComponents;
 import java.util.ArrayList;
 
 import ModelClasses.Territory;
+import UIComponents.ApplicationFrame;
 import UIComponents.Coordinate;
 import UIComponents.VisualTerritory;
+import UIComponents.VisualTerritory.SCALE_MODE;
 
 public class AttackAnimation extends Animation {
 
@@ -65,7 +67,7 @@ public class AttackAnimation extends Animation {
 	private VisualTerritory source, target;
 	private Territory sourceTerritory, targetTerritory;
 	private boolean firstPhase = true;
-	private int coordChanger = 15;
+	private int coordChanger = 12;
 
 	public AttackAnimation(ArrayList<VisualTerritory> visualTerritories, VisualTerritory visualSourceTerritory,
 			VisualTerritory visualTargetTerritory, Territory sourceTerritory, Territory targetTerritory) {
@@ -80,6 +82,9 @@ public class AttackAnimation extends Animation {
 	}
 
 	private boolean visualBufferAnimationTerminateRequested = false;
+	private static Coordinate attackCoordinate = new Coordinate(VisualTerritory.PIXEL_JUMP * 25
+			, VisualTerritory.PIXEL_JUMP * 42), defendCoordinate = new Coordinate(ApplicationFrame.width / 2 
+					+ VisualTerritory.PIXEL_JUMP * 25, VisualTerritory.PIXEL_JUMP * 42);
 	@Override
 	public boolean execute() {
 		boolean executing = true;
@@ -95,11 +100,18 @@ public class AttackAnimation extends Animation {
 				}
 			}
 			firstPhase = CORNER_POINTS.execute(coordChanger);
-			if(!firstPhase && !terminating)
-				AnimationHandler.requestAnimationVisualBufferAttackAnimation(sourceTerritory, targetTerritory);
+			if(!firstPhase && !terminating) {
+				source.drawCoordinate = attackCoordinate; 
+				target.drawCoordinate = defendCoordinate;
+				source.scale = SCALE_MODE.UPSCALED; target.scale = SCALE_MODE.UPSCALED;
+				AnimationHandler.requestAnimationVisualBufferAttackAnimation(sourceTerritory, targetTerritory); 
+			}
 		}
 		else if(terminating) {
 			if(!AnimationHandler.suspendAttackAnimationTermination()) {
+				source.drawCoordinate = source.mainCoordinate; 
+				target.drawCoordinate = target.mainCoordinate;
+				source.scale = SCALE_MODE.NORMAL; target.scale = SCALE_MODE.NORMAL;
 				boolean finished = true;
 				for (int i = 0; i < this.visualTerritories.size(); i++) {
 					if (visualTerritories.get(i) != source && visualTerritories.get(i) != target) {
