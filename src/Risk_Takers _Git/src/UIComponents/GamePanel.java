@@ -26,7 +26,7 @@ public class GamePanel extends DynamicPanel {
 	private ArrayList<VisualString> attackModeStr;
 	private ArrayList<VisualString> currentStateStrToDraw;
 	private ArrayList<VisualString> borderLinesForLabels;
-	
+		
 	//stringList.add(new VisualString(770, 126, 14, "Options"));
 	
 	public GamePanel() {
@@ -47,7 +47,7 @@ public class GamePanel extends DynamicPanel {
 		
 //		for(int i = 0; i < draftPhaseStr.size(); i++)
 //			currentStateStrToDraw.add(draftPhaseStr.get(i));
-		currentStateStrToDraw.add(new VisualString(1210, 875, 5, "Draft"));
+		currentStateStrToDraw.add(new VisualString(1210, 875, 5, "Fortify"));
 		currentStateStrToDraw.add(new VisualString(1400, 875, 5, "Player 1", Color.GREEN));
 		currentStateStrToDraw.add(new VisualString(1210, 925, 4, "Attack Till Capture"));
 		currentStateStrToDraw.add(new VisualString(1210, 965, 4, "Attack"));
@@ -97,15 +97,50 @@ public class GamePanel extends DynamicPanel {
 
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
-		for(int i = 0; i < borderLinesForLabels.size(); i++)
-			borderLinesForLabels.get(i).paint(painter);
 		for(int i = 0; i < currentStateStrToDraw.size(); i++)
 			currentStateStrToDraw.get(i).paint(painter);
+		
+		drawStringBorders(painter);
+		
 		visualTerritoryPanel.paint(painter);
 		if(currState == PANEL_STATES.CARD)
 			visualCardPanel.paint(painter);
 		if(currState == PANEL_STATES.NORMAL)
 			textualInGamePanel.paint(painter);
+	}
+	
+	public void drawStringBorders(Graphics g) {
+		int xCor = 1200, yCor = 860;
+		for(int i = 0; i < 46; i++) {
+			g.drawRect(xCor, yCor, 4, 4);
+			xCor += 8;
+		}
+		xCor = 1204; yCor = 910; //1030
+		for(int i = 0; i < 45; i++) {
+			g.drawRect(xCor, yCor, 4, 4);
+			xCor += 8;
+		}
+		xCor = 1200; yCor = 1030;
+		for(int i = 0; i < 46; i++) {
+			g.drawRect(xCor, yCor, 4, 4);
+			xCor += 8;
+		}
+		xCor = 1200; yCor = 866; //1030
+		for(int i = 0; i < 33; i++) {
+			g.drawRect(xCor, yCor, 2, 2);
+			yCor += 5;
+		}
+		xCor = 1380; yCor = 866; //1030
+		for(int i = 0; i < 9; i++) {
+			g.drawRect(xCor, yCor, 2, 2);
+			yCor += 5;
+		}
+		xCor = 1562; yCor = 866; //1030
+		for(int i = 0; i < 33; i++) {
+			g.drawRect(xCor, yCor, 2, 2);
+			yCor += 5;
+		}
+		
 	}
 
 	public void update() {
