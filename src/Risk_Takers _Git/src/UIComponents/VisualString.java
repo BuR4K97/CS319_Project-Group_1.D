@@ -176,8 +176,7 @@ public class VisualString {
 		});
 		mexicoWave.start();
 	}	
-
-	public int colorChanger = 0;
+	
 	public void paint(Graphics g) {
 		g.setColor(color);
 
