@@ -670,7 +670,7 @@ public class VisualString {
 			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
 			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
 		}
-		else if(ch == 'I' || ch == 'Ý') {
+		else if(ch == 'I' || ch == 'Ä°') {
 			makeAreaB(new Rect(topLeft.x, topLeft.y), blockLength);
 			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y), blockLength);
 			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y), blockLength);

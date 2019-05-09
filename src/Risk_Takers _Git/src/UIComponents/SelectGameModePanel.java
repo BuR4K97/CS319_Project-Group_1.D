@@ -103,10 +103,10 @@ public class SelectGameModePanel extends JPanel{
 		stringList.add(new VisualString(530, 126, 14, "Select Game Mode"));
 		stringList.add(new VisualString(265, 500, 10, "Singleplayer"));
 		stringList.add(new VisualString(1210, 500, 10, "Multiplayer"));
-		stringList.add(new VisualString(750, 800, 7, "Number of human"));
+		stringList.add(new VisualString(750, 800, 7, "Number of humans"));
 		stringList.add(new VisualString(47, 989, 10, "Back"));
 
-		stringList.add(new VisualString(550, 325,7, "Number of player", true));
+		stringList.add(new VisualString(550, 325,7, "Number of players", true));
 		stringList.add(new VisualString(1100, 325, 10, "<", true));
 		stringList.add(new VisualString(1300, 325, 10, ">", true));
 

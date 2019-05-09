@@ -61,9 +61,14 @@ public class HowToPlayPanel extends JPanel{
 	{
 		stringList.add(new VisualString(670, 126, 14, "How To Play"));
 		stringList.add(new VisualString(47, 989, 10, "Back"));
-		stringList.add(new VisualString(670, 370, 4, "The implementation is not finished yet,"));
-		stringList.add(new VisualString(670, 400, 4, "We will fill this screen when the hole "));
-		stringList.add(new VisualString(670, 430, 4, "implementation of the game is finished."));
+		stringList.add(new VisualString(500, 370, 4, "After Play Game section Choose the Mode You Want to Play,"));
+		stringList.add(new VisualString(330, 400, 4, "Choose the Number of Players and Select either SINGLEPLAYER or MULTIPLAYER "));
+		stringList.add(new VisualString(350, 430, 4, "When the Game Starts You Need to Place Your Soldiers to Your Territories"));
+		stringList.add(new VisualString(300, 460, 4, "After Placing Soldiers by Clicking Next Phase You May Choose a Target Territory to Attack"));
+		stringList.add(new VisualString(310, 490, 4, "When You Win a Battle You will Receive the Card of the Territory You Have Recently Captured"));
+		stringList.add(new VisualString(250, 520, 4, "Your Cards are Extreamly Important because You May Gain new Soldiers by the Combinations of Your Cards"));
+		stringList.add(new VisualString(5340, 550, 4, "Don t Forget Your Main Goal is to Concur the Whole World with Your perfect Strategy"));
+		stringList.add(new VisualString(610, 580, 4, "Be Quick There will ONLY one WINNER"));
 		//fireWorks = new Fireworks(); // I guess we dont need animation here, keep it simple))
 		ra = new RectAnimation();
 	}
