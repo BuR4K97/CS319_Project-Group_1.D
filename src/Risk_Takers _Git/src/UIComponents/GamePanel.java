@@ -1,6 +1,7 @@
 package UIComponents;
 
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -8,7 +9,6 @@ import java.util.ArrayList;
 import AnimationComponents.AnimationHandler;
 import Controller.GameController;
 import ModelClasses.Territory;
-import UIComponents.RectAnimation.RectAnimation;
 
 public class GamePanel extends DynamicPanel {
 
