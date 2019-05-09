@@ -3,6 +3,8 @@ package UIComponents;
 import javax.swing.*;
 
 import UIComponents.Fireworks.Fireworks;
+import UIComponents.PixelMapWithSea.Circle;
+import UIComponents.PixelMapWithSea.Pixel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

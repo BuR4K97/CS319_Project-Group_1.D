@@ -1,4 +1,4 @@
-package UIComponents;
+package UIComponents.PixelMapWithSea;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

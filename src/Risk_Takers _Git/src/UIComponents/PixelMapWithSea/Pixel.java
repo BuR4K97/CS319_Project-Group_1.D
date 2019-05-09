@@ -1,4 +1,4 @@
-package UIComponents;
+package UIComponents.PixelMapWithSea;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,6 +16,8 @@ import javax.swing.*;
 
 import GameAssets.DefaultRiskMode.DefaultRiskMode;
 import HelperTools.FileHandler;
+import UIComponents.Coordinate;
+import UIComponents.VisualTerritory;
 
 public class Pixel{
 	int red = 255;
@@ -27,7 +29,7 @@ public class Pixel{
 	ArrayList<SimpleCoordinate> list = new ArrayList<SimpleCoordinate>();
 	ArrayList<SimpleCoordinate> listCopy = new ArrayList<SimpleCoordinate>();
 	ArrayList<SimpleCoordinate> listSea = new ArrayList<SimpleCoordinate>();
-	ArrayList<Circle> listCircle = new ArrayList<Circle>();
+	public ArrayList<Circle> listCircle = new ArrayList<Circle>();
 	int x = 9;
 	int y = x;
 	int jump = 12;  // 12
