@@ -25,7 +25,7 @@ public class GamePanel extends DynamicPanel {
 	private ArrayList<VisualString> showCardsModeStr;
 	private ArrayList<VisualString> attackModeStr;
 	private ArrayList<VisualString> currentStateStrToDraw;
-	private ArrayList<VisualString> borderLinesForLabels;
+	private InGameSettingsPanel inGameSettingsPanel;
 		
 	//stringList.add(new VisualString(770, 126, 14, "Options"));
 	
@@ -40,9 +40,7 @@ public class GamePanel extends DynamicPanel {
 		setShowCardsModeStr();
 		setAttackModeStr();
 		setCurrentStateStrToDraw();
-		setBorderLinesForLabels();
 		
-		fillBorderLinesForLabels();
 		fillDraftPhaseStr();
 		
 //		for(int i = 0; i < draftPhaseStr.size(); i++)
@@ -53,6 +51,7 @@ public class GamePanel extends DynamicPanel {
 		currentStateStrToDraw.add(new VisualString(1210, 965, 4, "Attack"));
 		currentStateStrToDraw.add(new VisualString(1210, 1005, 4, "Attack"));
 		
+		inGameSettingsPanel = new InGameSettingsPanel();
 		
 		
 		currState = PANEL_STATES.NORMAL;
@@ -115,7 +114,7 @@ public class GamePanel extends DynamicPanel {
 			g.drawRect(xCor, yCor, 4, 4);
 			xCor += 8;
 		}
-		xCor = 1204; yCor = 910; //1030
+		xCor = 1204; yCor = 910;
 		for(int i = 0; i < 45; i++) {
 			g.drawRect(xCor, yCor, 4, 4);
 			xCor += 8;
@@ -125,17 +124,17 @@ public class GamePanel extends DynamicPanel {
 			g.drawRect(xCor, yCor, 4, 4);
 			xCor += 8;
 		}
-		xCor = 1200; yCor = 866; //1030
+		xCor = 1200; yCor = 866;
 		for(int i = 0; i < 33; i++) {
 			g.drawRect(xCor, yCor, 2, 2);
 			yCor += 5;
 		}
-		xCor = 1380; yCor = 866; //1030
+		xCor = 1380; yCor = 866;
 		for(int i = 0; i < 9; i++) {
 			g.drawRect(xCor, yCor, 2, 2);
 			yCor += 5;
 		}
-		xCor = 1562; yCor = 866; //1030
+		xCor = 1562; yCor = 866;
 		for(int i = 0; i < 33; i++) {
 			g.drawRect(xCor, yCor, 2, 2);
 			yCor += 5;
@@ -234,13 +233,7 @@ public class GamePanel extends DynamicPanel {
 		currentStateStrToDraw = new ArrayList<VisualString>();
 	}
 	
-	public void setBorderLinesForLabels() {
-		borderLinesForLabels = new ArrayList<VisualString>();
-	}
-	
 	public void fillCurrentStateStrToDraw() {
-		for(int i = 0; i < borderLinesForLabels.size(); i++)
-			currentStateStrToDraw.add(borderLinesForLabels.get(i));
 		for(int i = 0; i < showCardsModeStr.size(); i++)
 			currentStateStrToDraw.add(showCardsModeStr.get(i));
 		for(int i = 0; i < draftPhaseStr.size(); i++)
@@ -251,56 +244,6 @@ public class GamePanel extends DynamicPanel {
 			currentStateStrToDraw.add(fortifyPhaseStr.get(i));
 		for(int i = 0; i < attackModeStr.size(); i++)
 			currentStateStrToDraw.add(attackModeStr.get(i));
-	}
-	
-	public void fillBorderLinesForLabels() {
-		borderLinesForLabels.add(new VisualString(1200, 860, 1, "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"));
-		borderLinesForLabels.add(new VisualString(1200, 910, 1, "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"));
-		borderLinesForLabels.add(new VisualString(1200, 1030, 1, "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"));
-		borderLinesForLabels.add(new VisualString(1200, 860, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 870, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 880, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 890, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 900, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 910, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 920, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 930, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 940, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 950, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 960, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 970, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 980, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 990, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 1000, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 1010, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 1020, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1200, 1030, 1, "0"));
-		///////////////////////////////////////////////////////////////
-		borderLinesForLabels.add(new VisualString(1380, 860, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1380, 870, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1380, 880, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1380, 890, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1380, 900, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1380, 910, 1, "0"));
-		///////////////////////////////////////////////////////////////
-		borderLinesForLabels.add(new VisualString(1560, 860, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 870, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 880, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 890, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 900, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 910, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 920, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 930, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 940, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 950, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 960, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 970, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 980, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 990, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 1000, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 1010, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 1020, 1, "0"));
-		borderLinesForLabels.add(new VisualString(1560, 1030, 1, "0"));
 	}
 	
 	public void fillDraftPhaseStr(){
