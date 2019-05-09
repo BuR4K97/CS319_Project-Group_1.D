@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import UIComponents.Fireworks.Fireworks;
+
 public class HowToPlayPanel extends JPanel{
 
 	private JLabel lblHowToPlay;

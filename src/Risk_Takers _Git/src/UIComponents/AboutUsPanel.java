@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import UIComponents.Fireworks.Fireworks;
+
 public class AboutUsPanel extends JPanel {
 
 	private JLabel lblBack;

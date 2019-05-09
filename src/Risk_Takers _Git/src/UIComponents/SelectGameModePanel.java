@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import UIComponents.BoxAni.JumpingBox;
+import UIComponents.Fireworks.Fireworks;
 
 public class SelectGameModePanel extends JPanel{
 	

@@ -61,7 +61,7 @@ public class Pixel{
 					if(listCircle.get(i).done)
 						listCircle.remove(i);
 				}
-				if(Math.random()* 50 < 1)
+				if(Math.random()* 40 < 1)
 					listCircle.add(new Circle( (int)(Math.random()* 1920), (int)(Math.random()* 1080)));
 			}
 		});

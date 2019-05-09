@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 public class VisualString {
-	
+
 	boolean end = false;
 	public int x;
 	public int y;
@@ -48,9 +48,9 @@ public class VisualString {
 			yEnd = 1080;
 		}
 	}
-	
+
 	public VisualString(int x, int y, int maxLength, String string, Color color) { // width = maxlength*5
-		
+
 		this.maxLength = maxLength;
 		this.minLength = (int)(maxLength * 6 / 7);
 		mexicoWaveLength = maxLength - minLength;
@@ -59,7 +59,7 @@ public class VisualString {
 		this.string = string;
 		mexicoWaveCoordinate = 0;//x
 		this.color = color;
-		
+
 		for(int i = 0; i < string.length(); i++)
 			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
 		//endAnimation.start();
@@ -95,10 +95,10 @@ public class VisualString {
 				else
 					mexicoWaveCoordinate =-mexicoWaveLength*2+ x;
 				 */
-				if(mexicoWaveCoordinate < (1920) + mexicoWaveLength * maxLength)
-					mexicoWaveCoordinate += mexicoWaveLength * 3;
+				if(mexicoWaveCoordinate < (1920) + mexicoWaveLength * 2)
+					mexicoWaveCoordinate += mexicoWaveLength * 2;
 				else
-					mexicoWaveCoordinate = - mexicoWaveLength * 3;
+					mexicoWaveCoordinate = - mexicoWaveLength * 2;
 				for(int i = 0; i < list.size(); i++) {
 					for(int j = 0; j <= mexicoWaveLength;j++) {
 						if(Math.abs(list.get(i).x - mexicoWaveCoordinate) <= maxLength * (j+1) && Math.abs(list.get(i).x - mexicoWaveCoordinate) > maxLength * (j)) {
@@ -112,19 +112,19 @@ public class VisualString {
 		});
 		mexicoWave.start();
 	}
-	
-	
-public VisualString(int x, int y, int maxLength, String string) { // width = maxlength*5
-		
+
+
+	public VisualString(int x, int y, int maxLength, String string) { // width = maxlength*5
+
 		this.maxLength = maxLength;
 		this.minLength = (int)(maxLength * 6 / 7);
 		mexicoWaveLength = maxLength - minLength;
 		this.x = x;
 		this.y = y;
 		this.string = string;
-		mexicoWaveCoordinate = x;
+		mexicoWaveCoordinate = 0;
 		this.color = Color.WHITE;
-		
+
 		for(int i = 0; i < string.length(); i++)
 			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
 		startAnimation = new Timer(startAnimationDelay, new ActionListener() {
@@ -159,10 +159,10 @@ public VisualString(int x, int y, int maxLength, String string) { // width = max
 				else
 					mexicoWaveCoordinate =-mexicoWaveLength*2+ x;
 				 */
-				if(mexicoWaveCoordinate < (1920) + mexicoWaveLength * maxLength)
-					mexicoWaveCoordinate += mexicoWaveLength * 3;
+				if(mexicoWaveCoordinate < (1920) + mexicoWaveLength * 2)
+					mexicoWaveCoordinate += mexicoWaveLength * 2;
 				else
-					mexicoWaveCoordinate = - mexicoWaveLength * 3;
+					mexicoWaveCoordinate = - mexicoWaveLength * 2;
 				for(int i = 0; i < list.size(); i++) {
 					for(int j = 0; j <= mexicoWaveLength;j++) {
 						if(Math.abs(list.get(i).x - mexicoWaveCoordinate) <= maxLength * (j+1) && Math.abs(list.get(i).x - mexicoWaveCoordinate) > maxLength * (j)) {
@@ -176,23 +176,30 @@ public VisualString(int x, int y, int maxLength, String string) { // width = max
 		});
 		mexicoWave.start();
 	}	
-	
-	
+
+	public int colorChanger = 20;
 	public void paint(Graphics g) {
 		g.setColor(color);
+
 		for(int i = 0; i < list.size(); i++) {
-			
-			//g.drawRect(x, y, maxLength * string.length() * 4 , maxLength*5);
+			if(list.get(i).border == minLength)
+				g.setColor(color);
+			else if(list.get(i).border == minLength + 1)
+				g.setColor(new Color(color.getRed() - colorChanger, color.getGreen() - colorChanger, color.getBlue()));
+			else if(list.get(i).border == minLength + 2)
+				g.setColor(new Color(color.getRed() - colorChanger*2, color.getGreen() - colorChanger*2, color.getBlue()));
+			else if(list.get(i).border == minLength + 3)
+				g.setColor(new Color(color.getRed() - colorChanger*3, color.getGreen() - colorChanger*3, color.getBlue()));
 			g.fillRect(list.get(i).xCurrent, list.get(i).y, list.get(i).border, list.get(i).border);
 		}
 	}
-	
+
 	public  void makeAreaB(Rect topLeftCoordinate, int length) {
 		list.add(new Rect(topLeftCoordinate.x, topLeftCoordinate.y));
 	}
-	
+
 	public  void makeAreaS(Rect topLeftCoordinate, int lenth) {}
-	
+
 	public  void drawNumberOn(Rect topLeft, int blockLength, char ch) {
 		if(ch == ' ') {
 			makeAreaS(new Rect(topLeft.x, topLeft.y), blockLength);

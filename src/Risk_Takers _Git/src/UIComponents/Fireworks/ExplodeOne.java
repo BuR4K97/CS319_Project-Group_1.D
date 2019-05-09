@@ -1,4 +1,4 @@
-package UIComponents;
+package UIComponents.Fireworks;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,10 +8,9 @@ public class ExplodeOne {
 	int xMovement, yMovement, xCenter, yCenter;
 	int yMovementChanges = 1;
 	Color c;
-	int opacity = 250;
-	int opacityChanges = 4;
+	int opacity = 200;
+	int opacityChanges = 3;
 	boolean done = false;
-	int rect = (int)(Math.random() * 2); // 1 rect 0 oval
 	public ExplodeOne(int xCenter, int yCenter, int xMovement, int yMovement, int borderLength, Color c) {
 		this.xCenter = xCenter;
 		this.yCenter = yCenter;
@@ -22,10 +21,7 @@ public class ExplodeOne {
 	}
 	public void paint(Graphics g) {
 		g.setColor(c);
-		if(rect == 1)
-			g.fillRect(xCenter - (borderLength/2), yCenter - (borderLength/2), borderLength, borderLength);
-		else
-			g.fillOval(xCenter - (borderLength/2), yCenter - (borderLength/2), borderLength, borderLength);
+		g.fillRect(xCenter - (borderLength/2), yCenter - (borderLength/2), borderLength, borderLength);
 	}
 	public void update() {
 		xCenter += xMovement;
@@ -34,8 +30,8 @@ public class ExplodeOne {
 			opacity -= opacityChanges;
 		else
 			done = true;
-		if(Math.random()*10 < 3)
-		yMovement+= yMovementChanges;
+		if(Math.random()*10 < 4)
+			yMovement+= yMovementChanges;
 		borderLength -= borderLength / (opacity / opacityChanges);
 		//borderLength -= borderLength / (25);
 		c = new Color(c.getRed(), c.getGreen(), c.getBlue(), opacity);
