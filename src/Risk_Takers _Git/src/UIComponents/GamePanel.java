@@ -95,23 +95,17 @@ public class GamePanel extends DynamicPanel {
 	}
 
 	public void paintComponent(Graphics painter) {
-<<<<<<< HEAD
 		super.paintComponent(painter);
-=======
-		super.paintComponent(painter);		
->>>>>>> d1ae512f45a0ba2cc716cc3b0638c5e47c4df1f6
 		
 		visualTerritoryPanel.paint(painter);
 		if(!suspendVisualCardPanelPaintEvent())
 			visualCardPanel.paint(painter);
 		if(!suspendTextualInGamePanelPaintEvent()) {
 			textualInGamePanel.paint(painter);
-<<<<<<< HEAD
 			drawStringBorders(painter);
 			for(int i = 0; i < currentStateStrToDraw.size(); i++)
 				currentStateStrToDraw.get(i).paint(painter);
 		}
-=======
 		for(int i = 0; i < currentStateStrToDraw.size(); i++)
 			currentStateStrToDraw.get(i).paint(painter);
 		
@@ -123,7 +117,6 @@ public class GamePanel extends DynamicPanel {
 		painter.fillRect(1920/2 - width/2, 1080/2 - height/2, width, height);
 		painter.setColor(Color.CYAN);
 		painter.drawRect(1920/2 - width/2, 1080/2 - height/2, width, height);
->>>>>>> d1ae512f45a0ba2cc716cc3b0638c5e47c4df1f6
 	}
 	
 	public void drawStringBorders(Graphics g) {
