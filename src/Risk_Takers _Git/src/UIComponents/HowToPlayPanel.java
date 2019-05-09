@@ -13,13 +13,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import UIComponents.Fireworks.Fireworks;
+import UIComponents.RectAnimation.RectAnimation;
+
 public class HowToPlayPanel extends JPanel{
 
 	private JLabel lblHowToPlay;
 	private JLabel lblBack;
 	private JTextArea txtHowToPlay;
 	private ArrayList<VisualString> stringList;
-	private Fireworks fireWorks;
+	//private Fireworks fireWorks;
+	RectAnimation ra;
 
 	public HowToPlayPanel(){
 
@@ -28,7 +32,8 @@ public class HowToPlayPanel extends JPanel{
 		setBackground(Color.BLACK);
 
 		stringList = new ArrayList<VisualString>();
-
+		
+			
 		/*
 		txtHowToPlay = new JTextArea();
 		txtHowToPlay.setEditable(false);
@@ -60,6 +65,7 @@ public class HowToPlayPanel extends JPanel{
 		stringList.add(new VisualString(670, 400, 4, "We will fill this screen when the hole "));
 		stringList.add(new VisualString(670, 430, 4, "implementation of the game is finished."));
 		//fireWorks = new Fireworks(); // I guess we dont need animation here, keep it simple))
+		ra = new RectAnimation();
 	}
 
 	public void paintComponent(Graphics g)
@@ -68,7 +74,8 @@ public class HowToPlayPanel extends JPanel{
 		for(int i = 0; i < stringList.size(); i++)
 			stringList.get(i).paint(g);
 		//fireWorks.paint(g);
-	}
+		ra.paint(g);
+	} 
 
 	public JLabel getBackLabel()
 	{

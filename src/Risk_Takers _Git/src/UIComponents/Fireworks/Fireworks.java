@@ -1,4 +1,4 @@
-package UIComponents;
+package UIComponents.Fireworks;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,22 +17,14 @@ public class Fireworks {
 	ArrayList<RisingOne> risingOneList = new ArrayList<RisingOne>();
 	ArrayList<ExplodeOne> explodeOneList = new ArrayList<ExplodeOne>();
 	public Fireworks() {
-		// list of fireworks
-
-		// add firework timer
-		Timer add = new Timer(125, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				risingOneList.add(new RisingOne((int)(Math.random() * 1920),
-						(int)(Math.random() * 500) + 200,
-						//500,
-						(int)(Math.random() * (maxSpeed - minSpeed)) + minSpeed,
-						new Color((int)(Math.random() * 255),(int)(Math.random() * 255),(int)(Math.random() * 255))));
-			}
-		});
-		add.start();
 		// update firework timer
 		Timer update = new Timer(15, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if((int)(Math.random() * 100) > 95)
+					risingOneList.add(new RisingOne((int)(Math.random() * 1920),
+							(int)(Math.random() * 500) + 200,
+							(int)(Math.random() * (maxSpeed - minSpeed)) + minSpeed,
+							new Color((int)(Math.random() * 255),(int)(Math.random() * 255),(int)(Math.random() * 255))));
 				// rising one
 				for(int i = 0; i < risingOneList.size(); i++) {
 					if(!risingOneList.get(i).boom) {
@@ -40,7 +32,7 @@ public class Fireworks {
 					}
 					else {
 						for(int xMovement = -3; xMovement <= 3; xMovement++) {
-							for(int yMovement = -10; yMovement <= -4; yMovement++) {
+							for(int yMovement = -12; yMovement <= -5; yMovement++) {
 								explodeOneList.add(new ExplodeOne(risingOneList.get(i).xStart,
 										risingOneList.get(i).yStart, 
 										xMovement,

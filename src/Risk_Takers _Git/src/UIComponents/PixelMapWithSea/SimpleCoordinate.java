@@ -1,4 +1,4 @@
-package UIComponents;
+package UIComponents.PixelMapWithSea;
 
 public class SimpleCoordinate {
 
