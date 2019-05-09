@@ -31,7 +31,7 @@ public class SelectGameModePanel extends JPanel{
 		//mapAnimation = new Pixel();
 		mouseX = 0;
 		mouseY = 0;
-		jumpingBox = new JumpingBox();
+		
 
 		singlePaleyr = new JLabel("");
 		singlePaleyr.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
@@ -53,6 +53,7 @@ public class SelectGameModePanel extends JPanel{
 	
 	public void initialize()
 	{
+		jumpingBox = new JumpingBox();
 		stringList.add(new VisualString(530, 126, 14, "Select Game Mode"));
 		stringList.add(new VisualString(265, 500, 10, "Singleplayer"));
 		stringList.add(new VisualString(1210, 500, 10, "Multiplayer"));

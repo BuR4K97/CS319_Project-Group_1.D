@@ -32,7 +32,7 @@ public class HowToPlayPanel extends JPanel{
 		setBackground(Color.BLACK);
 
 		stringList = new ArrayList<VisualString>();
-		ra = new RectAnimation();
+		
 			
 		/*
 		txtHowToPlay = new JTextArea();
@@ -65,6 +65,7 @@ public class HowToPlayPanel extends JPanel{
 		stringList.add(new VisualString(670, 400, 4, "We will fill this screen when the hole "));
 		stringList.add(new VisualString(670, 430, 4, "implementation of the game is finished."));
 		//fireWorks = new Fireworks(); // I guess we dont need animation here, keep it simple))
+		ra = new RectAnimation();
 	}
 
 	public void paintComponent(Graphics g)
