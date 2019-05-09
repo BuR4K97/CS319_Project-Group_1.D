@@ -10,6 +10,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import UIComponents.BoxAni.JumpingBox;
+
 public class SelectGameModePanel extends JPanel{
 	
 	private JLabel singlePaleyr;
@@ -18,7 +20,7 @@ public class SelectGameModePanel extends JPanel{
 	private ArrayList<VisualString> stringList;
 	//private Pixel mapAnimation;
 	private int mouseX, mouseY;
-	
+	private JumpingBox jumpingBox;
 	
 	public SelectGameModePanel() {
 		
@@ -28,6 +30,7 @@ public class SelectGameModePanel extends JPanel{
 		//mapAnimation = new Pixel();
 		mouseX = 0;
 		mouseY = 0;
+		jumpingBox = new JumpingBox();
 
 		singlePaleyr = new JLabel("");
 		singlePaleyr.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
@@ -61,6 +64,7 @@ public class SelectGameModePanel extends JPanel{
 		//mapAnimation.paint(g);
 		for(int i = 0; i < stringList.size(); i++)
 			stringList.get(i).paint(g);
+		jumpingBox.paint(g);
 	}
 	
 	public JLabel getSingleplayerLabel()

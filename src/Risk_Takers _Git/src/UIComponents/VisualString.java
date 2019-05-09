@@ -22,8 +22,6 @@ public class VisualString {
 	public ArrayList<Rect> list = new ArrayList<Rect>();
 	int startAnimationDelay = 15;
 	int startAnimationSpeed = 25;
-	int endAnimationDelay = 15;
-	int endAnimationSpeed = 25;
 	Timer startAnimation, endAnimation;
 	Timer mexicoWave;
 	int mexicoWaveCoordinate;
@@ -38,12 +36,14 @@ public class VisualString {
 		public int yEnd;
 		public int border;
 		public boolean startAnimation = false;
-		public boolean endAnimation = false;
 		public Rect(int xx, int yy) {			
 			border = minLength;
 			this.x = xx;
 			//xCurrent = -minLength;
-			xCurrent = (int)(Math.random() * 1920 / 2);
+			if(x < 1920 / 2)
+				xCurrent = (int)(Math.random() * 1920 / 2);
+			else
+				xCurrent = 1920 / 2 + (int)(Math.random() * 1920 / 2);
 			this.y = yy;
 			yEnd = 1080;
 		}
@@ -57,38 +57,11 @@ public class VisualString {
 		this.x = x;
 		this.y = y;
 		this.string = string;
-		mexicoWaveCoordinate = x;
+		mexicoWaveCoordinate = 0;//x
 		this.color = color;
 		
 		for(int i = 0; i < string.length(); i++)
 			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
-		endAnimation = new Timer(endAnimationDelay, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				boolean done = true;
-				for(int i = 0; i < list.size(); i++) {
-					
-					if(Math.random() * 4 < 1)
-						list.get(i).endAnimation = true;
-					if(Math.abs(list.get(i).y - list.get(i).yEnd) <= endAnimationSpeed && list.get(i).endAnimation) {
-						list.get(i).y = list.get(i).yEnd;
-						list.get(i).endAnimation = false;
-					}
-					else if(list.get(i).y < list.get(i).yEnd && list.get(i).endAnimation) {
-
-						list.get(i).y += endAnimationSpeed;
-						done = false;
-					}
-					else if(list.get(i).y > list.get(i).yEnd && list.get(i).endAnimation) {
-						list.get(i).y -= endAnimationSpeed;
-						done = false;
-					}
-				}
-				if(done) {
-					endAnimation.stop();
-					end = true;
-				}
-			}
-		});
 		//endAnimation.start();
 		startAnimation = new Timer(startAnimationDelay, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -154,34 +127,6 @@ public VisualString(int x, int y, int maxLength, String string) { // width = max
 		
 		for(int i = 0; i < string.length(); i++)
 			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
-		endAnimation = new Timer(endAnimationDelay, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				boolean done = true;
-				for(int i = 0; i < list.size(); i++) {
-					
-					if(Math.random() * 4 < 1)
-						list.get(i).endAnimation = true;
-					if(Math.abs(list.get(i).y - list.get(i).yEnd) <= endAnimationSpeed && list.get(i).endAnimation) {
-						list.get(i).y = list.get(i).yEnd;
-						list.get(i).endAnimation = false;
-					}
-					else if(list.get(i).y < list.get(i).yEnd && list.get(i).endAnimation) {
-
-						list.get(i).y += endAnimationSpeed;
-						done = false;
-					}
-					else if(list.get(i).y > list.get(i).yEnd && list.get(i).endAnimation) {
-						list.get(i).y -= endAnimationSpeed;
-						done = false;
-					}
-				}
-				if(done) {
-					endAnimation.stop();
-					end = true;
-				}
-			}
-		});
-		//endAnimation.start();
 		startAnimation = new Timer(startAnimationDelay, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean done = true;

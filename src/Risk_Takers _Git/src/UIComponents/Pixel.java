@@ -67,14 +67,14 @@ public class Pixel{
 		});
 		seaUpdater.start();
 		// timer for draw sea using mouse
-		seaMouse = new Timer(50, new ActionListener() {
+		seaMouse = new Timer(10, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				listCircle.add(new Circle( mouseX, mouseY));
 			}
 		});
 		// timer for diassemble
 		Timer di = new Timer(15, new ActionListener() {
-			int movement = 10;
+			int movement = 8;
 			public void actionPerformed(ActionEvent e) {
 				// random
 				if((int)(Math.random() * 3) == 0) {
@@ -126,19 +126,16 @@ public class Pixel{
 	}
 	// draw
 	public void paint(Graphics g) {
+		for(int j = 0;j < listCircle.size(); j++)
+			listCircle.get(j).paint(g);
 		for(int i = 0;i < list.size(); i++) { // - or +
+			g.setColor(Color.BLACK);
+			g.fillRect(list.get(i).x, list.get(i).y, jump, jump);
 			g.setColor(new Color(  Math.abs(red - list.get(i).x/ jump) % 255, 
 					Math.abs(green - list.get(i).x/ jump) % 255, Math.abs(blue - list.get(i).x/ jump) % 255));
 			g.fillRect(list.get(i).x, list.get(i).y, x, y);
 		}
-		for(int i = 0;i < listSea.size(); i++) {
-			for(int j = 0;j < listCircle.size(); j++)
-				if(listCircle.get(j).isInCircle(listSea.get(i))) {
-					g.setColor(new Color(50, 170, 250,listCircle.get(j).seaOpacity ));
-					//g.setColor(new Color(255, 255, 255,listCircle.get(j).seaOpacity ));
-					g.drawOval(listSea.get(i).x, listSea.get(i).y, x, y);
-				}
-		}
+	
 	}
 	public static ArrayList<SimpleCoordinate> getCopyList(ArrayList<SimpleCoordinate> list) {
 		ArrayList<SimpleCoordinate> newl = new ArrayList<SimpleCoordinate>();
