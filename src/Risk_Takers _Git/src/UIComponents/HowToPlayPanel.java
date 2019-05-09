@@ -14,6 +14,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import UIComponents.Fireworks.Fireworks;
+import UIComponents.RectAnimation.RectAnimation;
 
 public class HowToPlayPanel extends JPanel{
 
@@ -21,7 +22,8 @@ public class HowToPlayPanel extends JPanel{
 	private JLabel lblBack;
 	private JTextArea txtHowToPlay;
 	private ArrayList<VisualString> stringList;
-	private Fireworks fireWorks;
+	//private Fireworks fireWorks;
+	RectAnimation ra;
 
 	public HowToPlayPanel(){
 
@@ -30,7 +32,8 @@ public class HowToPlayPanel extends JPanel{
 		setBackground(Color.BLACK);
 
 		stringList = new ArrayList<VisualString>();
-
+		ra = new RectAnimation();
+			
 		/*
 		txtHowToPlay = new JTextArea();
 		txtHowToPlay.setEditable(false);
@@ -70,7 +73,8 @@ public class HowToPlayPanel extends JPanel{
 		for(int i = 0; i < stringList.size(); i++)
 			stringList.get(i).paint(g);
 		//fireWorks.paint(g);
-	}
+		ra.paint(g);
+	} 
 
 	public JLabel getBackLabel()
 	{
