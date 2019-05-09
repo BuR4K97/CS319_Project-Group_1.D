@@ -15,7 +15,7 @@ public class MyRectangle {
 		this.y = y;
 		this.xDir = xDir;
 		this.yDir = yDir;
-		BORDER = (xDir + yDir)*2;
+		BORDER = (xDir + yDir)*5;
 		color = c;
 	}
 	// METHODS
