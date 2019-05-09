@@ -66,34 +66,6 @@ public class ApplicationPanel extends DynamicPanel {
 			}
 		};
 		
-		// Mouse Listener to the Single Player label in Main Panel
-		MouseListener listenerToSinglePlayerLabelInSelectGameModePanel = new MouseListener() {
-			public void mouseReleased(MouseEvent e) {}
-			public void mousePressed(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
-			public void mouseClicked(MouseEvent e) {
-				((SelectGameModePanel)selectGameModePanel).setStringList();
-				layout.show(self, "gamePanel");
-				MainApplication.destroyMenu();
-				MainApplication.initializeGame();
-			}
-		};
-		
-		// Mouse Listener to the Multiplayer label in Main Panel
-		MouseListener listenerToMultiplayerLabelInSelectGameModePanel = new MouseListener() {
-			public void mouseReleased(MouseEvent e) {}
-			public void mousePressed(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
-			public void mouseClicked(MouseEvent e) {
-				((SelectGameModePanel)selectGameModePanel).setStringList();
-				layout.show(self, "gamePanel");
-				MainApplication.destroyMenu();
-				MainApplication.initializeGame();
-			}
-		};
-		
 		// Mouse Listener to the Quit label in Main Panel
 		MouseListener listenerToQuitLabelInMenuPanel = new MouseListener() {
 			public void mouseReleased(MouseEvent e) {}
@@ -164,6 +136,33 @@ public class ApplicationPanel extends DynamicPanel {
 			}
 		};	
 		
+		// Mouse Listener to the Single Player label in Main Panel
+		MouseListener listenerToSinglePlayerLabelInSelectGameModePanel = new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				((SelectGameModePanel)selectGameModePanel).setStringList();
+				layout.show(self, "gamePanel");
+				MainApplication.destroyMenu();
+				MainApplication.initializeGame();
+			}
+		};
+				
+		// Mouse Listener to the Multiplayer label in Main Panel
+		MouseListener listenerToMultiplayerLabelInSelectGameModePanel = new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseClicked(MouseEvent e) {
+				((SelectGameModePanel)selectGameModePanel).setStringList();
+				layout.show(self, "gamePanel");
+				MainApplication.destroyMenu();
+				MainApplication.initializeGame();
+			}
+		};
 		
 		
 		// Listeners to the buttons
