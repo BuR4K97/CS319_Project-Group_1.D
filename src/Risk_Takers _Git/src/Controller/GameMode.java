@@ -3,6 +3,7 @@ package Controller;
 import java.util.ArrayList;
 import ModelClasses.Card;
 import ModelClasses.GameState;
+import ModelClasses.Player;
 import ModelClasses.Territory;
 import ModelClasses.TerritoryGraph;
 import UIComponents.PixelMap;
@@ -67,6 +68,6 @@ public abstract class GameMode {
 	protected abstract void loadPixelMap();
 	protected abstract void loadCardSet();
 	protected abstract void loadVisualCards();
-	public abstract void checkStates(GameState prevState, GameState currState);
+	public abstract void checkStatesModeSpecific(GameState prevState, GameState currState, Player recentPlayer);
 
 }

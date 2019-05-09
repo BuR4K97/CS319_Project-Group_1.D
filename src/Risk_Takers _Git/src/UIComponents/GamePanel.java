@@ -1,6 +1,7 @@
 package UIComponents;
 
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class GamePanel extends DynamicPanel {
 	private TextualInGamePanel textualInGamePanel;
 	private VisualCardPanel visualCardPanel;
 	private MouseInGameListener mouseTracer;
+	
 	private ArrayList<VisualString> draftPhaseStr;
 	private ArrayList<VisualString> attackPhaseStr;
 	private ArrayList<VisualString> fortifyPhaseStr;
@@ -26,7 +28,6 @@ public class GamePanel extends DynamicPanel {
 	private ArrayList<VisualString> attackModeStr;
 	private ArrayList<VisualString> currentStateStrToDraw;
 	private InGameSettingsPanel inGameSettingsPanel;
-		
 	//stringList.add(new VisualString(770, 126, 14, "Options"));
 	
 	public GamePanel() {
@@ -52,7 +53,6 @@ public class GamePanel extends DynamicPanel {
 		currentStateStrToDraw.add(new VisualString(1210, 1005, 4, "Attack"));
 		
 		inGameSettingsPanel = new InGameSettingsPanel();
-		
 		
 		currState = PANEL_STATES.NORMAL;
 		mouseTracer = new MouseInGameListener();
@@ -96,16 +96,27 @@ public class GamePanel extends DynamicPanel {
 
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
+		
+		visualTerritoryPanel.paint(painter);
+		if(!suspendVisualCardPanelPaintEvent())
+			visualCardPanel.paint(painter);
+		if(!suspendTextualInGamePanelPaintEvent()) {
+			textualInGamePanel.paint(painter);
+			drawStringBorders(painter);
+			for(int i = 0; i < currentStateStrToDraw.size(); i++)
+				currentStateStrToDraw.get(i).paint(painter);
+		}
 		for(int i = 0; i < currentStateStrToDraw.size(); i++)
 			currentStateStrToDraw.get(i).paint(painter);
 		
 		drawStringBorders(painter);
-		
-		visualTerritoryPanel.paint(painter);
-		if(currState == PANEL_STATES.CARD)
-			visualCardPanel.paint(painter);
-		if(currState == PANEL_STATES.NORMAL)
-			textualInGamePanel.paint(painter);
+//		int width, height;
+//		width = 800;
+//		height = 400;
+//		painter.setColor(new Color(0, 0, 0, 170));
+//		painter.fillRect(1920/2 - width/2, 1080/2 - height/2, width, height);
+//		painter.setColor(Color.CYAN);
+//		painter.drawRect(1920/2 - width/2, 1080/2 - height/2, width, height);
 	}
 	
 	public void drawStringBorders(Graphics g) {
@@ -144,7 +155,7 @@ public class GamePanel extends DynamicPanel {
 
 	public void update() {
 		if(!suspendVisualTerritoryPanelUpdate()) visualTerritoryPanel.update();
-		if(!suspendTextualInGamePanel()) textualInGamePanel.update();
+		if(!suspendTextualInGamePanelUpdate()) textualInGamePanel.update();
 		if(!suspendVisualCardPanelUpdate()) visualCardPanel.update();
 		
 		mouseTracer.mouseReleased = false;
@@ -203,10 +214,22 @@ public class GamePanel extends DynamicPanel {
 		return false;
 	}
 	
-	private boolean suspendTextualInGamePanel() {
+	private boolean suspendTextualInGamePanelUpdate() {
 		if(currState != PANEL_STATES.NORMAL)
 			return true;
-		return false;
+		return AnimationHandler.suspendTextualInGamePanelUpdate();
+	}
+	
+	private boolean suspendTextualInGamePanelPaintEvent() {
+		if(currState != PANEL_STATES.NORMAL)
+			return true;
+		return AnimationHandler.suspendTextualInGamePanelPaintEvent();
+	}
+	
+	private boolean suspendVisualCardPanelPaintEvent() {
+		if(currState != PANEL_STATES.CARD)
+			return true;
+		return AnimationHandler.suspendVisualCardPanelPaintEvent();
 	}
 
 	public void setShowCardsModeStr() {

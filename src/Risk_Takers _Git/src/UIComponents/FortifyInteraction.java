@@ -1,5 +1,7 @@
 package UIComponents;
 
+import java.awt.Event;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -47,12 +49,18 @@ public class FortifyInteraction {
 				returningUnits.clear();
 			}	
 		}
-		if(returningUnits.size() == 0) returningTerritory = null;
-		
 		
 		if(mouseTracer.leftButtonClicked) {
-			if(sourceTerritory == mouseTracer.getFocusTerritory() || sourceTerritory == null) {
-					sourceTerritory = mouseTracer.getFocusTerritory();
+			if(sourceTerritory == null) {
+				sourceTerritory = mouseTracer.getFocusTerritory();
+				if(isSelectable(sourceTerritory)) {
+					if(GameInteractions.findCorrespondingTerritory(sourceTerritory).getUnitNumber() > Combat.MIN_DEFENSE_UNIT)
+						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
+					else sourceTerritory = null;
+				}
+				else sourceTerritory = null;
+			}
+			else if(sourceTerritory == mouseTracer.getFocusTerritory()) {
 				if(GameInteractions.findCorrespondingTerritory(sourceTerritory).getUnitNumber() 
 						- unitsInHand.size() > Combat.MIN_DEFENSE_UNIT) {
 					if(unitsInHand.size() < 3)
@@ -68,23 +76,42 @@ public class FortifyInteraction {
 			else if(isSelectable(mouseTracer.getFocusTerritory())) {
 				GameController.interactions.synchronizeFocusTerritories(sourceTerritory, mouseTracer.getFocusTerritory());
 				GameController.interactions.requestAction(unitsInHand.size());
-				sourceTerritory = null;
+				GameInteractions.requestManualGameUpdate();
 				unitsInHand.clear();
 			}
 		} 
-		else if(mouseTracer.rightButtonClicked){
-			if(mouseTracer.getFocusTerritory() == sourceTerritory && sourceTerritory != null) {
-				returningTerritory = sourceTerritory;
+		else if(mouseTracer.rightButtonClicked && sourceTerritory != null) {
+			returningTerritory = sourceTerritory;
+			if(mouseTracer.getFocusTerritory() != sourceTerritory) {
 				sourceTerritory = null;
 				returningUnits.addAll(unitsInHand);
 				unitsInHand.clear();
 			}
+			else {
+				returningUnits.add(unitsInHand.get(unitsInHand.size() - 1));
+				unitsInHand.remove(unitsInHand.size() - 1);
+				if(unitsInHand.size() == 0)
+					sourceTerritory = null;
+			}
 		}
-		((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(sourceTerritory, unitsInHand.size());
-		((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(returningTerritory, returningUnits.size());
+		if(sourceTerritory == returningTerritory && sourceTerritory != null) 
+			((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(sourceTerritory
+					, unitsInHand.size() + returningUnits.size());
+		else {
+			if(sourceTerritory != null)
+				((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(sourceTerritory, unitsInHand.size());
+			if(returningTerritory != null)
+				((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(returningTerritory, returningUnits.size());
+		}
+		if(unitsInHand.size() == 0) sourceTerritory = null;
+		if(returningUnits.size() == 0) returningTerritory = null;
 	}
 	
 	public void flushState() {
+		if(sourceTerritory != null)
+			((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(sourceTerritory, 0);
+		if(returningTerritory != null)
+			((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(returningTerritory, 0);
 		sourceTerritory = null;
 		returningTerritory = null;
 		unitsInHand.clear();

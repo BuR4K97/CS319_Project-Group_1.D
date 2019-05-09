@@ -16,6 +16,10 @@ import UIComponents.Fireworks.Fireworks;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.JSpinner;
+import javax.swing.JToggleButton;
+import javax.swing.JScrollBar;
+import javax.swing.JSlider;
 
 public class OptionsPanel extends JPanel {
 
@@ -77,6 +81,10 @@ public class OptionsPanel extends JPanel {
 		comboBoxTurnOnOffMusic.setAlignmentX (Component.CENTER_ALIGNMENT);
 		comboBoxChangeDifficulty.setBounds(840, 644, 248, 30);
 		add(comboBoxChangeDifficulty);
+		
+		JSlider slider = new JSlider();
+		slider.setBounds(126, 120, 283, 45);
+		add(slider);
 
 	}
 

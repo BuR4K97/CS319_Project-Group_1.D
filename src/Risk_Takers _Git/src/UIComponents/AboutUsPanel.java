@@ -45,7 +45,7 @@ public class AboutUsPanel extends JPanel {
 		stringList.add(new VisualString(691, 580, 7, "Esad Burak Altinyazar"));
 		stringList.add(new VisualString(747, 650, 7, "Nurlan Farzaliyev"));
 		stringList.add(new VisualString(730, 720, 7, "Yigit Kutay Gulben"));
-		//fireWorks = new Fireworks(); // I guess we dont need animation here, keep it simple))
+		fireWorks = new Fireworks(); // I guess we dont need animation here, keep it simple))
 	}
 
 	public void paintComponent(Graphics g)
@@ -53,7 +53,7 @@ public class AboutUsPanel extends JPanel {
 		super.paintComponent(g);
 		for(int i = 0; i < stringList.size(); i++)
 			stringList.get(i).paint(g);
-		//fireWorks.paint(g);
+		fireWorks.paint(g);
 	}
 
 	public JLabel getBackLabel()

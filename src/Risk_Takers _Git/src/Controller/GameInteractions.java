@@ -79,10 +79,12 @@ public class GameInteractions {
 			Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
 			focusTerritories[0] = sourceTerritory;
 		}
+		else { focusTerritories[0] = null; }
 		if(target != null) {
 			Territory targetTerritory = GameController.activeMode.findItsTerritoryCorresponding(target.getCorrespondingTag());
 			focusTerritories[1] = targetTerritory;
 		}
+		else { focusTerritories[1] = null; }
 	}
 	
 	public Territory[] getFocusTerritories() {
@@ -190,6 +192,10 @@ public class GameInteractions {
 		return GameController.activeMode.findItsCardCorresponding(card.getCorrespondingTag());
 	}
 	
+	public static Card findCorrespondingCard(Territory territory) {
+		return GameController.activeMode.findItsCardCorresponding(territory.getCorrespondingTag());
+	}
+	
 	public static boolean isSelectable(VisualTerritory source, VisualTerritory target) {
 		Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
 		if(sourceTerritory == null) return false;
@@ -205,4 +211,9 @@ public class GameInteractions {
 			cards.add(findCorrespondingCard(activate));
 		return Game.activateCards(cards);
 	}
+
+	public static void requestManualGameUpdate() {
+		GameController.requestManualGameUpdate();
+	}
+	
 }
