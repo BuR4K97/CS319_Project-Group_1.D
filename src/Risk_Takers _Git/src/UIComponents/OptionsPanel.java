@@ -25,14 +25,16 @@ public class OptionsPanel extends JPanel {
 
 	private JLabel labelSettingsGif;
 	private JComboBox comboBoxMusic;
-	private JComboBox comboBoxTurnOnOffMusic;
 	private JComboBox comboBoxChangeDifficulty;
+	private JLabel lblPlay;
+	private JLabel lblPause;
 	private JLabel lblBack;
+	private JSlider slider;
 	private ArrayList<VisualString> stringList;
 	private Fireworks fireWorks;
-	/**
-	 * Create the panel.
-	 */
+	
+	
+	
 	public OptionsPanel() {
 		this.setPreferredSize(new Dimension(1920, 1080));
 		setLayout(null);
@@ -44,7 +46,7 @@ public class OptionsPanel extends JPanel {
 		labelSettingsGif.setBackground(new Color(0,0,0,0));
 		labelSettingsGif.setForeground(new Color(0,0,0,0));
 		labelSettingsGif.setIcon(new ImageIcon("images\\settings.gif"));
-		labelSettingsGif.setBounds(436, 480, 148, 126);
+		labelSettingsGif.setBounds(648, 103, 148, 126);
 		add(labelSettingsGif);
 
 		lblBack = new JLabel("");
@@ -59,18 +61,8 @@ public class OptionsPanel extends JPanel {
 		comboBoxMusic.setFont(new Font("Sylfaen", Font.PLAIN, 20));
 		comboBoxMusic.setForeground(new Color(254,233,222,100));
 		comboBoxMusic.setAlignmentX (Component.CENTER_ALIGNMENT);
-		comboBoxMusic.setBounds(840, 412, 248, 30);
+		comboBoxMusic.setBounds(200, 600, 248, 30);
 		add(comboBoxMusic);
-
-		comboBoxTurnOnOffMusic = new JComboBox();
-		comboBoxTurnOnOffMusic.setToolTipText("Turn On Off Music");
-		comboBoxTurnOnOffMusic.setSelectedIndex(-1);
-		comboBoxTurnOnOffMusic.setBackground(new Color(254,233,222,100));
-		comboBoxTurnOnOffMusic.setFont(new Font("Sylfaen", Font.PLAIN, 20));
-		comboBoxTurnOnOffMusic.setForeground(new Color(254,233,222,100));
-		comboBoxTurnOnOffMusic.setAlignmentX (Component.CENTER_ALIGNMENT);
-		comboBoxTurnOnOffMusic.setBounds(840, 528, 248, 30);
-		add(comboBoxTurnOnOffMusic);
 
 		comboBoxChangeDifficulty = new JComboBox();
 		comboBoxChangeDifficulty.setToolTipText("Change Difficulty");
@@ -78,19 +70,36 @@ public class OptionsPanel extends JPanel {
 		comboBoxChangeDifficulty.setForeground(new Color(254, 233, 222, 100));
 		comboBoxChangeDifficulty.setFont(new Font("Sylfaen", Font.PLAIN, 20));
 		comboBoxChangeDifficulty.setBackground(new Color(254, 233, 222, 100));
-		comboBoxTurnOnOffMusic.setAlignmentX (Component.CENTER_ALIGNMENT);
-		comboBoxChangeDifficulty.setBounds(840, 644, 248, 30);
+		comboBoxChangeDifficulty.setBounds(1472, 600, 248, 30);
 		add(comboBoxChangeDifficulty);
 		
-		JSlider slider = new JSlider();
-		slider.setBounds(126, 120, 283, 45);
+		slider = new JSlider();
+		slider.setBounds(832, 600, 248, 30);
+		slider.setBackground(null);
 		add(slider);
+		
+		lblPlay = new JLabel("");
+		lblPlay.setForeground(Color.WHITE);
+		lblPlay.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblPlay.setBounds(200, 558, 85, 29);
+		add(lblPlay);
+		
+		lblPause = new JLabel("");
+		lblPause.setForeground(Color.WHITE);
+		lblPause.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblPause.setBounds(375, 558, 73, 29);
+		add(lblPause);
 
 	}
 
 	public void initialize()
 	{
-		stringList.add(new VisualString(770, 126, 14, "Options"));
+		stringList.add(new VisualString(810, 126, 14, "Options"));
+		stringList.add(new VisualString(255, 445, 7, "Music"));
+		stringList.add(new VisualString(202, 562, 4, "Play"));
+		stringList.add(new VisualString(373, 562, 4, "Pause"));
+		stringList.add(new VisualString(875, 445, 7, "Volume"));
+		stringList.add(new VisualString(1462, 445, 7, "Difficulty"));
 		stringList.add(new VisualString(47, 989, 10, "Back"));
 		//fireWorks = new Fireworks(); // I guess we dont need animation here, keep it simple))
 	}
