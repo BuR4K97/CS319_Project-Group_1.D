@@ -51,6 +51,11 @@ public class SoundHandler {
 		pauseTimePosition = clip.getMicrosecondPosition();
 		clip.stop();
 	}
+	
+	public static void stopMusic() {
+		clip.stop();
+		played = false;
+	} 
 
 	public static boolean getPlayed() {
 		return played;
@@ -58,6 +63,10 @@ public class SoundHandler {
 
 	public static void setPlayed() {
 		played = false;
+	}
+	
+	public static Clip getClip() {
+		return clip;
 	}
 	
 }
