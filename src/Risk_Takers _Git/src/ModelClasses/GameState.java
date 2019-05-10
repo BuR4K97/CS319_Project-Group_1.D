@@ -22,12 +22,22 @@ public class GameState {
 	}
 
 	public static void checkStates(GameState prevState, GameState currState) {
+		int territoriesCaptured = 0;
 		for(int i = 0; i < prevState.territoriesState.size(); i++) {
-			if(prevState.territoriesState.get(i).getPlayer() != currState.territoriesState.get(i).getPlayer())
-				currState.territoriesState.get(i).getPlayer().insertCard(GameInteractions
-						.findCorrespondingCard(currState.territoriesState.get(i)));
+			if(currState.territoriesState.get(i).getPlayer() == Turn.activePlayer) {
+				territoriesCaptured += 1;
+				if(prevState.territoriesState.get(i).getPlayer() != Turn.activePlayer)
+					currState.territoriesState.get(i).getPlayer().insertCard(GameInteractions
+							.findCorrespondingCard(currState.territoriesState.get(i)));
+			}
 		}
 		GameController.activeMode.checkStatesModeSpecific(prevState, currState, Turn.activePlayer);
+	}
+	
+	public static int getChangeAmount(GameState prevState, Territory focusTerritory) {
+		if(focusTerritory == null) return 0;
+		int territoryIndex = Game.territories.indexOf(focusTerritory);
+		return Game.territories.get(territoryIndex).getUnitNumber() - prevState.territoriesState.get(territoryIndex).getUnitNumber();
 	}
 
 }

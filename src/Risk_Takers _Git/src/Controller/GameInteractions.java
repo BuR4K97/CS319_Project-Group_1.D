@@ -28,6 +28,7 @@ public class GameInteractions {
 	private Combat activeCombat;
 	private boolean textualPanelUpdateRequest = false;
 	private boolean visualCardPanelUpdateRequest = false;
+
 	
 	public void requestNextPhase() {
 		nextPhaseRequest = true;
@@ -196,13 +197,20 @@ public class GameInteractions {
 		return GameController.activeMode.findItsCardCorresponding(territory.getCorrespondingTag());
 	}
 	
-	public static boolean isSelectable(VisualTerritory source, VisualTerritory target) {
-		Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
-		if(sourceTerritory == null) return false;
-		Territory targetTerritory = GameController.activeMode.findItsTerritoryCorresponding(target.getCorrespondingTag());
-		if(targetTerritory == null) return false;
-		
-		return Game.isSelectable(sourceTerritory, targetTerritory);
+	public static boolean isSelectable(VisualTerritory source, VisualTerritory target, int selectAmount) {
+		if(source == null) return false;
+		if(target != null) {
+			Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
+			if(sourceTerritory == null) return false;
+			Territory targetTerritory = GameController.activeMode.findItsTerritoryCorresponding(target.getCorrespondingTag());
+			if(targetTerritory == null) return false;
+			return Game.isSelectable(sourceTerritory, targetTerritory, selectAmount);
+		}
+		else {
+			Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
+			if(sourceTerritory == null) return false;
+			return Game.isSelectable(sourceTerritory, null, selectAmount);
+		}
 	}
 	
 	public static boolean requestCardActivation(ArrayList<VisualCard> activates) {

@@ -164,20 +164,39 @@ public class Game {
 		territories = null;
 	}
 
-	public static boolean isSelectable(Territory sourceTerritory, Territory targetTerritory) {
+	public static boolean isSelectable(Territory sourceTerritory, Territory targetTerritory, int selectAmount) {
+		if(sourceTerritory == null) return false;
+		
 		if(Turn.activePhase == TURN_PHASE.DRAFT) {
-			if(targetTerritory != sourceTerritory) return false;
 			return Turn.activePlayer.captured(sourceTerritory);
 		}
 		else if(Turn.activePhase == TURN_PHASE.ATTACK) {
 			if(!Turn.activePlayer.captured(sourceTerritory)) return false;
+			if(targetTerritory == null) return sourceTerritory.getUnitNumber() >= Combat.MIN_ATTACK_UNIT;
 			return Combat.combatable(sourceTerritory, targetTerritory);
 		}
 		else {
 			if(!Turn.activePlayer.captured(sourceTerritory)) return false;
-			if(!Turn.activePlayer.captured(targetTerritory)) return false;
-			return true;
+			
+			Territory[] focusTerritories = GameController.interactions.getFocusTerritories();
+			if(targetTerritory == null) {
+				if(focusTerritories[0] != sourceTerritory) { //Maybe focusTerritories[0] is null
+					if(focusTerritories[1] == sourceTerritory)
+						return sourceTerritory.getUnitNumber() > Combat.MIN_DEFENSE_UNIT;
+					else if(GameState.getChangeAmount(Turn.prevState, focusTerritories[0]) == 0)
+						return sourceTerritory.getUnitNumber() > Combat.MIN_DEFENSE_UNIT;
+				}
+				else return sourceTerritory.getUnitNumber() > Combat.MIN_DEFENSE_UNIT;
+			}
+			else {
+				if(!Turn.activePlayer.captured(targetTerritory)) return false;
+				
+				if(GameState.getChangeAmount(Turn.prevState, focusTerritories[0]) == 0) return true;
+				if(targetTerritory == focusTerritories[0] || targetTerritory == focusTerritories[1]) return true;
+				return GameState.getChangeAmount(Turn.prevState, sourceTerritory) == selectAmount;
+			}
 		}
+		return false;
 	}
 	
 	public static boolean activateCards(ArrayList<Card> activates) {

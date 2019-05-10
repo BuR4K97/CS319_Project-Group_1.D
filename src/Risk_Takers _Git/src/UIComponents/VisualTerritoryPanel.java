@@ -51,15 +51,22 @@ public class VisualTerritoryPanel {
 	}
 	
 	public void update() {
-		mouseEventUpdate();
-		if(GameInteractions.getActivePhase() != TURN_PHASE.ATTACK)
-			flushPrevState();
-		else
+		flushSelectableTerritory();
+		if(!suspendMouseEventUpdate()) { 
+			mouseEventUpdate();
 			GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]); 
+		}
 	}
 	
 	public void flushPrevState() {
 		popOutFocusTerritory(focusTerritories[0]);
+		flushSelectableTerritory();
+	}
+	
+	private void flushSelectableTerritory() {
+		if(selectableTerritory != focusTerritories[0] && selectableTerritory != focusTerritories[1])
+			AnimationHandler.terminateMouseOnTerritoryAnimation(selectableTerritory);
+		selectableTerritory = null;
 	}
 	
 	public void destroy() {
@@ -120,12 +127,8 @@ public class VisualTerritoryPanel {
 			}
 		}
 		
-		if(selectableTerritory != focusTerritories[0] && selectableTerritory != focusTerritories[1])
-			AnimationHandler.terminateMouseOnTerritoryAnimation(selectableTerritory);
-		selectableTerritory = null;
-		
 		if(focusTerritory == null)  return;
-		if(!pushIntoSelectableTerritories(focusTerritory)) return;
+		if(!pushIntoSelectableTerritory(focusTerritory)) return;
 		if(mouseTracer.mousePressed) {
 			if(focusTerritories[0] == focusTerritory || focusTerritories[1] == focusTerritory) 
 				alreadyFocused = true;
@@ -137,20 +140,20 @@ public class VisualTerritoryPanel {
 	
 	private boolean pushIntoFocusTerritories(VisualTerritory push) {
 		if(focusTerritories[0] == null) {
-			if(GameInteractions.isSelectable(push, push)) {
+			if(GameInteractions.isSelectable(push, null, 0)) {
 				AnimationHandler.requestMouseOnTerritoryAnimation(push);
 				focusTerritories[0] = push;
 				return true;
 			}
 			return false;
 		}
-		if(GameInteractions.isSelectable(focusTerritories[0], push)) {
+		if(GameInteractions.isSelectable(focusTerritories[0], push, 1)) {
 			AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
 			AnimationHandler.requestMouseOnTerritoryAnimation(push);
 			focusTerritories[1] = push;
 			return true;
 		}
-		else if(GameInteractions.isSelectable(push, push)) {
+		else if(GameInteractions.isSelectable(push, null, 0)) {
 			AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
 			AnimationHandler.requestMouseOnTerritoryAnimation(push);
 			focusTerritories[0] = push;
@@ -161,26 +164,35 @@ public class VisualTerritoryPanel {
 		return false;
 	}
 	
-	private boolean pushIntoSelectableTerritories(VisualTerritory push) {
+	private boolean pushIntoSelectableTerritory(VisualTerritory push) {
 		if(focusTerritories[0] == null) {
-			if(GameInteractions.isSelectable(push, push)) {
+			if(GameInteractions.isSelectable(push, null, 0)) {
 				AnimationHandler.requestMouseOnTerritoryAnimation(push);
 				selectableTerritory = push;
 				return true;
 			}
 			return false;
 		}
-		if(GameInteractions.isSelectable(focusTerritories[0], push)) {
+		if(GameInteractions.isSelectable(focusTerritories[0], push, 1)) {
 			AnimationHandler.requestMouseOnTerritoryAnimation(push);
 			selectableTerritory = push;
 			return true;
 		}
-		else if(GameInteractions.isSelectable(push, push)) {
+		else if(GameInteractions.isSelectable(push, null, 0)) {
 			AnimationHandler.requestMouseOnTerritoryAnimation(push);
 			selectableTerritory = push;
 			return true;
 		}
 		return false;
+	}
+	
+	private boolean suspendMouseEventUpdate() {
+		return GameInteractions.getActivePhase() != TURN_PHASE.ATTACK;
+	}
+	
+	public void requestPushIntoSelectableTerritory(VisualTerritory push) {
+		AnimationHandler.requestMouseOnTerritoryAnimation(push);
+		selectableTerritory = push;
 	}
 	
 	private void popOutFocusTerritory(VisualTerritory pop) {

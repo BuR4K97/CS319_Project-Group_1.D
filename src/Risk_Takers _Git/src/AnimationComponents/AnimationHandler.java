@@ -13,6 +13,8 @@ public class AnimationHandler {
 
 	
 	public static void requestMouseOnTerritoryAnimation(VisualTerritory animateTerritory) {
+		if(animateTerritory == null) return;
+		
 		for(Animation animation : animations)
 			if(animation instanceof MouseOnTerritoryAnimation)
 				if(((MouseOnTerritoryAnimation) animation).equals(animateTerritory)) {

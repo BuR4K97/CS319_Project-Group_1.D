@@ -52,10 +52,8 @@ public class InteractionPanel {
 			public void mouseExited(MouseEvent e) {}
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {
+				GameController.interactions.synchronizeFocusTerritories(null, null);
 				GameController.interactions.requestNextPhase();
-				VisualTerritory[] focusTerritories = ((GamePanel)MainApplication.frame.focusPanel).getFocusVisualTerritories(); 
-				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
-				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushTextualInGamePanel();
 			}
@@ -68,9 +66,6 @@ public class InteractionPanel {
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.requestAction(0);
-				VisualTerritory[] focusTerritories = ((GamePanel)MainApplication.frame.focusPanel).getFocusVisualTerritories(); 
-				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
-				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
 			}
 		});
@@ -142,9 +137,6 @@ public class InteractionPanel {
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseClicked(MouseEvent e) {
 				((GamePanel)MainApplication.frame.focusPanel).initializeCardMode();
-				VisualTerritory[] focusTerritories = ((GamePanel)MainApplication.frame.focusPanel).getFocusVisualTerritories(); 
-				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
-				AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushTextualInGamePanel();
 			}

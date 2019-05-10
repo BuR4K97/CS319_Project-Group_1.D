@@ -181,6 +181,10 @@ public class GamePanel extends DynamicPanel {
 	public void requestFortifyInteractionEffect(VisualTerritory focusTerritory, int effectAmount) {
 		visualTerritoryPanel.requestFortifyInteractionEffect(focusTerritory, effectAmount);
 	}
+	
+	public void requestPushIntoVisualTerritoryPanelSelectableTerritory(VisualTerritory push) {
+		visualTerritoryPanel.requestPushIntoSelectableTerritory(push);
+	}
 
 	public void destroy() {
 		visualTerritoryPanel.destroy();

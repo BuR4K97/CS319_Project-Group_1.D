@@ -77,6 +77,12 @@ public class TerritoryGraph implements Serializable {
 		return false;
 	}
 	
+	//public boolean checkOverConnect(Territory sourceTerritory, Territory targetTerritory) {
+		//ArrayList<GraphNode> extendedList = new ArrayList<GraphNode>();
+		//GraphNode sourceGraphNode =
+		
+	//}
+	
 	public ArrayList<Territory> getTerritories() {
 		ArrayList<Territory> result = new ArrayList<Territory>();
 		for(GraphNode currNode : territories) result.add(currNode.territory);

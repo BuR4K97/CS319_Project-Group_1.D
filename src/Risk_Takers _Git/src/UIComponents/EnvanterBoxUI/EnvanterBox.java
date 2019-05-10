@@ -128,7 +128,9 @@ public class EnvanterBox{
 			}	
 		}
 
-		// mouse
+		if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, 0))
+			((GamePanel)MainApplication.frame.focusPanel).requestPushIntoVisualTerritoryPanelSelectableTerritory(
+					mouseTracer.getFocusTerritory());
 		if(mouseOnBox(mouseTracer.mousePosition.xCoord, mouseTracer.mousePosition.yCoord)) {
 			if(mouseTracer.leftButtonClicked) {
 				if(list.size() > 0) {
@@ -161,17 +163,12 @@ public class EnvanterBox{
 				unitsInHand.clear();
 			}
 			else if(mouseTracer.leftButtonClicked) {
-				if(isSelectable(mouseTracer.getFocusTerritory())) {
+				if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, 0)) {
 					GameController.interactions.synchronizeFocusTerritories(mouseTracer.getFocusTerritory(), null);
 					GameController.interactions.requestAction(unitsInHand.size()); 
 				}
 			}
 		}
-	}
-	
-	private boolean isSelectable(VisualTerritory check) {
-		if(check == null) return false;
-		return GameInteractions.isSelectable(check, check); 
 	}
 
 	public void paint(Graphics g) {
