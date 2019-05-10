@@ -3,6 +3,8 @@ package UIComponents;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
+import SoundComponent.SoundHandler;
+
 public class ApplicationFrame extends JFrame {
 	
 	public static int width = 1920;
@@ -16,6 +18,7 @@ public class ApplicationFrame extends JFrame {
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setUndecorated(true);
 		setVisible(true);
+		SoundHandler.playMusic("sounds\\the-long-dark-wintermute-main-menu-theme-hq-tld-unost.wav");
 	}
 	
 	public void initializeMenu() {
