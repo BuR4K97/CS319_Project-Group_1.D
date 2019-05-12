@@ -80,7 +80,7 @@ public class VisualTerritoryPanel {
 	
 	public void paint(Graphics painter) {
 		AnimationHandler.visualBuffer.paint(painter);
-		painter.setFont(new Font("pixel", Font.BOLD, 20));
+		int defaultFontSize = 16;
 		
 		Territory corresponding;
 		for(int i = 0; i < visualTerritories.size(); i++) {
@@ -97,13 +97,26 @@ public class VisualTerritoryPanel {
 			visualTerritories.get(i).paint(painter, selected);
 			
 			if(!AnimationHandler.suspendVisualTerritoryPanel()) {
-				if(visualTerritories.get(i).mainCoordinate != null) { 
+				Coordinate mainCoord = visualTerritories.get(i).mainCoordinate;
+				if(visualTerritories.get(i).mainCoordinate != null) {
+					VisualTerritory.applyPixelJumpHierarchy(mainCoord);
 					painter.setColor(Color.WHITE);
-					painter.fillRect(visualTerritories.get(i).mainCoordinate.xCoord - 1, visualTerritories.get(i).mainCoordinate.yCoord - VisualTerritory.PIXEL_JUMP
-							- 6, 1 * VisualTerritory.PIXEL_JUMP,  2 *VisualTerritory.PIXEL_JUMP);
+					int pixelGap = VisualTerritory.PIXEL_JUMP - visualTerritories.get(i).drawSize;
+					int fontSize = (2 - pixelGap) + defaultFontSize;
+					painter.setFont(new Font("pixel", Font.BOLD, fontSize));
+					int xCoordOffset = 1;
+					if(corresponding.getUnitNumber() - effectAmounts.get(i) < 10)
+						painter.fillRect(mainCoord.xCoord, mainCoord.yCoord, VisualTerritory.PIXEL_JUMP - pixelGap
+								,  2*VisualTerritory.PIXEL_JUMP - pixelGap);
+					else {
+						painter.fillRect(mainCoord.xCoord, mainCoord.yCoord, 2*VisualTerritory.PIXEL_JUMP - pixelGap
+								,  2*VisualTerritory.PIXEL_JUMP - pixelGap);
+						xCoordOffset += 1;
+					}
 					painter.setColor(Color.BLACK);
 					painter.drawString(Integer.toString(corresponding.getUnitNumber() - effectAmounts.get(i))
-							, visualTerritories.get(i).mainCoordinate.xCoord, visualTerritories.get(i).mainCoordinate.yCoord);
+							, mainCoord.xCoord + xCoordOffset + (2 - pixelGap) / 2, mainCoord.yCoord - (2 - pixelGap) / 2 
+							+ VisualTerritory.PIXEL_JUMP - pixelGap + fontSize / 2);
 				}
 			}
 		}

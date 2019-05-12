@@ -23,16 +23,19 @@ public class GameState {
 
 	public static void checkStates(GameState prevState, GameState currState) {
 		int territoriesCaptured = 0;
-		for(int i = 0; i < prevState.territoriesState.size(); i++) {
-			if(currState.territoriesState.get(i).getPlayer() == Turn.activePlayer) {
+		for(int i = 0; i < prevState.territoriesState.size(); i++)
+			if(currState.territoriesState.get(i).getPlayer() == Turn.activePlayer)
 				territoriesCaptured += 1;
-				if(prevState.territoriesState.get(i).getPlayer() != Turn.activePlayer)
-					currState.territoriesState.get(i).getPlayer().insertCard(GameInteractions
-							.findCorrespondingCard(currState.territoriesState.get(i)));
-			}
-		}
 		Turn.activePlayer.insertUnit(territoriesCaptured);
 		GameController.activeMode.checkStatesModeSpecific(prevState, currState, Turn.activePlayer);
+	}
+	
+	public static void checkStateChange(GameState prevState, Territory focusTerritory) {
+		if(focusTerritory.getPlayer() != Turn.activePlayer) return;
+		
+		if(prevState.territoriesState.get(Game.territories.indexOf(focusTerritory)).getPlayer() != Turn.activePlayer)
+			Turn.activePlayer.insertCard(GameInteractions.findCorrespondingCard(focusTerritory));
+		
 	}
 	
 	public static int getChangeAmount(GameState prevState, Territory focusTerritory) {

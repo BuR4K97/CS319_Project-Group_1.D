@@ -49,8 +49,9 @@ public class FortifyInteraction {
 				returningUnits.clear();
 			}	
 		}
+		
 		if(sourceTerritory == null || mouseTracer.getFocusTerritory() == sourceTerritory) {
-			if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, 0)) 
+			if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, unitsInHand.size())) 
 				((GamePanel)MainApplication.frame.focusPanel).requestPushIntoVisualTerritoryPanelSelectableTerritory(
 						mouseTracer.getFocusTerritory()); 
 		}
@@ -62,13 +63,13 @@ public class FortifyInteraction {
 		if(mouseTracer.leftButtonClicked) {
 			if(sourceTerritory == null) {
 				sourceTerritory = mouseTracer.getFocusTerritory();
-				if(GameInteractions.isSelectable(sourceTerritory, null, 0))
+				if(GameInteractions.isSelectable(sourceTerritory, null, 1))
 					unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
 				else 
 					sourceTerritory = null;
 			}
 			else if(sourceTerritory == mouseTracer.getFocusTerritory()) {
-				if(GameInteractions.isSelectable(sourceTerritory, null, 0)) {
+				if(GameInteractions.isSelectable(sourceTerritory, null, unitsInHand.size() + 1)) {
 					if(unitsInHand.size() < 3)
 						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
 					else if(unitsInHand.size() < 6) 

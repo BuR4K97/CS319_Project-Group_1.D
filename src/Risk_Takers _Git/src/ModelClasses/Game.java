@@ -57,7 +57,12 @@ public class Game {
 			else if(GameController.interactions.getAttackTillCapture())
 				finished = !GameController.interactions.getActiveCombat().combatTillCapture();
 			
-			if(finished) GameController.interactions.terminateCombat();
+			if(finished) {
+				GameState.checkStateChange(Turn.prevState, GameController.interactions.getActiveCombat()
+						.getCombatTerritories()[1]);
+				GameController.interactions.requestVisualCardPanelUpdateRequest();
+				GameController.interactions.terminateCombat();
+			}
 		}
 		else if(GameController.interactions.getActionRequest()) {
 			if(Turn.activePhase == TURN_PHASE.DRAFT) {
@@ -67,10 +72,13 @@ public class Game {
 				}
 			}
 			else if(Turn.activePhase == TURN_PHASE.ATTACK) {
-				if(focusTerritory[0] != null && focusTerritory[1] != null) {
-					GameController.interactions.activateCombat(Turn.activePlayer.attackTerritory(focusTerritory[0]
-							, focusTerritory[1]));
+				if(Turn.activePlayer.getCardSet().size() < UnitPocket.MAX_CARD) {
+					if(focusTerritory[0] != null && focusTerritory[1] != null) {
+						GameController.interactions.activateCombat(Turn.activePlayer.attackTerritory(focusTerritory[0]
+								, focusTerritory[1]));
+					} 
 				}
+				else {System.out.println("You cannot attack since you have too many cards!!!");}
 			}
 			else {
 				if(focusTerritory[0] != null && focusTerritory[1] != null) {
@@ -184,11 +192,11 @@ public class Game {
 			if(targetTerritory == null) {
 				if(focusTerritories[0] != sourceTerritory) { //Maybe focusTerritories[0] is null
 					if(focusTerritories[1] == sourceTerritory)
-						return sourceTerritory.getUnitNumber() > Combat.MIN_DEFENSE_UNIT;
+						return sourceTerritory.getUnitNumber() - selectAmount >= Combat.MIN_DEFENSE_UNIT;
 					else if(GameState.getChangeAmount(Turn.prevState, focusTerritories[0]) == 0)
-						return sourceTerritory.getUnitNumber() > Combat.MIN_DEFENSE_UNIT;
+						return sourceTerritory.getUnitNumber() - selectAmount >= Combat.MIN_DEFENSE_UNIT;
 				}
-				else return sourceTerritory.getUnitNumber() > Combat.MIN_DEFENSE_UNIT;
+				else return sourceTerritory.getUnitNumber() - selectAmount >= Combat.MIN_DEFENSE_UNIT;
 			}
 			else {
 				if(!Turn.activePlayer.captured(targetTerritory)) return false;
