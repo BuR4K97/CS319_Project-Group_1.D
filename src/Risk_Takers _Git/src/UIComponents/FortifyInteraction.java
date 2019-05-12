@@ -62,12 +62,10 @@ public class FortifyInteraction {
 		if(mouseTracer.leftButtonClicked) {
 			if(sourceTerritory == null) {
 				sourceTerritory = mouseTracer.getFocusTerritory();
-				if(GameInteractions.isSelectable(sourceTerritory, null, 0)) {
-					if(GameInteractions.findCorrespondingTerritory(sourceTerritory).getUnitNumber() > Combat.MIN_DEFENSE_UNIT)
-						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
-					else sourceTerritory = null;
-				}
-				else sourceTerritory = null;
+				if(GameInteractions.isSelectable(sourceTerritory, null, 0))
+					unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
+				else 
+					sourceTerritory = null;
 			}
 			else if(sourceTerritory == mouseTracer.getFocusTerritory()) {
 				if(GameInteractions.isSelectable(sourceTerritory, null, 0)) {
@@ -103,13 +101,13 @@ public class FortifyInteraction {
 			}
 		}
 		if(sourceTerritory == returningTerritory && sourceTerritory != null) 
-			((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(sourceTerritory
+			((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(sourceTerritory
 					, unitsInHand.size() + returningUnits.size());
 		else {
 			if(sourceTerritory != null)
-				((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(sourceTerritory, unitsInHand.size());
+				((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(sourceTerritory, unitsInHand.size());
 			if(returningTerritory != null)
-				((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(returningTerritory, returningUnits.size());
+				((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(returningTerritory, returningUnits.size());
 		}
 		if(unitsInHand.size() == 0) sourceTerritory = null;
 		if(returningUnits.size() == 0) returningTerritory = null;
@@ -117,9 +115,9 @@ public class FortifyInteraction {
 	
 	public void flushState() {
 		if(sourceTerritory != null)
-			((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(sourceTerritory, 0);
+			((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(sourceTerritory, 0);
 		if(returningTerritory != null)
-			((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(returningTerritory, 0);
+			((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(returningTerritory, 0);
 		sourceTerritory = null;
 		returningTerritory = null;
 		unitsInHand.clear();

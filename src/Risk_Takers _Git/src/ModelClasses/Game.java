@@ -168,7 +168,9 @@ public class Game {
 		if(sourceTerritory == null) return false;
 		
 		if(Turn.activePhase == TURN_PHASE.DRAFT) {
-			return Turn.activePlayer.captured(sourceTerritory);
+			if(!Turn.activePlayer.captured(sourceTerritory)) return false;
+			if(selectAmount > 0) return selectAmount <= GameState.getChangeAmount(Turn.prevState, sourceTerritory);
+			else return true;
 		}
 		else if(Turn.activePhase == TURN_PHASE.ATTACK) {
 			if(!Turn.activePlayer.captured(sourceTerritory)) return false;

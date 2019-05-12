@@ -31,6 +31,7 @@ public class GameState {
 							.findCorrespondingCard(currState.territoriesState.get(i)));
 			}
 		}
+		Turn.activePlayer.insertUnit(territoriesCaptured);
 		GameController.activeMode.checkStatesModeSpecific(prevState, currState, Turn.activePlayer);
 	}
 	

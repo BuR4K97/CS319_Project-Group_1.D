@@ -48,7 +48,7 @@ public class EnvanterBox{
 	ArrayList<SmallBox> list = new ArrayList<SmallBox>();
 	ArrayList<SmallBox> unitsInHand = new ArrayList<SmallBox>();
 	ArrayList<SmallBox> returnToBoxAnimation = new ArrayList<SmallBox>();
-	
+
 
 	public EnvanterBox() {
 		movingBoxes = new Timer(MainApplication.ONE_SEC / MainApplication.ANIMATION_UPDATE_FREQUENCY
@@ -62,7 +62,7 @@ public class EnvanterBox{
 
 		});
 		movingBoxes.start();
-		
+
 		opening = new Timer(16,  new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openAngle += openRate;
@@ -81,10 +81,11 @@ public class EnvanterBox{
 
 	private Player player;
 	public void updatePlayer(Player activePlayer) {
+		if(player == activePlayer) return;
 		this.player = activePlayer;
 		resetPlayerNumber();
 	}
-	
+
 	private void resetPlayerNumber() {
 		list.clear();
 		for(int i = 0; i < player.getAvailableUnitAmount(); i++)
@@ -92,6 +93,8 @@ public class EnvanterBox{
 		unitsInHand.clear();
 	}
 
+	private VisualTerritory focusTerritory;
+	private int selectedAmount;
 	public void updateMouseEvent(MouseInGameListener mouseTracer) {
 		if(mouseOnBox(mouseTracer.mousePosition.xCoord, mouseTracer.mousePosition.yCoord))
 			open();
@@ -128,47 +131,95 @@ public class EnvanterBox{
 			}	
 		}
 
-		if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, 0))
+		if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, -unitsInHand.size()))
 			((GamePanel)MainApplication.frame.focusPanel).requestPushIntoVisualTerritoryPanelSelectableTerritory(
 					mouseTracer.getFocusTerritory());
-		if(mouseOnBox(mouseTracer.mousePosition.xCoord, mouseTracer.mousePosition.yCoord)) {
-			if(mouseTracer.leftButtonClicked) {
+		else if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, selectedAmount + 1))
+			((GamePanel)MainApplication.frame.focusPanel).requestPushIntoVisualTerritoryPanelSelectableTerritory(
+					mouseTracer.getFocusTerritory());
+		if(mouseTracer.leftButtonClicked) {
+			if(mouseOnBox(mouseTracer.mousePosition.xCoord, mouseTracer.mousePosition.yCoord)) {
 				if(list.size() > 0) {
 					removeUnit(1);
-					//unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
-					if(unitsInHand.size() < 3) {
+					if(unitsInHand.size() < 3)
 						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
-					} else if(unitsInHand.size() < 6) {
+					else if(unitsInHand.size() < 6) 
 						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + (unitsInHand.size() -3) * 20, mouseTracer.mousePosition.yCoord + 1 * 20));
-					}else if(unitsInHand.size() < 9) {
-						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + (unitsInHand.size() -6) * 20, mouseTracer.mousePosition.yCoord + 2 * 20));
-					} else {
+					else if(unitsInHand.size() < 9) 
+						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + (unitsInHand.size() -6) * 20, mouseTracer.mousePosition.yCoord + 2 * 20)); 
+					else 
 						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
-					}
-
 				}
-			} else if(mouseTracer.rightButtonClicked){
+				//GameController.interactions.synchronizeFocusTerritories(focusTerritory, null);
+				//GameController.interactions.requestAction(-selectedAmount);
+				//GameInteractions.requestManualGameUpdate();
+				//selectedAmount = 0;
+			}
+			else if(unitsInHand.size() > 0) {
+				if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, -unitsInHand.size())) {
+					GameController.interactions.synchronizeFocusTerritories(focusTerritory, null);
+					GameController.interactions.requestAction(-selectedAmount);
+					GameInteractions.requestManualGameUpdate();
+					selectedAmount = 0;
+					GameController.interactions.synchronizeFocusTerritories(mouseTracer.getFocusTerritory(), null);
+					GameController.interactions.requestAction(unitsInHand.size());
+					unitsInHand.clear();
+				}
+			}
+		}
+		else if(mouseTracer.rightButtonClicked) {
+			if(mouseOnBox(mouseTracer.mousePosition.xCoord, mouseTracer.mousePosition.yCoord)) {
 				if(unitsInHand.size() > 0) {
+					if(focusTerritory != null) {
+						GameController.interactions.synchronizeFocusTerritories(focusTerritory, null);
+						GameController.interactions.requestAction(-1);
+						GameInteractions.requestManualGameUpdate();
+					}
 					addUnit(1);
 					unitsInHand.remove(unitsInHand.size()-1);
+					selectedAmount -= 1;
 				}
-			}	
-		} 
-		else if(unitsInHand.size() > 0) {
-			if(mouseTracer.rightButtonClicked){
-				for(int i = 0; i < unitsInHand.size();i++) {
+			}
+			else if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, selectedAmount + 1))  {
+				if(focusTerritory != mouseTracer.getFocusTerritory() && focusTerritory != null) {
+					GameController.interactions.synchronizeFocusTerritories(focusTerritory, null);
+					GameController.interactions.requestAction(-selectedAmount);
+					GameInteractions.requestManualGameUpdate();
+					for(int i = 0; i < unitsInHand.size(); i++) {
+						returnToBoxAnimation.add(unitsInHand.get(i));
+						returnToBoxAnimation.get(i).goTarget(x + borderLength / 2, y + returnToBoxAnimation.get(i).length/2);
+					}
+					unitsInHand.clear();
+					selectedAmount = 0;
+				}
+				else {
+					if(unitsInHand.size() < 3)
+						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
+					else if(unitsInHand.size() < 6) 
+						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + (unitsInHand.size() -3) * 20, mouseTracer.mousePosition.yCoord + 1 * 20));
+					else if(unitsInHand.size() < 9) 
+						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + (unitsInHand.size() -6) * 20, mouseTracer.mousePosition.yCoord + 2 * 20)); 
+					else 
+						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
+					focusTerritory = mouseTracer.getFocusTerritory();
+					selectedAmount += 1;
+				}
+			}
+			else if(mouseTracer.getFocusTerritory() != focusTerritory) {
+				GameController.interactions.synchronizeFocusTerritories(focusTerritory, null);
+				GameController.interactions.requestAction(-selectedAmount);
+				GameInteractions.requestManualGameUpdate();
+				for(int i = 0; i < unitsInHand.size(); i++) {
 					returnToBoxAnimation.add(unitsInHand.get(i));
 					returnToBoxAnimation.get(i).goTarget(x + borderLength / 2, y + returnToBoxAnimation.get(i).length/2);
 				}
 				unitsInHand.clear();
-			}
-			else if(mouseTracer.leftButtonClicked) {
-				if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, 0)) {
-					GameController.interactions.synchronizeFocusTerritories(mouseTracer.getFocusTerritory(), null);
-					GameController.interactions.requestAction(unitsInHand.size()); 
-				}
+				selectedAmount = 0;
 			}
 		}
+		if(focusTerritory != null)
+			((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(focusTerritory, selectedAmount);
+		if(selectedAmount == 0) focusTerritory = null;
 	}
 
 	public void paint(Graphics g) {
@@ -189,7 +240,7 @@ public class EnvanterBox{
 		g2d.drawLine(x + borderLength, y + borderLength, x + borderLength, y);
 		//angle based moving border
 		g2d.drawLine(x, y, x + (int)(borderLength * Math.cos(openAngle)), y - (int)(borderLength * Math.sin(openAngle)));
-		
+
 		// unit number
 		g2d.setFont(new Font("pixel", Font.PLAIN, borderLength));
 		g2d.drawString("" + list.size(), x + borderLength + 15, y + borderLength);
@@ -218,17 +269,17 @@ public class EnvanterBox{
 		closing.stop();
 		opening.start();
 	}
-	
+
 	public void close() {
 		opening.stop();
 		closing.start();
 	}
-	
+
 	public void addUnit(int number) {
 		for(int i = 0; i < number; i++)
 			list.add(new SmallBox(x + borderLength/2, y + borderLength/2));
 	}
-	
+
 	public void removeUnit(int number) {
 		if((list.size() - number) > 0) {
 			for(int i = 0; i < number; i++)
@@ -237,11 +288,11 @@ public class EnvanterBox{
 			list = new ArrayList<SmallBox>();
 		}
 	}
-	
+
 	public void removeAll() {
 		list = new ArrayList<SmallBox>();
 	}
-	
+
 	public boolean mouseOnBox(int x, int y) {
 		if(x >= this.x && (x <= this.x + borderLength) && y >= this.y && (y <= this.y + borderLength))
 			return true;
@@ -249,8 +300,15 @@ public class EnvanterBox{
 	}
 
 	public void flushState() {
-		addUnit(unitsInHand.size());
+		if(focusTerritory == null)
+			addUnit(unitsInHand.size());
+		else {
+			((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(focusTerritory, 0);
+			addUnit(unitsInHand.size() - selectedAmount);
+		}
+		focusTerritory = null;
 		unitsInHand.clear();
+		selectedAmount = 0;
 	}
-	
+
 }

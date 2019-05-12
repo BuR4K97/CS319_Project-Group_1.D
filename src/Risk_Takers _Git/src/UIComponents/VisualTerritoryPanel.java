@@ -74,7 +74,7 @@ public class VisualTerritoryPanel {
 	}
 	
 	ArrayList<Integer> effectAmounts = new ArrayList<>();
-	public void requestFortifyInteractionEffect(VisualTerritory focusTerritory, int effectAmount) {
+	public void requestVisualDeviationEffect(VisualTerritory focusTerritory, int effectAmount) {
 		effectAmounts.set(visualTerritories.indexOf(focusTerritory), effectAmount);
 	}
 	
