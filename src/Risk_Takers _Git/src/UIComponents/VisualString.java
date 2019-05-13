@@ -29,6 +29,7 @@ public class VisualString {
 	int mexicoWaveLength;
 	boolean mouseEntered = false;
 	Color color = null;
+	String notification = "";
 	public class Rect{
 		public int y;
 		public int x;
@@ -40,10 +41,14 @@ public class VisualString {
 			border = minLength;
 			this.x = xx;
 			//xCurrent = -minLength;
-			if(x < 1920 / 2)
-				xCurrent = (int)(Math.random() * 1920 / 2);
-			else
-				xCurrent = 1920 / 2 + (int)(Math.random() * 1920 / 2);
+			if(!notification.equals("notification")) {
+				if(x < 1920 / 2)
+					xCurrent = (int)(Math.random() * 1920 / 2);
+				else
+					xCurrent = 1920 / 2 + (int)(Math.random() * 1920 / 2);
+			}else {
+				xCurrent = (int)(-border);
+			}
 			this.y = yy;
 			yEnd = 1080;
 		}
@@ -114,7 +119,7 @@ public class VisualString {
 	}
 
 	public VisualString(int x, int y, int maxLength, String string, boolean noAnimation) {
-		 // width = maxlength*5
+		// width = maxlength*5
 
 		this.maxLength = maxLength;
 		this.minLength = (int)(maxLength * 6 / 7);
@@ -154,12 +159,76 @@ public class VisualString {
 
 		});
 		mexicoWave.start();
-	
+
 	}
 	public VisualString(int x, int y, int maxLength, String string) { // width = maxlength*5
 
 		this.maxLength = maxLength;
 		this.minLength = (int)(maxLength * 6 / 7);
+		mexicoWaveLength = maxLength - minLength;
+		this.x = x;
+		this.y = y;
+		this.string = string;
+		mexicoWaveCoordinate = 0;
+		this.color = Color.WHITE;
+
+		for(int i = 0; i < string.length(); i++)
+			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
+		startAnimation = new Timer(startAnimationDelay, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean done = true;
+				for(int i = 0; i < list.size(); i++) {
+					if(Math.random() * 4 < 1)
+						list.get(i).startAnimation = true;
+					if(Math.abs(list.get(i).x - list.get(i).xCurrent) <= startAnimationSpeed && list.get(i).startAnimation) {
+						list.get(i).xCurrent = list.get(i).x;
+						list.get(i).startAnimation = false;
+					}
+					else if(list.get(i).x < list.get(i).xCurrent && list.get(i).startAnimation) {
+						list.get(i).xCurrent -= startAnimationSpeed;
+						done = false;
+					}
+					else if(list.get(i).x > list.get(i).xCurrent && list.get(i).startAnimation) {
+						list.get(i).xCurrent += startAnimationSpeed;
+						done = false;
+					}
+				}
+				if(done)
+					startAnimation.stop();
+			}
+		});
+		startAnimation.start();
+		mexicoWave = new Timer(mexicoWaveDelay, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*
+				if(mexicoWaveCoordinate < (x + string.length() * 4 * maxLength) + mexicoWaveLength)
+					mexicoWaveCoordinate+=mexicoWaveLength;
+				else
+					mexicoWaveCoordinate =-mexicoWaveLength*2+ x;
+				 */
+				if(mexicoWaveCoordinate < (1920) + mexicoWaveLength * 2)
+					mexicoWaveCoordinate += mexicoWaveLength * 2;
+				else
+					mexicoWaveCoordinate = - mexicoWaveLength * 2;
+				for(int i = 0; i < list.size(); i++) {
+					for(int j = 0; j <= mexicoWaveLength;j++) {
+						if(Math.abs(list.get(i).x - mexicoWaveCoordinate) <= maxLength * (j+1) && Math.abs(list.get(i).x - mexicoWaveCoordinate) > maxLength * (j)) {
+							list.get(i).border = maxLength - j;
+							break;
+						} 
+					}
+				}
+			}
+
+		});
+		mexicoWave.start();
+	}	
+	public VisualString(int x, int y, int maxLength, String string, String notification) { // width = maxlength*5
+		this.maxLength = maxLength;
+		if(notification.equals("notification")) {
+			this.minLength = (int)(maxLength * 1);
+			this.notification = notification;
+		}
 		mexicoWaveLength = maxLength - minLength;
 		this.x = x;
 		this.y = y;
@@ -291,7 +360,7 @@ public class VisualString {
 			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y + blockLength * 4), blockLength);
 			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
 		}
-		
+
 		else if(ch == '|') {
 			makeAreaB(new Rect(topLeft.x, topLeft.y), blockLength);
 			makeAreaB(new Rect(topLeft.x + blockLength, topLeft.y), blockLength);
@@ -1133,7 +1202,7 @@ public class VisualString {
 			makeAreaB(new Rect(topLeft.x + blockLength * 2, topLeft.y + blockLength * 4), blockLength);
 		}
 	}
-	
+
 	public Rectangle getRectangle() {
 		return new Rectangle(x, y, maxLength * string.length() * 4 , maxLength*5);
 	}

@@ -3,7 +3,6 @@ package SoundComponent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import sun.audio.*;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;

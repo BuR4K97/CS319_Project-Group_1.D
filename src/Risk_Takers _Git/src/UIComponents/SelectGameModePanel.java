@@ -80,18 +80,27 @@ public class SelectGameModePanel extends JPanel{
 					if(totalNumber > minNumberOfHuman) {
 						totalNumber--;
 						stringList.get(stringList.size()-1).updateStringNoAnimation( "" + totalNumber);
+						if(totalNumber < totalNumberOfHuman) {
+							totalNumberOfHuman--;
+							jumpingBox.removeBox();
+						}
 					}
 				}
 				if(jumpingBox.getRightRectangle().contains(getMousePosition()) && SwingUtilities.isLeftMouseButton(e)) {
 					if(totalNumberOfHuman < totalNumber) {
 						totalNumberOfHuman++;
 						jumpingBox.addBox();
+					}else if(totalNumberOfHuman == totalNumber && totalNumber < maxNumberOfHuman) {
+						totalNumberOfHuman++;
+						jumpingBox.addBox();
+						totalNumber++;
+						stringList.get(stringList.size()-1).updateStringNoAnimation( "" + totalNumber);
 					}
 				}else if(jumpingBox.getRightRectangle().contains(getMousePosition()) && SwingUtilities.isRightMouseButton(e)) {
 					if(totalNumberOfHuman > minNumberOfHuman) {
 						totalNumberOfHuman--;
 						jumpingBox.removeBox();
-
+						
 					}
 				}
 				GameInteractions.requestResetMultiplayerMode(totalNumberOfHuman);
