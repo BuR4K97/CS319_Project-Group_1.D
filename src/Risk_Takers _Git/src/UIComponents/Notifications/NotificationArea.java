@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import GameAssets.GameConstants;
+import GameAssets.SoundConstants;
+
 public class NotificationArea {
 	int xTopLeft = 20;
 	int yTopLeft = 100;
@@ -27,6 +30,7 @@ public class NotificationArea {
 			public void actionPerformed(ActionEvent e) {
 				if(showedNotificationList.size() < showedNotificationNumber && notificationList.size() > 0) {
 					showedNotificationList.add(new Notification(notificationList.get(0).string));
+					SoundConstants.notificationSound();
 					notificationList.remove(0);
 					if(showedNotificationList.size() == 1) {
 						showedNotificationList.get(0).initialize(

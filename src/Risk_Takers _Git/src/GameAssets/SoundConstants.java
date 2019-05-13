@@ -87,4 +87,14 @@ public class SoundConstants {
 	        System.err.println(e1.getMessage());
 	      }
 	}
+	public static void notificationSound() {
+		try {
+	        Clip clip = AudioSystem.getClip();
+	        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("shortSounds//notification.wav"));
+	        clip.open(inputStream);
+	        clip.start(); 
+	      } catch (Exception e1) {
+	        System.err.println(e1.getMessage());
+	      }
+	}
 }
