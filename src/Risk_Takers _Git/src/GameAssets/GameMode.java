@@ -1,4 +1,4 @@
-package Controller;
+package GameAssets;
 
 import java.util.ArrayList;
 import ModelClasses.Card;
@@ -68,6 +68,8 @@ public abstract class GameMode {
 	protected abstract void loadPixelMap();
 	protected abstract void loadCardSet();
 	protected abstract void loadVisualCards();
-	public abstract void checkStatesModeSpecific(GameState prevState, GameState currState, Player recentPlayer);
+	public abstract Card findItsModeSpecificCardCorresponding(String findTag);
+	public abstract boolean checkStateChangeModeSpecific(GameState prevState, GameState currState, Territory focusTerritory, Player recentPlayer);
+	public abstract int extractModeSpecificScore(ArrayList<Territory> list);
 
 }

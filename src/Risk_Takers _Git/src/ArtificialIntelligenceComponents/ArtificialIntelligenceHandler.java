@@ -26,9 +26,8 @@ public class ArtificialIntelligenceHandler {
 			}
 		}
 		if(activeAgent != null) {
-			if(!activeAgent.update()) {
+			if(!activeAgent.update())
 				GameController.interactions.requestNextPhase();
-			}
 		}
 	}
 

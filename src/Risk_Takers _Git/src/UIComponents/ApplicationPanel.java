@@ -178,7 +178,7 @@ public class ApplicationPanel extends DynamicPanel {
 		((AboutUsPanel)aboutUsPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsSelectGameModePanel);
 		((SelectGameModePanel)selectGameModePanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsSelectGameModePanel);
 		((SelectGameModePanel)selectGameModePanel).getMultiplayerLabel().addMouseListener(listenerToMultiplayerLabelInSelectGameModePanel);
-		((SelectGameModePanel)selectGameModePanel).getSingleplayerLabel().addMouseListener(listenerToMultiplayerLabelInSelectGameModePanel);
+		((SelectGameModePanel)selectGameModePanel).getSingleplayerLabel().addMouseListener(listenerToSinglePlayerLabelInSelectGameModePanel);
 	}
 
 	@Override

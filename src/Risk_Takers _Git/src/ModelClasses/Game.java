@@ -61,6 +61,7 @@ public class Game {
 				GameState.checkStateChange(Turn.prevState, GameController.interactions.getActiveCombat()
 						.getCombatTerritories()[1]);
 				GameController.interactions.requestVisualCardPanelUpdateRequest();
+				GameController.interactions.requestTextualPanelUpdateRequest();
 				GameController.interactions.terminateCombat();
 			}
 		}
@@ -198,7 +199,7 @@ public class Game {
 				}
 				else return sourceTerritory.getUnitNumber() - selectAmount >= Combat.MIN_DEFENSE_UNIT;
 			}
-			else {
+			else if(GameController.activeMode.territoryGraph.checkOverConnect(sourceTerritory, targetTerritory)) {
 				if(!Turn.activePlayer.captured(targetTerritory)) return false;
 				
 				if(GameState.getChangeAmount(Turn.prevState, focusTerritories[0]) == 0) return true;

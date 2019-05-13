@@ -81,7 +81,7 @@ public class EnvanterBox{
 
 	private Player player;
 	public void updatePlayer(Player activePlayer) {
-		if(player == activePlayer) return;
+		//if(player == activePlayer) return;
 		this.player = activePlayer;
 		resetPlayerNumber();
 	}
@@ -90,7 +90,6 @@ public class EnvanterBox{
 		list.clear();
 		for(int i = 0; i < player.getAvailableUnitAmount(); i++)
 			list.add(new SmallBox(x + borderLength/2, y + borderLength/2));
-		unitsInHand.clear();
 	}
 
 	private VisualTerritory focusTerritory;

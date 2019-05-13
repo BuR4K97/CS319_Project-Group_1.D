@@ -88,6 +88,19 @@ public class GameInteractions {
 		else { focusTerritories[1] = null; }
 	}
 	
+	public void synchronizeDirectFocusTerritories(Territory source, Territory target) {
+		if(source != null) {
+			Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
+			focusTerritories[0] = sourceTerritory;
+		}
+		else { focusTerritories[0] = null; }
+		if(target != null) {
+			Territory targetTerritory = GameController.activeMode.findItsTerritoryCorresponding(target.getCorrespondingTag());
+			focusTerritories[1] = targetTerritory;
+		}
+		else { focusTerritories[1] = null; }
+	}
+	
 	public Territory[] getFocusTerritories() {
 		return focusTerritories;
 	}
@@ -218,6 +231,10 @@ public class GameInteractions {
 		for(VisualCard activate : activates)
 			cards.add(findCorrespondingCard(activate));
 		return Game.activateCards(cards);
+	}
+	
+	public static boolean requestDirectCardActivation(ArrayList<Card> activates) {
+		return Game.activateCards(activates);
 	}
 
 	public static void requestManualGameUpdate() {

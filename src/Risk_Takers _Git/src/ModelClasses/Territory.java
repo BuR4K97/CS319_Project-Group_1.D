@@ -56,6 +56,12 @@ public abstract class Territory implements Combatable, Serializable {
 		return check.checkItsCorresponding(this.getCorrespondingTag());
 	}
 	
+	@Override
+	public boolean equals(Object check) {
+		if(check instanceof Territory) return equals((Territory)check);
+		return false;
+	}
+	
 	/**
 	private void writeObject(ObjectOutputStream objectBuffer) throws ClassNotFoundException, IOException {
 		objectBuffer.defaultWriteObject();

@@ -3,11 +3,11 @@ import java.util.ArrayList;
 
 import Controller.GameController;
 import Controller.GameInteractions;
-import Controller.GameMode;
+import ModelClasses.Card.CARD_ACTIVATION;
 
 public class GameState {
 	
-	private ArrayList<Territory> territoriesState;
+	protected ArrayList<Territory> territoriesState;
 	
 	public ArrayList<Territory> getTerritoriesState() { 
 		return this.territoriesState;
@@ -26,8 +26,7 @@ public class GameState {
 		for(int i = 0; i < prevState.territoriesState.size(); i++)
 			if(currState.territoriesState.get(i).getPlayer() == Turn.activePlayer)
 				territoriesCaptured += 1;
-		Turn.activePlayer.insertUnit(territoriesCaptured);
-		GameController.activeMode.checkStatesModeSpecific(prevState, currState, Turn.activePlayer);
+		Turn.activePlayer.insertUnit(territoriesCaptured / CARD_ACTIVATION.COMBINATIONAL.activation);
 	}
 	
 	public static void checkStateChange(GameState prevState, Territory focusTerritory) {
@@ -35,7 +34,17 @@ public class GameState {
 		
 		if(prevState.territoriesState.get(Game.territories.indexOf(focusTerritory)).getPlayer() != Turn.activePlayer)
 			Turn.activePlayer.insertCard(GameInteractions.findCorrespondingCard(focusTerritory));
-		
+		if(GameController.activeMode.checkStateChangeModeSpecific(Turn.prevState, extractGameState()
+				, focusTerritory, Turn.activePlayer)) {
+			Card modeSpecificCard = GameController.activeMode
+					.findItsModeSpecificCardCorresponding(focusTerritory.getCorrespondingTag());
+			if(modeSpecificCard != null) {
+				Turn.activePlayer.insertCard(modeSpecificCard);
+				ArrayList<Card> activate = new ArrayList<Card>();
+				activate.add(modeSpecificCard);
+				Turn.activePlayer.activateCards(activate);
+			}
+		}
 	}
 	
 	public static int getChangeAmount(GameState prevState, Territory focusTerritory) {
