@@ -16,6 +16,7 @@ import Controller.GameInteractions;
 import ModelClasses.Turn;
 import ModelClasses.Turn.TURN_PHASE;
 import UIComponents.EnvanterBoxUI.EnvanterBox;
+import UIComponents.Notifications.NotificationArea;
 
 public class TextualInGamePanel {
 
@@ -24,8 +25,10 @@ public class TextualInGamePanel {
 	public EnvanterBox envanterBox;
 	private FortifyInteraction foritfyInteraction;
 	private MouseInGameListener mouseTracer;
-
+	private NotificationArea notifications;
+	
 	public void initialize(MouseInGameListener mouseTracer) {
+		notifications = new NotificationArea();
 		phaseLabel = new JLabel();
 		phaseLabel.setFont(new Font("pixel", Font.PLAIN, 32));
 		phaseLabel.setForeground(Color.LIGHT_GRAY);
@@ -65,9 +68,14 @@ public class TextualInGamePanel {
 		foritfyInteraction.flushState();
 	}
 	
+	public void requestNotification(String message) {
+		notifications.addNotification(message);
+	}
+	
 	public void paint(Graphics painter) {
 		envanterBox.paint(painter);
 		foritfyInteraction.paint(painter);
+		notifications.paint(painter);
 	}
 	
 	private boolean suspendEnvanterBox() {
@@ -77,7 +85,7 @@ public class TextualInGamePanel {
 	private boolean suspendFortifyInteraction() {
 		return GameInteractions.getActivePhase() != TURN_PHASE.FORTIFY;
 	}
-
+	
 	public JLabel getPhaseLabel() {
 		return phaseLabel;
 	}

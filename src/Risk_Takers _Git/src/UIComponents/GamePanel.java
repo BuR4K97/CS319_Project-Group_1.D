@@ -90,6 +90,10 @@ public class GamePanel extends DynamicPanel {
 		mouseTracer.rightButtonClicked = false;
 	}
 	
+	public void requestNotification(String message) {
+		textualInGamePanel.requestNotification(message);
+	}
+	
 	public void requestFlushVisualTerritoryPanel() {
 		visualTerritoryPanel.flushPrevState();
 	}

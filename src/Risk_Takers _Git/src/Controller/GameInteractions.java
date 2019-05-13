@@ -219,6 +219,10 @@ public class GameInteractions {
 			cards.add(findCorrespondingCard(activate));
 		return Game.activateCards(cards);
 	}
+	
+	public static void requestNotification(String message) {
+		((GamePanel)MainApplication.frame.focusPanel).requestNotification(message);
+	}
 
 	public static void requestManualGameUpdate() {
 		GameController.requestManualGameUpdate();

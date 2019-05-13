@@ -78,7 +78,10 @@ public class Game {
 								, focusTerritory[1]));
 					} 
 				}
-				else {System.out.println("You cannot attack since you have too many cards!!!");}
+				else {
+					GameInteractions.requestNotification("you have maximum amount of cards");
+					GameInteractions.requestNotification("you must use your cards before attack");
+				}
 			}
 			else {
 				if(focusTerritory[0] != null && focusTerritory[1] != null) {
