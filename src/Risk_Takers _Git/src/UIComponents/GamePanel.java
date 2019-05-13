@@ -21,38 +21,11 @@ public class GamePanel extends DynamicPanel {
 	private VisualCardPanel visualCardPanel;
 	private MouseInGameListener mouseTracer;
 	
-	private ArrayList<VisualString> draftPhaseStr;
-	private ArrayList<VisualString> attackPhaseStr;
-	private ArrayList<VisualString> fortifyPhaseStr;
-	private ArrayList<VisualString> showCardsModeStr;
-	private ArrayList<VisualString> attackModeStr;
-	private ArrayList<VisualString> currentStateStrToDraw;
-	private InGameSettingsPanel inGameSettingsPanel;
-	//stringList.add(new VisualString(770, 126, 14, "Options"));
-	
 	public GamePanel() {
 		if(GameController.activeMode == null) return;
 		setLayout(null);
 		setBackground(Color.BLACK);
-		
-		setDraftPhaseStr();
-		setAttackPhaseStr();
-		setFortifyPhaseStr();
-		setShowCardsModeStr();
-		setAttackModeStr();
-		setCurrentStateStrToDraw();
-		
-		fillDraftPhaseStr();
-		
-//		for(int i = 0; i < draftPhaseStr.size(); i++)
-//			currentStateStrToDraw.add(draftPhaseStr.get(i));
-		currentStateStrToDraw.add(new VisualString(1210, 875, 5, "Fortify"));
-		currentStateStrToDraw.add(new VisualString(1400, 875, 5, "Player 1", Color.GREEN));
-		currentStateStrToDraw.add(new VisualString(1210, 925, 4, "Attack Till Capture"));
-		currentStateStrToDraw.add(new VisualString(1210, 965, 4, "Attack"));
-		currentStateStrToDraw.add(new VisualString(1210, 1005, 4, "Attack"));
-		
-		inGameSettingsPanel = new InGameSettingsPanel();
+
 		
 		currState = PANEL_STATES.NORMAL;
 		mouseTracer = new MouseInGameListener();
@@ -102,51 +75,7 @@ public class GamePanel extends DynamicPanel {
 			visualCardPanel.paint(painter);
 		if(!suspendTextualInGamePanelPaintEvent()) {
 			textualInGamePanel.paint(painter);
-			drawStringBorders(painter);
-			for(int i = 0; i < currentStateStrToDraw.size(); i++)
-				currentStateStrToDraw.get(i).paint(painter);
 		}
-//		int width, height;
-//		width = 800;
-//		height = 400;
-//		painter.setColor(new Color(0, 0, 0, 170));
-//		painter.fillRect(1920/2 - width/2, 1080/2 - height/2, width, height);
-//		painter.setColor(Color.CYAN);
-//		painter.drawRect(1920/2 - width/2, 1080/2 - height/2, width, height);
-	}
-	
-	public void drawStringBorders(Graphics g) {
-		int xCor = 1200, yCor = 860;
-		for(int i = 0; i < 46; i++) {
-			g.drawRect(xCor, yCor, 4, 4);
-			xCor += 8;
-		}
-		xCor = 1204; yCor = 910;
-		for(int i = 0; i < 45; i++) {
-			g.drawRect(xCor, yCor, 4, 4);
-			xCor += 8;
-		}
-		xCor = 1200; yCor = 1030;
-		for(int i = 0; i < 46; i++) {
-			g.drawRect(xCor, yCor, 4, 4);
-			xCor += 8;
-		}
-		xCor = 1200; yCor = 866;
-		for(int i = 0; i < 33; i++) {
-			g.drawRect(xCor, yCor, 2, 2);
-			yCor += 5;
-		}
-		xCor = 1380; yCor = 866;
-		for(int i = 0; i < 9; i++) {
-			g.drawRect(xCor, yCor, 2, 2);
-			yCor += 5;
-		}
-		xCor = 1562; yCor = 866;
-		for(int i = 0; i < 33; i++) {
-			g.drawRect(xCor, yCor, 2, 2);
-			yCor += 5;
-		}
-		
 	}
 
 	public void update() {
@@ -232,49 +161,7 @@ public class GamePanel extends DynamicPanel {
 		return AnimationHandler.suspendVisualCardPanelPaintEvent();
 	}
 
-	public void setShowCardsModeStr() {
-		showCardsModeStr = new ArrayList<VisualString>();
-	}
 
-	public void setDraftPhaseStr() {
-		draftPhaseStr = new ArrayList<VisualString>();
-	}
 
-	public void setAttackPhaseStr() {
-		attackPhaseStr = new ArrayList<VisualString>();
-	}
-
-	public void setFortifyPhaseStr() {
-		fortifyPhaseStr = new ArrayList<VisualString>();
-	}
-
-	public void setAttackModeStr() {
-		attackModeStr = new ArrayList<VisualString>();
-	}
-
-	public void setCurrentStateStrToDraw() {
-		currentStateStrToDraw = new ArrayList<VisualString>();
-	}
 	
-	public void fillCurrentStateStrToDraw() {
-		for(int i = 0; i < showCardsModeStr.size(); i++)
-			currentStateStrToDraw.add(showCardsModeStr.get(i));
-		for(int i = 0; i < draftPhaseStr.size(); i++)
-			currentStateStrToDraw.add(draftPhaseStr.get(i));
-		for(int i = 0; i < attackPhaseStr.size(); i++)
-			currentStateStrToDraw.add(attackPhaseStr.get(i));
-		for(int i = 0; i < fortifyPhaseStr.size(); i++)
-			currentStateStrToDraw.add(fortifyPhaseStr.get(i));
-		for(int i = 0; i < attackModeStr.size(); i++)
-			currentStateStrToDraw.add(attackModeStr.get(i));
-	}
-	
-	public void fillDraftPhaseStr(){
-		//System.out.println(textualInGamePanel.getActivePlayerText());
-		//System.out.println(textualInGamePanel.getActivePhaseText());
-		
-		//draftPhaseStr.add(new VisualString(1210, 875, 5, textualInGamePanel.getPhaseLabel().getText(), Color.CYAN));
-		//draftPhaseStr.add(new VisualString(1400, 875, 5, textualInGamePanel.getPlayerLabel().getText(), textualInGamePanel.getPlayerLabel().getForeground()));
-		//System.out.println(textualInGamePanel.getPhaseLabel().getText());
-	}
 }
