@@ -29,11 +29,11 @@ public class TextualInGamePanel {
 		phaseLabel = new JLabel();
 		phaseLabel.setFont(new Font("pixel", Font.PLAIN, 32));
 		phaseLabel.setForeground(Color.LIGHT_GRAY);
-		phaseLabel.setBounds(575, 1013, 116, 29);
+		phaseLabel.setBounds(575, 1013, 125, 29);
 		
 		playerLabel = new JLabel();
 		playerLabel.setFont(new Font("pixel", Font.PLAIN, 32));
-		playerLabel.setBounds(725, 1013, 150, 29);
+		playerLabel.setBounds(725, 1013, 140, 29);
 				
 		envanterBox = new EnvanterBox();
 		foritfyInteraction = new FortifyInteraction();

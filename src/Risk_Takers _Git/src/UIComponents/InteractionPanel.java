@@ -36,14 +36,14 @@ public class InteractionPanel {
 	
 	private int nextPhaseLabelX = 925;
 	private int cardButtonX = 1175;
-	private int attackRequestLabelX = 1450;
+	private int attackRequestLabelX = 1430;
 	
-	private int attackTillCaptureX = 815;
-	private int attackPerRollX = 1090;
-	private int terminateAttackX = 1305;
+	private int attackTillCaptureX = 900;
+	private int attackPerRollX = 1270;
+	private int terminateAttackX = 1565;
 	
-	private int activateCardsX = 1090;
-	private int cardModeBackButtonX = 1305;
+	private int activateCardsX = 925;
+	private int cardModeBackButtonX = 1200;
 
 	public void initialize() {
 
@@ -90,19 +90,19 @@ public class InteractionPanel {
 		});
 
 		attackTillCapture = new JLabel("Attack Till Capture");
-		attackTillCapture.setBounds(attackTillCaptureX, yAxis, 285, 29);
+		attackTillCapture.setBounds(attackTillCaptureX, yAxis, 315, 29);
 		attackTillCapture.setForeground(Color.LIGHT_GRAY);
 		attackTillCapture.setBackground(new Color(0, 0, 0, 0));
 		attackTillCapture.setFont(new Font("pixel", Font.PLAIN, 32));
 
 		attackPerRoll = new JLabel("Attack Per Roll");
-		attackPerRoll.setBounds(attackPerRollX, yAxis, 230, 29);
+		attackPerRoll.setBounds(attackPerRollX, yAxis, 255, 29);
 		attackPerRoll.setForeground(Color.LIGHT_GRAY);
 		attackPerRoll.setBackground(new Color(0, 0, 0, 0));
 		attackPerRoll.setFont(new Font("pixel", Font.PLAIN, 32));
 
 		terminateAttack = new JLabel("Terminate Attack");
-		terminateAttack.setBounds(terminateAttackX, yAxis, 265, 29);
+		terminateAttack.setBounds(terminateAttackX, yAxis, 280, 29);
 		terminateAttack.setForeground(Color.LIGHT_GRAY);
 		terminateAttack.setBackground(new Color(0, 0, 0, 0));
 		terminateAttack.setFont(new Font("pixel", Font.PLAIN, 32));
@@ -174,7 +174,7 @@ public class InteractionPanel {
 		});
 
 		activateCards = new JLabel("Activate Cards");
-		activateCards.setBounds(activateCardsX, yAxis, 230, 29);
+		activateCards.setBounds(activateCardsX, yAxis, 235, 29);
 		activateCards.setForeground(Color.LIGHT_GRAY);
 		activateCards.setBackground(new Color(0, 0, 0, 0));
 		activateCards.setFont(new Font("pixel", Font.PLAIN, 32));
