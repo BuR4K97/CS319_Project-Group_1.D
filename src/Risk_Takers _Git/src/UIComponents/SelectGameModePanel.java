@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import Controller.GameInteractions;
 import GameAssets.GameConstants;
+import GameAssets.SoundConstants;
 import ModelClasses.Game;
 import UIComponents.BoxAni.JumpingBox;
 import UIComponents.Fireworks.Fireworks;
@@ -68,7 +69,9 @@ public class SelectGameModePanel extends JPanel{
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				if(stringList.get(stringList.size()-2).getRectangle().contains(getMousePosition())) {
 					if(totalNumber < maxNumberOfHuman) {
@@ -104,6 +107,7 @@ public class SelectGameModePanel extends JPanel{
 					}
 				}
 				GameInteractions.requestResetMultiplayerMode(totalNumberOfHuman);
+				SoundConstants.menuClickSound();
 			}
 		};
 		this.addMouseListener(ml);

@@ -18,6 +18,7 @@ import AnimationComponents.AnimationHandler;
 import Controller.GameController;
 import Controller.GameInteractions;
 import Controller.MainApplication;
+import GameAssets.SoundConstants;
 import ModelClasses.Card;
 import ModelClasses.Territory;
 
@@ -50,12 +51,15 @@ public class InteractionPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.synchronizeFocusTerritories(null, null);
 				GameController.interactions.requestNextPhase();
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushTextualInGamePanel();
+				SoundConstants.gameMouseClickSound();
 			}
 		});
 
@@ -63,10 +67,13 @@ public class InteractionPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.requestAction(0);
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
+				SoundConstants.gameMouseClickSound();
 			}
 		});
 
@@ -92,9 +99,12 @@ public class InteractionPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.requestAttackTillCapture();
+				SoundConstants.multiDiceSound();
 			}
 		});
 
@@ -102,9 +112,12 @@ public class InteractionPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.requestAttackPerRoll();
+				SoundConstants.singleDiceSound();
 			}
 		});
 
@@ -112,9 +125,12 @@ public class InteractionPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				GameController.interactions.terminateCombat();
+				SoundConstants.gameMouseClickSound();
 			}
 		});
 
@@ -134,11 +150,14 @@ public class InteractionPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				((GamePanel)MainApplication.frame.focusPanel).initializeCardMode();
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualTerritoryPanel();
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushTextualInGamePanel();
+				SoundConstants.gameMouseClickSound();
 			}
 		});
 
@@ -158,10 +177,13 @@ public class InteractionPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				if(GameInteractions.requestCardActivation(((GamePanel)MainApplication.frame.focusPanel).getFocusVisualCards()))
 					((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualCardPanel();
+				SoundConstants.gameMouseClickSound();
 			}
 		});
 
@@ -169,10 +191,13 @@ public class InteractionPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				((GamePanel)MainApplication.frame.focusPanel).terminateCardMode();
 				((GamePanel)MainApplication.frame.focusPanel).requestFlushVisualCardPanel();
+				SoundConstants.gameMouseClickSound();
 			}
 		});
 		activateCards.setVisible(false);
