@@ -1,4 +1,5 @@
-package UIComponents;
+package UIComponents.Notifications;
+
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
-public class VisualString {
+public class notificationString {
 
 	boolean end = false;
 	public int x;
@@ -20,8 +21,8 @@ public class VisualString {
 	public int maxLength;
 	public String string;
 	public ArrayList<Rect> list = new ArrayList<Rect>();
-	int startAnimationDelay = 15;
-	int startAnimationSpeed = 25;
+	int startAnimationDelay = 16;
+	int startAnimationSpeed = NotificationArea.startAnimationSpeed;
 	Timer startAnimation, endAnimation;
 	Timer mexicoWave;
 	int mexicoWaveCoordinate;
@@ -47,14 +48,14 @@ public class VisualString {
 				else
 					xCurrent = 1920 / 2 + (int)(Math.random() * 1920 / 2);
 			}else {
-				xCurrent = (int)(-border);
+				xCurrent = (int)(-border) * 10;
 			}
 			this.y = yy;
 			yEnd = 1080;
 		}
 	}
 
-	public VisualString(int x, int y, int maxLength, String string, Color color) { // width = maxlength*5
+	public notificationString(int x, int y, int maxLength, String string, Color color) { // width = maxlength*5
 
 		this.maxLength = maxLength;
 		this.minLength = (int)(maxLength * 6 / 7);
@@ -117,8 +118,7 @@ public class VisualString {
 		});
 		mexicoWave.start();
 	}
-
-	public VisualString(int x, int y, int maxLength, String string, boolean noAnimation) {
+	public notificationString(int x, int y, int maxLength, String string, boolean noAnimation) {
 		// width = maxlength*5
 
 		this.maxLength = maxLength;
@@ -161,8 +161,7 @@ public class VisualString {
 		mexicoWave.start();
 
 	}
-	
-	public VisualString(int x, int y, int maxLength, String string) { // width = maxlength*5
+	public notificationString(int x, int y, int maxLength, String string) { // width = maxlength*5
 
 		this.maxLength = maxLength;
 		this.minLength = (int)(maxLength * 6 / 7);
@@ -224,72 +223,10 @@ public class VisualString {
 		});
 		mexicoWave.start();
 	}	
-	public VisualString(int x, int y, int maxLength, String string, int p) { // width = maxlength*5
-
-		this.maxLength = maxLength;
-		this.minLength = (int)(maxLength * 7 / 7);
-		mexicoWaveLength = maxLength - minLength;
-		this.x = x;
-		this.y = y;
-		this.string = string;
-		mexicoWaveCoordinate = 0;
-		this.color = Color.WHITE;
-
-		for(int i = 0; i < string.length(); i++)
-			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
-		startAnimation = new Timer(startAnimationDelay, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				boolean done = true;
-				for(int i = 0; i < list.size(); i++) {
-					if(Math.random() * 4 < 1)
-						list.get(i).startAnimation = true;
-					if(Math.abs(list.get(i).x - list.get(i).xCurrent) <= startAnimationSpeed && list.get(i).startAnimation) {
-						list.get(i).xCurrent = list.get(i).x;
-						list.get(i).startAnimation = false;
-					}
-					else if(list.get(i).x < list.get(i).xCurrent && list.get(i).startAnimation) {
-						list.get(i).xCurrent -= startAnimationSpeed;
-						done = false;
-					}
-					else if(list.get(i).x > list.get(i).xCurrent && list.get(i).startAnimation) {
-						list.get(i).xCurrent += startAnimationSpeed;
-						done = false;
-					}
-				}
-				if(done)
-					startAnimation.stop();
-			}
-		});
-		startAnimation.start();
-		mexicoWave = new Timer(mexicoWaveDelay, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				/*
-				if(mexicoWaveCoordinate < (x + string.length() * 4 * maxLength) + mexicoWaveLength)
-					mexicoWaveCoordinate+=mexicoWaveLength;
-				else
-					mexicoWaveCoordinate =-mexicoWaveLength*2+ x;
-				 */
-				if(mexicoWaveCoordinate < (1920) + mexicoWaveLength * 2)
-					mexicoWaveCoordinate += mexicoWaveLength * 2;
-				else
-					mexicoWaveCoordinate = - mexicoWaveLength * 2;
-				for(int i = 0; i < list.size(); i++) {
-					for(int j = 0; j <= mexicoWaveLength;j++) {
-						if(Math.abs(list.get(i).x - mexicoWaveCoordinate) <= maxLength * (j+1) && Math.abs(list.get(i).x - mexicoWaveCoordinate) > maxLength * (j)) {
-							list.get(i).border = maxLength - j;
-							break;
-						} 
-					}
-				}
-			}
-
-		});
-		mexicoWave.start();
-	}	
-	public VisualString(int x, int y, int maxLength, String string, String notification) { // width = maxlength*5
+	public notificationString(int x, int y, int maxLength, String string, String notification) { // width = maxlength*5
 		this.maxLength = maxLength;
 		if(notification.equals("notification")) {
-			this.minLength = (int)(maxLength * 1);
+			this.minLength = (int)(maxLength * 7/7);
 			this.notification = notification;
 		}
 		mexicoWaveLength = maxLength - minLength;
@@ -350,6 +287,49 @@ public class VisualString {
 		});
 		mexicoWave.start();
 	}	
+	public notificationString(int x, int y, int maxLength, String string, String notification, boolean noanimation) { // width = maxlength*5
+		this.maxLength = maxLength;
+		if(notification.equals("notification")) {
+			this.minLength = (int)(maxLength * 7/7);
+			this.notification = notification;
+		}
+		mexicoWaveLength = maxLength - minLength;
+		this.x = x;
+		this.y = y;
+		this.string = string;
+		mexicoWaveCoordinate = 0;
+		this.color = Color.WHITE;
+
+		for(int i = 0; i < string.length(); i++)
+			drawNumberOn(new Rect(x + (i* maxLength* 4), y), maxLength, string.toUpperCase().charAt(i));
+		for(int i = 0; i < list.size(); i++) {
+			list.get(i).xCurrent = list.get(i).x;
+		}
+		mexicoWave = new Timer(mexicoWaveDelay, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*
+				if(mexicoWaveCoordinate < (x + string.length() * 4 * maxLength) + mexicoWaveLength)
+					mexicoWaveCoordinate+=mexicoWaveLength;
+				else
+					mexicoWaveCoordinate =-mexicoWaveLength*2+ x;
+				 */
+				if(mexicoWaveCoordinate < (1920) + mexicoWaveLength * 2)
+					mexicoWaveCoordinate += mexicoWaveLength * 2;
+				else
+					mexicoWaveCoordinate = - mexicoWaveLength * 2;
+				for(int i = 0; i < list.size(); i++) {
+					for(int j = 0; j <= mexicoWaveLength;j++) {
+						if(Math.abs(list.get(i).x - mexicoWaveCoordinate) <= maxLength * (j+1) && Math.abs(list.get(i).x - mexicoWaveCoordinate) > maxLength * (j)) {
+							list.get(i).border = maxLength - j;
+							break;
+						} 
+					}
+				}
+			}
+
+		});
+		mexicoWave.start();
+	}	
 	public void updateStringNoAnimation(String s) {
 		list.clear();
 		string = s;
@@ -368,7 +348,6 @@ public class VisualString {
 	}
 	public void paint(Graphics g) {
 		g.setColor(color);
-
 		for(int i = 0; i < list.size(); i++) {
 			g.fillRect(list.get(i).xCurrent, list.get(i).y, list.get(i).border, list.get(i).border);
 		}

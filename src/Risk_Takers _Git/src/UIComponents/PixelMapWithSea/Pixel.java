@@ -79,7 +79,7 @@ public class Pixel{
 			int movement = 8;
 			public void actionPerformed(ActionEvent e) {
 				// random
-				if((int)(Math.random() * 3) == 0) {
+				if((int)(Math.random() * 4) == 0) {
 					list.get((int)(Math.random() * list.size())).move = true;
 				}
 				for(int i = 0;i < list.size(); i++) {

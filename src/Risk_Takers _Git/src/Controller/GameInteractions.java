@@ -234,7 +234,12 @@ public class GameInteractions {
 	}
 	
 	public static boolean requestDirectCardActivation(ArrayList<Card> activates) {
-		return Game.activateCards(activates);
+		return Game.activateCards(activates); 
+	}
+
+	public static void requestNotification(String message) {
+		((GamePanel)MainApplication.frame.focusPanel).requestNotification(message);
+
 	}
 
 	public static void requestManualGameUpdate() {
