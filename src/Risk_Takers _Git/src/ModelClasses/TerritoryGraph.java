@@ -3,6 +3,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import Controller.GameController;
+
 public class TerritoryGraph implements Serializable {
 
 	private static class GraphNode implements Serializable {
@@ -184,37 +186,58 @@ public class TerritoryGraph implements Serializable {
 
 	public Territory extractFlushTerritory(Territory flush) {
 		ArrayList<GraphNode> flushes = new ArrayList<GraphNode>(); flushes.add(findGraphNode(flush));
-		for(GraphNode execute : flushes) {
+		GraphNode execute;
+		for(int i = 0; i < flushes.size(); i++) {
+			execute = flushes.get(i); if(execute == null) continue;
 			for(GraphNode insert : execute.connectedTerritories) {
 				if(insert.territory.getPlayer() == flush.getPlayer()) {
 					if(!flushes.contains(insert)) flushes.add(insert);
 				}
 			}
 		}
-		check:for(GraphNode execute : flushes) {
+		
+		check:for(int i = 0; i < flushes.size(); i++) {
+			execute = flushes.get(i);
 			for(GraphNode connect : execute.connectedTerritories)
 				if(connect.territory.getPlayer() != execute.territory.getPlayer()) continue check;
 			flushes.remove(execute);
+			i--;
 		}
 		
-		ArrayList<ArrayList<GraphNode>> flushesPath = new ArrayList<ArrayList<GraphNode>>();
-		ArrayList<ArrayList<GraphNode>> searchList = new ArrayList<ArrayList<GraphNode>>();
-		for(GraphNode execute : flushes) {
-			ArrayList<GraphNode> executeList = new ArrayList<GraphNode>(); executeList.add(execute);
-			searchList.add(executeList);
-			
+		SearchNode longestPath = null; Territory result = null;
+		ArrayList<SearchNode> searchList = new ArrayList<SearchNode>(); SearchNode search;
+		ArrayList<GraphNode> extendedList = new ArrayList<GraphNode>();
+		for(GraphNode executeFlush : flushes) {
+			searchList.add(new SearchNode(executeFlush));
+			while(!searchList.isEmpty()) {
+				if(searchList.get(0).checkExecuted()) break;
+				search = searchList.get(0);
+				extendedList.add(search.path.get(search.path.size() - 1));
+				ArrayList<SearchNode> branches = search.execute();
+				for(int i = 0; i < branches.size(); i++) {
+					SearchNode branch = branches.get(i);
+					if(branch.path.get(branch.path.size() - 1).territory.getPlayer() == flush.getPlayer()) {
+						branches.remove(branch); i--; continue;
+					}
+					if(extendedList.contains(branch.path.get(branch.path.size() - 1))) {
+						branches.remove(branch); i--;
+					}
+				}
+				searchList.addAll(branches);
+				searchList.sort(null);
+			}
+			extendedList.clear();
+			if(longestPath == null) {
+				longestPath = searchList.get(0);
+				result = executeFlush.territory;
+			}
+			else if(searchList.get(0).path.size() > longestPath.path.size()) {
+				longestPath = searchList.get(0);
+				result = executeFlush.territory;
+			}
 			searchList.clear();
 		}
-
-		searchList.sort(new Comparator<ArrayList<GraphNode>>() {
-
-			@Override
-			public int compare(ArrayList<GraphNode> o1, ArrayList<GraphNode> o2) {
-				return o2.size() - o1.size();
-			}
-
-		});
-		return null;
+		return result;
 	}
 
 	public ArrayList<Territory> getTerritories() {
@@ -227,6 +250,63 @@ public class TerritoryGraph implements Serializable {
 		for(GraphNode currNode : territories)
 			if(currNode.territory.equals(territory)) return currNode;
 		return null;
+	}
+	
+	/**
+	 * Specialized SearchNode to find the longest path possible.
+	 * You can specialize by defining new heuristic function mode.
+	 * Executes returns the branches but mot eliminates the loops since inefficiency.
+	 * Try to eliminate with A*' extended list reasoning.
+	 */
+	private static class SearchNode implements Comparable<SearchNode> {
+		
+		private ArrayList<GraphNode> path = new ArrayList<>();
+		private boolean executed = false;
+		private double heuristicValue;
+		
+		private SearchNode() {}
+		private SearchNode(GraphNode initialNode) {
+			this.path.add(initialNode);
+			this.extractHeuristicValue();
+		}
+		
+		private boolean checkExecuted() {
+			return executed;
+		}
+		
+		@Override
+		public int compareTo(SearchNode check) {
+			if(heuristicValue < check.heuristicValue) return -1;
+			if(heuristicValue > check.heuristicValue) return 1;
+			return 0;
+		}
+		
+		private void extractHeuristicValue() {
+			if(executed) heuristicValue = GameController.activeMode.territoryGraph.territories.size() / (double)path.size();
+			else heuristicValue = 1 / (double) path.size();
+		}
+		
+		private SearchNode copy() {
+			SearchNode copy = new SearchNode();
+			for(GraphNode pathNode : path)
+				copy.path.add(pathNode);
+			return copy;
+		}
+		
+		private ArrayList<SearchNode> execute() {
+			ArrayList<SearchNode> branhces = new ArrayList<SearchNode>();
+			SearchNode insert;
+			for(GraphNode branch : path.get(path.size() - 1).connectedTerritories) {
+				insert = this.copy();
+				insert.path.add(branch);
+				insert.extractHeuristicValue();
+				branhces.add(insert);
+			}
+			executed = true;
+			this.extractHeuristicValue();
+			return branhces;
+		}
+
 	}
 
 }//endClass
