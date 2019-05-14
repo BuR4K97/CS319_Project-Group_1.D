@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.concurrent.Phaser;
 
 import javax.sound.sampled.FloatControl;
@@ -37,9 +38,11 @@ public class OptionsPanel extends JPanel {
 	private JSlider slider;
 	private JLabel volumeLabel;
 	private float volumeChange;
+	private double volume;
 	private String[] musicNames;
 	private String currentMusicLoc;
 	private FloatControl gainControl;
+	private String[] difficultyLevels;
 	private ArrayList<VisualString> stringList;
 	private Fireworks fireWorks;
 	
@@ -67,7 +70,6 @@ public class OptionsPanel extends JPanel {
 		comboBoxMusic = new JComboBox(musicNames);
 		comboBoxMusic.setToolTipText("Change Music");
 		comboBoxMusic.setSelectedIndex(-1);
-		//comboBoxMusic.setBackground(new Color(254,233,222,100));
 		comboBoxMusic.setFont(new Font("Sylfaen", Font.PLAIN, 20));
 		comboBoxMusic.setForeground(Color.BLACK);
 		comboBoxMusic.setSelectedIndex(0);
@@ -93,16 +95,6 @@ public class OptionsPanel extends JPanel {
 		});
 		add(comboBoxMusic);
 
-		comboBoxChangeDifficulty = new JComboBox();
-		comboBoxChangeDifficulty.setToolTipText("Change Difficulty");
-		comboBoxChangeDifficulty.setSelectedIndex(-1);
-		comboBoxChangeDifficulty.setForeground(new Color(254, 233, 222, 100));
-		comboBoxChangeDifficulty.setFont(new Font("Sylfaen", Font.PLAIN, 20));
-		comboBoxChangeDifficulty.setBackground(new Color(254, 233, 222, 100));
-		comboBoxChangeDifficulty.setBounds(1472, 600, 248, 30);
-		add(comboBoxChangeDifficulty);
-		
-				
 		slider = new JSlider();
 		slider.setBounds(832, 600, 248, 30);
 		slider.setValue(100);
@@ -117,9 +109,6 @@ public class OptionsPanel extends JPanel {
 		volumeLabel.setBounds(1092, 604, 38, 16);
 		add(volumeLabel);
 		
-		
-		
-		
 		slider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				gainControl = (FloatControl) SoundHandler.getClip().getControl(FloatControl.Type.MASTER_GAIN);
@@ -127,26 +116,22 @@ public class OptionsPanel extends JPanel {
 				double upBound = Math.log(101);
 				double lowBound = Math.log(1);
 				double diffBounds = upBound - lowBound;
-				double volume = (Math.log(slider.getValue() + 1) * 86) / diffBounds;
-				
+				volume = (Math.log(slider.getValue() + 1) * 86) / diffBounds;
 				volumeLabel.setText(slider.getValue() + "");
 				gainControl.setValue(((float)volume) - 80);
 			}
 		});
 		add(slider);
 		
-		
 		lblPlay = new JLabel("");
 		lblPlay.setForeground(Color.WHITE);
 		lblPlay.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblPlay.setBounds(200, 558, 85, 29);
 		
-		
 		lblPause = new JLabel("");
 		lblPause.setForeground(Color.WHITE);
 		lblPause.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblPause.setBounds(375, 558, 73, 29);
-		
 		
 		playing  = true;
 		lblPlay.addMouseListener(new MouseListener() {
@@ -175,6 +160,15 @@ public class OptionsPanel extends JPanel {
 		});
 		add(lblPause);
 		
+		difficultyLevels = new String[] {"Hard"};
+		comboBoxChangeDifficulty = new JComboBox(difficultyLevels);
+		comboBoxChangeDifficulty.setToolTipText("Change Difficulty");
+		comboBoxChangeDifficulty.setFont(new Font("Sylfaen", Font.PLAIN, 20));
+		comboBoxChangeDifficulty.setForeground(Color.BLACK);
+		comboBoxChangeDifficulty.setSelectedIndex(0);
+		comboBoxChangeDifficulty.setAlignmentX (Component.CENTER_ALIGNMENT);
+		comboBoxChangeDifficulty.setBounds(1472, 600, 248, 30);
+		add(comboBoxChangeDifficulty);
 	}
 
 	public void initialize()
