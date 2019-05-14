@@ -308,6 +308,7 @@ public class EnvanterBox{
 		focusTerritory = null;
 		unitsInHand.clear();
 		selectedAmount = 0;
+		returnToBoxAnimation.clear();
 	}
 
 }

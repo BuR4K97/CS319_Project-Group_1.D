@@ -2,6 +2,7 @@ package ArtificialIntelligenceComponents;
 
 import java.util.ArrayList;
 
+import AnimationComponents.AnimationHandler;
 import Controller.GameController;
 import Controller.GameInteractions;
 import ModelClasses.Card;
@@ -76,14 +77,8 @@ public class ArtificialIntelligence {
 		}
 		return !terminated;
 	}
-
-	private boolean suspendedEvent = false;
+	
 	private boolean attackPhaseUpdate() {
-		if(suspendedEvent) {
-			GameController.interactions.requestAttackTillCapture();
-			suspendedEvent = false;
-			return true;
-		}
 		boolean terminated = true;
 		if(binding.getCardSet().size() >= UnitPocket.MAX_CARD) activateCards();
 
@@ -111,7 +106,7 @@ public class ArtificialIntelligence {
 				GameController.interactions.synchronizeDirectFocusTerritories(goalMoment.territoryMoment.get(i)
 						, goalMoment.territoryMoment.get(goalMoment.territoryMoment.size() - 1));
 				GameController.interactions.requestAction(0);
-				suspendedEvent = true;
+				ArtificialIntelligenceHandler.requestSuspendAttack();
 				terminated = false;
 				break;
 			}

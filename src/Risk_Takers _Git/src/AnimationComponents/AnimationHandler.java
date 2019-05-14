@@ -28,6 +28,7 @@ public class AnimationHandler {
 	public static void requestAttackAnimation(ArrayList<VisualTerritory> vs, VisualTerritory source, VisualTerritory target
 			, Territory sourceTerritory, Territory targetTerritory) {
 		if(source == null && target == null) return;
+		if(suspendArtificialIntelligenceUpdate()) return;
 		
 		for(Animation animation : animations)
 			if(animation instanceof AttackAnimation) 
@@ -55,6 +56,10 @@ public class AnimationHandler {
 					animations.remove(i);
 		
 		animations.add(new CharacterDisplayAnimation(animatedCharacter, displayCoordinate));
+	}
+	
+	public static void requestArtificialIntelligenceAnimation() {
+		animations.add(new ArtificialIntelligenceAnimation());
 	}
 
 	public static void terminateMouseOnTerritoryAnimation(VisualTerritory animateTerritory) {
@@ -143,4 +148,12 @@ public class AnimationHandler {
 		}
 		return false;
 	}
+	
+	public static boolean suspendArtificialIntelligenceUpdate() {
+		for(Animation animation : animations)
+			if(animation instanceof ArtificialIntelligenceAnimation)
+				return true;
+		return false;
+	}
+	
 }

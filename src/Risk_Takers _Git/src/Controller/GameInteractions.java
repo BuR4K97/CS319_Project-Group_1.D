@@ -250,4 +250,12 @@ public class GameInteractions {
 		Game.requestResetMultiplayerMode(playerNumber);
 	}
 	
+	public static boolean suspendArtificialIntelligenceUpdate() {
+		return AnimationHandler.suspendArtificialIntelligenceUpdate();
+	}
+	
+	public static void requestArtificialIntelligenceAnimation() {
+		AnimationHandler.requestArtificialIntelligenceAnimation();
+	}
+	
 }

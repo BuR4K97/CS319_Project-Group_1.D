@@ -17,7 +17,13 @@ public class ArtificialIntelligenceHandler {
 		agents.add(bindingAgent);
 	}
 
+	private static boolean suspendedAttack;
 	public static void update() {
+		if(suspendedAttack) {
+			GameController.interactions.requestAttackTillCapture(); suspendedAttack = false;
+		}
+		if(GameInteractions.suspendArtificialIntelligenceUpdate()) return;
+		
 		ArtificialIntelligence activeAgent = null;
 		for(ArtificialIntelligence agent : agents) {
 			if(agent.binding == GameInteractions.getActivePlayer()) {
@@ -26,9 +32,13 @@ public class ArtificialIntelligenceHandler {
 			}
 		}
 		if(activeAgent != null) {
-			if(!activeAgent.update())
-				GameController.interactions.requestNextPhase();
+			if(activeAgent.update()) GameInteractions.requestArtificialIntelligenceAnimation();
+			else GameController.interactions.requestNextPhase();
 		}
+	}
+	
+	public static void requestSuspendAttack() {
+		suspendedAttack = true;
 	}
 
 }
