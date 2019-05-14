@@ -23,6 +23,7 @@ public class ApplicationPanel extends DynamicPanel {
 	private JPanel aboutUsPanel;
 	private JPanel gamePanelTest;
 	private JPanel selectGameModePanel;
+	private JPanel quitPanel;
 	
 	public ApplicationPanel() {
 		// current panel in the frame
@@ -36,12 +37,14 @@ public class ApplicationPanel extends DynamicPanel {
 		howToPlayPanel = new HowToPlayPanel();
 		aboutUsPanel = new AboutUsPanel();
 		selectGameModePanel = new SelectGameModePanel();
+		quitPanel = new QuitPanel();
 		
 		add(menuPanel, "menuPanel");
 		add(settingsPanel, "settingsPanel");
 		add(howToPlayPanel, "howToPlayPanel");
 		add(aboutUsPanel, "aboutUsPanel");
 		add(selectGameModePanel, "selectGameModePanel");
+		add(quitPanel, "quitPanel");
 		
 		// beginning of the game
 		layout.show(this, "menuPanel");
@@ -81,7 +84,11 @@ public class ApplicationPanel extends DynamicPanel {
 				SoundConstants.menuMouseOnButtonSound();
 			}
 			public void mouseClicked(MouseEvent e) {
-				System.exit(1);
+				((MenuPanel)menuPanel).setStringList();
+				layout.show(self, "quitPanel");
+				((QuitPanel)quitPanel).requestFocusInWindow();
+				((QuitPanel)quitPanel).initialize();
+				SoundConstants.snapSound();
 			}
 		};
 		

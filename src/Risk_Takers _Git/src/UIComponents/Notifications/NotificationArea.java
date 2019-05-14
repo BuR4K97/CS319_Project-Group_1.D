@@ -12,7 +12,7 @@ import GameAssets.SoundConstants;
 
 public class NotificationArea {
 	int xTopLeft = 20;
-	int yTopLeft = 100;
+	int yTopLeft = 737;
 	public static int border = 3;	// 3 is ideal		// length of border of visual strings
 	public static int distanceBetwNotifications = 5;   // distance between notifications
 	int showedNotificationNumber = 3;					// showed notification numbers

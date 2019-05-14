@@ -65,7 +65,7 @@ public class HowToPlayPanel extends JPanel{
 		stringList.add(new VisualString(47, 280, 4, "you can select singleplayer or multiplayer mode in play game menu",1));
 		stringList.add(new VisualString(47, 310, 4, "you can increase or decrease total player number and total human number",1));
 		stringList.add(new VisualString(47, 340, 4, "increase humans by left click the box under multiplayer and decrease by right click",1));
-		stringList.add(new VisualString(247, 380, 5, "FORTIFY"));
+		stringList.add(new VisualString(247, 380, 5, "DRAFT"));
 		stringList.add(new VisualString(47, 420, 4, "territories are randomly distributed after game starts and you can fortify your territories",1));
 		stringList.add(new VisualString(47, 450, 4, "left click to get unit from your inventory right click to release unit",1));
 		stringList.add(new VisualString(47, 480, 4, "on your territory left click to add all units and right click to get back all units to invertory",1));
@@ -73,7 +73,7 @@ public class HowToPlayPanel extends JPanel{
 		stringList.add(new VisualString(47, 560, 4, "you first choose which territory you use then select target territory and click attack button",1));
 		stringList.add(new VisualString(47, 590, 4, "in attack screen you can attack per roll you can attack till capture or you can terminate attack",1));
 		stringList.add(new VisualString(47, 620, 4, "you can get the card of this territory automatically in draft mode if you can capture a territory",1));
-		stringList.add(new VisualString(247, 660, 5, "DRAFT"));
+		stringList.add(new VisualString(247, 660, 5, "FORTIFY"));
 		stringList.add(new VisualString(47, 700, 4, "You will Receive the Cards of the Territories You Have Recently Captured after You Win a Battle",1));
 		stringList.add(new VisualString(47, 730, 4, "you can combine the 3 cards with the same color to get the units displayed on cards",1));
 		stringList.add(new VisualString(47, 760, 4, "you can have maximum 9 cards so using cards is best option",1));

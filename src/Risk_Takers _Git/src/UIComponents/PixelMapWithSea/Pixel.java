@@ -20,13 +20,13 @@ import UIComponents.Coordinate;
 import UIComponents.VisualTerritory;
 
 public class Pixel{
-	int red = 255;
-	int green= 0;
-	int blue = 0;
+	public int red = 255;
+	public int green= 0;
+	public int blue = 0;
 	int counterForSea = 0;
 	int mouseX = 0;
 	int mouseY = 0;
-	ArrayList<SimpleCoordinate> list = new ArrayList<SimpleCoordinate>();
+	public static ArrayList<SimpleCoordinate> list = new ArrayList<SimpleCoordinate>();
 	ArrayList<SimpleCoordinate> listCopy = new ArrayList<SimpleCoordinate>();
 	ArrayList<SimpleCoordinate> listSea = new ArrayList<SimpleCoordinate>();
 	public ArrayList<Circle> listCircle = new ArrayList<Circle>();
@@ -35,6 +35,7 @@ public class Pixel{
 	int jump = 12;  // 12
 	Color c = new Color(0,0,0);
 	public static Timer seaMouse;
+	
 	public Pixel() {
 		// file
 		BufferedImage image = null;
