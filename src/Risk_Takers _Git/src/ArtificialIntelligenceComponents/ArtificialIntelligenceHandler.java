@@ -32,8 +32,8 @@ public class ArtificialIntelligenceHandler {
 			}
 		}
 		if(activeAgent != null) {
-			if(activeAgent.update()) GameInteractions.requestArtificialIntelligenceAnimation();
-			else GameController.interactions.requestNextPhase();
+			if(!activeAgent.update()) GameController.interactions.requestNextPhase();
+			GameInteractions.requestArtificialIntelligenceAnimation();
 		}
 	}
 	

@@ -238,6 +238,7 @@ public class GameInteractions {
 	}
 
 	public static void requestNotification(String message) {
+		if(suspendArtificialIntelligenceUpdate()) return;
 		((GamePanel)MainApplication.frame.focusPanel).requestNotification(message);
 
 	}
