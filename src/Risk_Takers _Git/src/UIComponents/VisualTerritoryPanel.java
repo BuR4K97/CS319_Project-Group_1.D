@@ -45,11 +45,6 @@ public class VisualTerritoryPanel {
 		AnimationHandler.terminateAttackAnimation();
 	}
 	
-	public void insertMouseListeners(JPanel target) {
-		target.addMouseListener(mouseTracer);
-		target.addMouseMotionListener(mouseTracer);
-	}
-	
 	public void update() {
 		flushSelectableTerritory();
 		if(!suspendMouseEventUpdate()) { 

@@ -53,6 +53,7 @@ public abstract class Territory implements Combatable, Serializable {
 	public abstract void print();
 	
 	public boolean equals(Territory check) {
+		if(check == null) return false;
 		return check.checkItsCorresponding(this.getCorrespondingTag());
 	}
 	

@@ -238,6 +238,7 @@ public class GameInteractions {
 	}
 
 	public static void requestNotification(String message) {
+		if(suspendArtificialIntelligenceUpdate()) return;
 		((GamePanel)MainApplication.frame.focusPanel).requestNotification(message);
 
 	}
@@ -248,6 +249,14 @@ public class GameInteractions {
 	
 	public static void requestResetMultiplayerMode(int playerNumber) {
 		Game.requestResetMultiplayerMode(playerNumber);
+	}
+	
+	public static boolean suspendArtificialIntelligenceUpdate() {
+		return AnimationHandler.suspendArtificialIntelligenceUpdate();
+	}
+	
+	public static void requestArtificialIntelligenceAnimation() {
+		AnimationHandler.requestArtificialIntelligenceAnimation();
 	}
 	
 }

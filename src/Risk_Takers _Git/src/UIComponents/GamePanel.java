@@ -60,7 +60,8 @@ public class GamePanel extends DynamicPanel {
 		visualCardPanel.initialize(mouseTracer);
 		
 
-		visualTerritoryPanel.insertMouseListeners(this);
+		this.addMouseListener(mouseTracer);
+		this.addMouseMotionListener(mouseTracer);
 		textualInGamePanel.insertLabels(this);
 		interactionPanel.insertButtons(this);
 		
