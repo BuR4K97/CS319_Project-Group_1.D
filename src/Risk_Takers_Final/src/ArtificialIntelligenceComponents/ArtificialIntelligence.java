@@ -62,17 +62,18 @@ public class ArtificialIntelligence {
 			searchList.sort(null);
 		}
 		GameMoment goalMoment = searchList.get(0);
-		goalMoment.flushHeuristicMoment();
 
 		int transfer;
 		for(int i = 0; i < initialMoment.territoryMoment.size(); i++) {
 			transfer = goalMoment.territoryMoment.get(i).getUnitNumber() 
 					- initialMoment.territoryMoment.get(i).getUnitNumber();
 			if(transfer > 0) {
-				GameController.interactions.synchronizeDirectFocusTerritories(initialMoment.territoryMoment.get(i), null);
+				Territory flush = goalMoment.flushHeuristicMoment(goalMoment.territoryMoment.get(i));
+				GameController.interactions.synchronizeDirectFocusTerritories(flush, null);
 				GameController.interactions.requestAction(transfer);
 				GameInteractions.requestManualGameUpdate();
 				terminated = false;
+				break;
 			}
 		}
 		return !terminated;
@@ -118,7 +119,7 @@ public class ArtificialIntelligence {
 		boolean terminated = true;
 
 		GameMoment initialMoment = new GameMoment(binding, GameState.extractGameState());
-		GameMoment goalMoment = initialMoment.copy(); goalMoment.flushHeuristicMoment();
+		GameMoment goalMoment = initialMoment.copy(); goalMoment.flushHeuristicMoment(null);
 
 		Territory source = null, target = null, initialSource = null;
 		for(int i = 0; i < initialMoment.territoryMoment.size(); i++) {
@@ -304,20 +305,23 @@ public class ArtificialIntelligence {
 			return false;
 		}
 
-		private void flushHeuristicMoment() {
-			Territory heuristicTerritory = null;
-			for(Territory terr : territoryMoment) {
-				if(heuristicTerritory == null) heuristicTerritory = terr;
-				else if(terr.getUnitNumber() > heuristicTerritory.getUnitNumber()) heuristicTerritory = terr;
+		private Territory flushHeuristicMoment(Territory heuristicTerritory) {
+			if(heuristicTerritory == null) {
+				for(Territory terr : territoryMoment) {
+					if(heuristicTerritory == null) heuristicTerritory = terr;
+					else if(terr.getUnitNumber() > heuristicTerritory.getUnitNumber()) heuristicTerritory = terr;
+				}
 			}
 			if(heuristicTerritory != null) {
 				Territory flush = GameController.activeMode.territoryGraph.extractFlushTerritory(heuristicTerritory);
-				if(flush == null) return;
+				if(flush == null) return null;
 				flush = extractCorrespondingTerritory(flush);
-				if(flush == heuristicTerritory) return;
+				if(flush == heuristicTerritory) return flush;
 				flush.addUnits(heuristicTerritory.getUnitNumber() - Combat.MIN_DEFENSE_UNIT);
-				heuristicTerritory.removeUnits(heuristicTerritory.getUnitNumber() - Combat.MIN_DEFENSE_UNIT); 
+				heuristicTerritory.removeUnits(heuristicTerritory.getUnitNumber() - Combat.MIN_DEFENSE_UNIT);
+				return flush;
 			}
+			return null;
 		}
 
 		@Override
