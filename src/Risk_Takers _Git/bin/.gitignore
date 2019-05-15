@@ -1,6 +1,8 @@
 /AnimationComponents/
 /ArtificialIntelligenceComponents/
 /Controller/
-/ModelClasses/
-/UIComponents/
+/GameAssets/
 /HelperTools/
+/ModelClasses/
+/SoundComponent/
+/UIComponents/
