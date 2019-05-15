@@ -89,7 +89,6 @@ public class GamePanel extends DynamicPanel {
 	int inGameSettingsPanelHeight = 500;
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
-		updateInGameLabels();
 		visualTerritoryPanel.paint(painter);
 		if(!suspendVisualCardPanelPaintEvent())
 			visualCardPanel.paint(painter);
@@ -111,6 +110,7 @@ public class GamePanel extends DynamicPanel {
 			for(int i = 0; i < stringList.size(); i++)
 				stringList.get(i).paint(painter);
 		}
+		updateInGameLabels();
 	}
 
 	public void update() {

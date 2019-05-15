@@ -299,6 +299,9 @@ public class InteractionPanel {
 				System.exit(1);
 			}
 		});	
+		mainMenuLabel.setEnabled(false);
+		backToGameLabel.setEnabled(false);
+		quitLabel.setEnabled(false);
 	}
 
 	public void insertButtons(JPanel target) {
@@ -384,11 +387,17 @@ public class InteractionPanel {
 	
 	public void updateInGameLabels() {
 		if(GamePanel.inGameMenuLabelPressed) {
+			mainMenuLabel.setBounds(790, 340, 348, 51);
+			backToGameLabel.setBounds(730, 520, 470, 51);
+			quitLabel.setBounds(890, 700, 150, 51);
 			mainMenuLabel.setEnabled(true);
 			backToGameLabel.setEnabled(true);
 			quitLabel.setEnabled(true);
 		}
 		else {
+			mainMenuLabel.setBounds(0, 0, 0, 0);
+			backToGameLabel.setBounds(0, 0, 0, 0);
+			quitLabel.setBounds(0, 0, 0, 0);
 			mainMenuLabel.setEnabled(false);
 			backToGameLabel.setEnabled(false);
 			quitLabel.setEnabled(false);
