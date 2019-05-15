@@ -51,10 +51,6 @@ public class ApplicationPanel extends DynamicPanel {
 		menuPanel.requestFocusInWindow();
 		((MenuPanel)menuPanel).initialize();
 		
-//		layout.show(this, "selectGameModePanel");
-//		selectGameModePanel.requestFocusInWindow();
-//		((SelectGameModePanel)selectGameModePanel).initialize();
-		
 		
 		/**---------------------------------------------------LISTENERS---------------------------------------*/
 		

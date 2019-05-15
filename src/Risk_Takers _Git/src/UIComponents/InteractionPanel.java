@@ -32,6 +32,10 @@ public class InteractionPanel {
 	private JLabel cardButton;
 	private JLabel activateCards;
 	private JLabel cardModeBackButton;
+	private JLabel inGameMenuLabel;
+	private JLabel mainMenuLabel;
+	private JLabel backToGameLabel;
+	private JLabel quitLabel;
 	private int yAxis = 1013;
 	
 	private int nextPhaseLabelX = 925;
@@ -216,6 +220,85 @@ public class InteractionPanel {
 		activateCards.setEnabled(false);
 		cardModeBackButton.setVisible(false);
 		cardModeBackButton.setEnabled(false);
+		
+		
+		// In Game Menu Labels
+		inGameMenuLabel = new JLabel("");
+		inGameMenuLabel.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
+		inGameMenuLabel.setBounds(0, 0, 30, 30);
+		inGameMenuLabel.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
+			public void mouseClicked(MouseEvent e) {
+				GamePanel.stringList = new ArrayList<VisualString>();
+				GamePanel.stringList.add(new VisualString(790, 340, 10, "Main Menu"));
+				GamePanel.stringList.add(new VisualString(730, 520, 10, "Back to Risk"));
+				GamePanel.stringList.add(new VisualString(890, 700, 10, "Quit"));
+				if (GamePanel.inGameMenuLabelPressed)
+					GamePanel.inGameMenuLabelPressed = false;
+				else
+					GamePanel.inGameMenuLabelPressed = true;
+				SoundConstants.snapSound();
+			}
+		});
+		
+		mainMenuLabel = new JLabel("");
+		mainMenuLabel.setFont(new Font("pixel", Font.BOLD, 50));
+		mainMenuLabel.setForeground(Color.WHITE);
+		mainMenuLabel.setBounds(790, 340, 348, 51);
+		mainMenuLabel.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
+			public void mouseClicked(MouseEvent e) {
+				MainApplication.destroyGame();
+				MainApplication.initializeMenu();
+				GamePanel.inGameMenuLabelPressed = false;
+				SoundConstants.snapSound();
+			}
+		});
+		
+		backToGameLabel = new JLabel("");
+		backToGameLabel.setFont(new Font("pixel", Font.BOLD, 50));
+		backToGameLabel.setForeground(Color.WHITE);
+		backToGameLabel.setBounds(730, 520, 470, 51);
+		backToGameLabel.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
+			public void mouseClicked(MouseEvent e) {
+				GamePanel.inGameMenuLabelPressed = false;
+				SoundConstants.snapSound();
+			}
+		});
+		
+		quitLabel = new JLabel("");
+		quitLabel.setFont(new Font("pixel", Font.BOLD, 50));
+		quitLabel.setForeground(Color.WHITE);
+		quitLabel.setBounds(890, 700, 150, 51);
+		quitLabel.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
+			public void mouseClicked(MouseEvent e) {
+				GamePanel.inGameMenuLabelPressed = false;
+				SoundConstants.snapSound();
+				System.exit(1);
+			}
+		});	
 	}
 
 	public void insertButtons(JPanel target) {
@@ -227,6 +310,10 @@ public class InteractionPanel {
 		target.add(cardButton);
 		target.add(activateCards);
 		target.add(cardModeBackButton);
+		target.add(inGameMenuLabel);
+		target.add(mainMenuLabel);
+		target.add(backToGameLabel);
+		target.add(quitLabel);
 	}
 
 	public void activateCombatMode() {
@@ -293,6 +380,19 @@ public class InteractionPanel {
 	public void deactivateAttackButton() {
 		attackRequestLabel.setEnabled(false);
 		attackRequestLabel.setVisible(false);
+	}
+	
+	public void updateInGameLabels() {
+		if(GamePanel.inGameMenuLabelPressed) {
+			mainMenuLabel.setEnabled(true);
+			backToGameLabel.setEnabled(true);
+			quitLabel.setEnabled(true);
+		}
+		else {
+			mainMenuLabel.setEnabled(false);
+			backToGameLabel.setEnabled(false);
+			quitLabel.setEnabled(false);
+		}
 	}
 
 }

@@ -15,6 +15,7 @@ import javax.swing.KeyStroke;
 
 import AnimationComponents.AnimationHandler;
 import Controller.GameController;
+import Controller.MainApplication;
 import GameAssets.SoundConstants;
 import ModelClasses.Territory;
 import javax.swing.JLabel;
@@ -29,14 +30,8 @@ public class GamePanel extends DynamicPanel {
 	private TextualInGamePanel textualInGamePanel;
 	private VisualCardPanel visualCardPanel;
 	private MouseInGameListener mouseTracer;
-	public boolean escPressed;
-	
-	private JLabel inGameMenuLabel;
-	private JLabel mainMenuLabel;
-	private JLabel backToGameLabel;
-	private JLabel quitLabel;
-	
-	//private JLabel quitInGame;
+	public static boolean inGameMenuLabelPressed;
+	public static  ArrayList<VisualString> stringList;
 	
 	public GamePanel() {
 		
@@ -45,7 +40,7 @@ public class GamePanel extends DynamicPanel {
 		setLayout(null);
 		setBackground(Color.BLACK);
 		setFocusable(true);
-		requestFocusInWindow();
+		requestFocusInWindow();		
 		
 		currState = PANEL_STATES.NORMAL;
 		mouseTracer = new MouseInGameListener();
@@ -64,45 +59,6 @@ public class GamePanel extends DynamicPanel {
 		this.addMouseMotionListener(mouseTracer);
 		textualInGamePanel.insertLabels(this);
 		interactionPanel.insertButtons(this);
-		
-		
-		inGameMenuLabel = new JLabel("");
-		inGameMenuLabel.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
-		inGameMenuLabel.setBounds(0, 0, 30, 30);
-		inGameMenuLabel.addMouseListener(new MouseListener() {
-			public void mouseReleased(MouseEvent e) {}
-			public void mousePressed(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {
-				SoundConstants.menuMouseOnButtonSound();
-			}
-			public void mouseClicked(MouseEvent e) {
-				if (escPressed)
-					escPressed = false;
-				else
-					escPressed = true;
-				SoundConstants.snapSound();
-			}
-		});	
-		add(inGameMenuLabel);
-		
-//		mainMenuLabel = new JLabel("MAIN MENU");
-//		mainMenuLabel.setFont(new Font("pixel", Font.BOLD, 50));
-//		mainMenuLabel.setForeground(Color.WHITE);
-//		mainMenuLabel.setBounds(800, 340, 300, 51);
-//		add(mainMenuLabel);
-//		
-//		backToGameLabel = new JLabel("BACK TO RISK");
-//		backToGameLabel.setFont(new Font("pixel", Font.BOLD, 50));
-//		backToGameLabel.setForeground(Color.WHITE);
-//		backToGameLabel.setBounds(780, 520, 400, 51);
-//		add(backToGameLabel);
-//		
-//		quitLabel = new JLabel("QUIT");
-//		quitLabel.setFont(new Font("pixel", Font.BOLD, 50));
-//		quitLabel.setForeground(Color.WHITE);
-//		quitLabel.setBounds(890, 700, 200, 51);
-//		add(quitLabel);
 		
 	}
 		
@@ -133,7 +89,7 @@ public class GamePanel extends DynamicPanel {
 	int inGameSettingsPanelHeight = 500;
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
-		
+		updateInGameLabels();
 		visualTerritoryPanel.paint(painter);
 		if(!suspendVisualCardPanelPaintEvent())
 			visualCardPanel.paint(painter);
@@ -144,11 +100,16 @@ public class GamePanel extends DynamicPanel {
 		painter.fillRect(0, 12, 30, 5);
 		painter.fillRect(0, 25, 30, 5);
 		
-		if(escPressed) {
+		if(inGameMenuLabelPressed) {
 			painter.setColor(new Color(0, 0, 0, 220));
 			painter.fillRect(1920/2 - inGameSettingsPanelWidth / 2, 1080 / 2 - inGameSettingsPanelHeight / 2, inGameSettingsPanelWidth, inGameSettingsPanelHeight);
 			painter.setColor(Color.CYAN);
 			painter.drawRect(1920/2 - inGameSettingsPanelWidth / 2, 1080 / 2 - inGameSettingsPanelHeight / 2, inGameSettingsPanelWidth, inGameSettingsPanelHeight);
+		}
+		
+		if(inGameMenuLabelPressed) {
+			for(int i = 0; i < stringList.size(); i++)
+				stringList.get(i).paint(painter);
 		}
 	}
 
@@ -205,10 +166,6 @@ public class GamePanel extends DynamicPanel {
 	public ArrayList<VisualCard> getFocusVisualCards() {
 		return visualCardPanel.getFocusVisualCards();
 	}
-
-	public void setStringList() {
-		//this.interactionStringList = new ArrayList<VisualString>();
-	}
 	
 	private boolean suspendVisualTerritoryPanelUpdate() {
 		if(currState != PANEL_STATES.NORMAL)
@@ -238,5 +195,16 @@ public class GamePanel extends DynamicPanel {
 		if(currState != PANEL_STATES.CARD)
 			return true;
 		return AnimationHandler.suspendVisualCardPanelPaintEvent();
+	}
+	public void updateInGameLabels() {
+		interactionPanel.updateInGameLabels();
+	}
+	
+	public boolean isInGameMenuLabelPressed() {
+		return inGameMenuLabelPressed;
+	}
+
+	public ArrayList<VisualString> getStringList() {
+		return stringList;
 	}
 }
