@@ -8,6 +8,7 @@ import javax.swing.Timer;
 import AnimationComponents.AnimationHandler;
 import Controller.GameController.GAME_MODE;
 import ModelClasses.Game.PLAYER_MODE;
+import SoundComponent.SoundHandler;
 import UIComponents.ApplicationFrame;
 import UIComponents.GamePanel;
 
@@ -45,22 +46,21 @@ public class MainApplication {
 			
 		});
 		visualDisplayTimer.start();
+		SoundHandler.playMusic("sounds\\the-long-dark-wintermute-main-menu-theme-hq-tld-unost.wav");
 	}
 	
 	public static boolean initializeMenu() {
 		visualDisplayTimer.stop();
-		
+	
 		frame.initializeMenu();
 		
 		visualDisplayTimer.restart();
-		frame.setVisible(true);
 		return true;
 	}
 	
 	public static void destroyMenu() {
 		visualDisplayTimer.stop();
 		frame.destroyFocusPanel();
-		frame.setVisible(true);
 	}
 	
 	public static boolean initializeGame(PLAYER_MODE playerMode, int playerNumber) {
@@ -72,7 +72,6 @@ public class MainApplication {
 		animationTimer.restart();
 		modelDataTimer.restart();
 		visualDisplayTimer.restart();
-		frame.setVisible(true);
 		return true;
 	}
 	
@@ -82,7 +81,6 @@ public class MainApplication {
 		
 		GameController.destroyGame();
 		frame.destroyFocusPanel();
-		frame.setVisible(true);
 	}
 
 }

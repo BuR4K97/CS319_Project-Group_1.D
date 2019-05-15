@@ -14,27 +14,28 @@ public class ApplicationFrame extends JFrame {
 	
 	public ApplicationFrame() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//setPreferredSize(new Dimension(width, height));
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setExtendedState(ApplicationFrame.MAXIMIZED_BOTH);
 		setUndecorated(true);
 		setVisible(true);
-		SoundHandler.playMusic("sounds\\the-long-dark-wintermute-main-menu-theme-hq-tld-unost.wav");
 	}
 	
 	public void initializeMenu() {
 		removePanel();
 		focusPanel = new ApplicationPanel();
 		updatePanel();
+		setVisible(true);
 	}
 	
 	public void initializeGame() {
 		removePanel();
 		focusPanel = new GamePanel();
 		updatePanel();
+		setVisible(true);
 	}
 	
 	public void destroyFocusPanel() {
 		removePanel();
+		setVisible(true);
 	}
 	
 	private void updatePanel() {
