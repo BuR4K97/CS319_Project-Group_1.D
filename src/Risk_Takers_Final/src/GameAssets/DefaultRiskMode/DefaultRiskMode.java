@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import GameAssets.GameMode;
 import ModelClasses.Card;
 import ModelClasses.GameState;
 import ModelClasses.Player;
 import ModelClasses.Territory;
-import Controller.GameMode;
 import HelperTools.FileHandler;
 import HelperTools.ImageHandler;
 import ModelClasses.TerritoryGraph;
@@ -100,6 +100,76 @@ public class DefaultRiskMode extends GameMode {
 		return null;
 	}
 	
+	@Override
+	public Card findItsModeSpecificCardCorresponding(String findTag) {
+		try {
+			TERRITORIES corresponding = TERRITORIES.valueOf(findTag);
+			if(corresponding == null) return null;
+			
+			CONTINENTS continent = null;
+			for(CONTINENTS check : CONTINENTS.values())
+				if(check.contains(corresponding)) {
+					continent = check;
+					break;
+				}
+			return super.findItsCardCorresponding(continent.toString());
+		}
+		catch(IllegalArgumentException exception) {}
+		return null;
+	}
+	
+	public boolean checkStateChangeModeSpecific(GameState prevState, GameState currState, Territory focusTerritory, Player recentPlayer) {
+		if(focusTerritory.getPlayer() != recentPlayer) return false;
+		
+		CONTINENTS corresponding = ((DefaultRiskTerritory)focusTerritory).continent;
+		boolean [] continentCaptured = new boolean[corresponding.territories.length];
+		
+		for(Territory territory : currState.getTerritoriesState()) {
+			DefaultRiskTerritory normalizedTerritory = ((DefaultRiskTerritory)territory);
+			if(normalizedTerritory.continent != corresponding) continue;
+			if(normalizedTerritory.getPlayer() == recentPlayer) {
+				int subIndex = -1;
+				for(int i = 0; i < normalizedTerritory.continent.territories.length; i++)
+					if(normalizedTerritory.territory == normalizedTerritory.continent.territories[i]) {	
+						subIndex = i; break;
+					}
+				
+				if(subIndex != -1) continentCaptured[subIndex] = true;
+			}
+		}
+		
+		for(boolean territoryCaptured : continentCaptured) 
+			if(!territoryCaptured) return false;
+		return true;
+	}
+	
+	@Override
+	public int extractModeSpecificScore(ArrayList<Territory> list) {
+		ArrayList<CONTINENTS> continents = new ArrayList<CONTINENTS>();
+		CONTINENTS corresponding;
+		for(Territory terr : list) {
+			corresponding = ((DefaultRiskTerritory)terr).continent;
+			if(!continents.contains(corresponding)) continents.add(corresponding);
+		}
+		
+		int modeSpecificScore = 0;
+		continentCheck:for(CONTINENTS check : continents) {
+			for(TERRITORIES terr : check.territories) {
+				boolean includes = false;
+				for(Territory element : list) {
+					if(element.checkItsCorresponding(terr.toString())) {
+						includes = true;
+						break;
+					}
+				}
+				if(!includes) continue continentCheck;
+			}
+			modeSpecificScore += super.findItsCardCorresponding(check.toString()).getUnitBuff();
+		}
+		return modeSpecificScore;
+	}
+	
+	//Not used anymore
 	public void checkStatesModeSpecific(GameState prevState, GameState currState, Player recentPlayer) {
 		boolean [][] continentsCaptured = new boolean[CONTINENTS.values().length][];
 		for(int i = 0; i < CONTINENTS.values().length; i++)

@@ -25,6 +25,10 @@ public class Player {
 		unitPocket.getCardSet().add(insert);
 	}
 	
+	public void insertUnit(int territoriesCaptured) {
+		unitPocket.removeUnit(-territoriesCaptured);
+	}
+	
 	public boolean activateCards(ArrayList<Card> activates) {
 		return unitPocket.activateCards(activates);
 	}
@@ -74,5 +78,5 @@ public class Player {
 	public String toString() {
 		return playerName;
 	}
-	
+
 }//endClass

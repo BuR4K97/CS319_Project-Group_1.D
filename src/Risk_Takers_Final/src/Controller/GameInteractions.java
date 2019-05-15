@@ -28,6 +28,7 @@ public class GameInteractions {
 	private Combat activeCombat;
 	private boolean textualPanelUpdateRequest = false;
 	private boolean visualCardPanelUpdateRequest = false;
+
 	
 	public void requestNextPhase() {
 		nextPhaseRequest = true;
@@ -75,6 +76,19 @@ public class GameInteractions {
 	}
 	
 	public void synchronizeFocusTerritories(VisualTerritory source, VisualTerritory target) {
+		if(source != null) {
+			Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
+			focusTerritories[0] = sourceTerritory;
+		}
+		else { focusTerritories[0] = null; }
+		if(target != null) {
+			Territory targetTerritory = GameController.activeMode.findItsTerritoryCorresponding(target.getCorrespondingTag());
+			focusTerritories[1] = targetTerritory;
+		}
+		else { focusTerritories[1] = null; }
+	}
+	
+	public void synchronizeDirectFocusTerritories(Territory source, Territory target) {
 		if(source != null) {
 			Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
 			focusTerritories[0] = sourceTerritory;
@@ -196,13 +210,20 @@ public class GameInteractions {
 		return GameController.activeMode.findItsCardCorresponding(territory.getCorrespondingTag());
 	}
 	
-	public static boolean isSelectable(VisualTerritory source, VisualTerritory target) {
-		Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
-		if(sourceTerritory == null) return false;
-		Territory targetTerritory = GameController.activeMode.findItsTerritoryCorresponding(target.getCorrespondingTag());
-		if(targetTerritory == null) return false;
-		
-		return Game.isSelectable(sourceTerritory, targetTerritory);
+	public static boolean isSelectable(VisualTerritory source, VisualTerritory target, int selectAmount) {
+		if(source == null) return false;
+		if(target != null) {
+			Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
+			if(sourceTerritory == null) return false;
+			Territory targetTerritory = GameController.activeMode.findItsTerritoryCorresponding(target.getCorrespondingTag());
+			if(targetTerritory == null) return false;
+			return Game.isSelectable(sourceTerritory, targetTerritory, selectAmount);
+		}
+		else {
+			Territory sourceTerritory = GameController.activeMode.findItsTerritoryCorresponding(source.getCorrespondingTag());
+			if(sourceTerritory == null) return false;
+			return Game.isSelectable(sourceTerritory, null, selectAmount);
+		}
 	}
 	
 	public static boolean requestCardActivation(ArrayList<VisualCard> activates) {
@@ -211,6 +232,16 @@ public class GameInteractions {
 			cards.add(findCorrespondingCard(activate));
 		return Game.activateCards(cards);
 	}
+	
+	public static boolean requestDirectCardActivation(ArrayList<Card> activates) {
+		return Game.activateCards(activates); 
+	}
+
+	public static void requestNotification(String message) {
+		if(suspendArtificialIntelligenceUpdate()) return;
+		((GamePanel)MainApplication.frame.focusPanel).requestNotification(message);
+
+	}
 
 	public static void requestManualGameUpdate() {
 		GameController.requestManualGameUpdate();
@@ -218,6 +249,14 @@ public class GameInteractions {
 	
 	public static void requestResetMultiplayerMode(int playerNumber) {
 		Game.requestResetMultiplayerMode(playerNumber);
+	}
+	
+	public static boolean suspendArtificialIntelligenceUpdate() {
+		return AnimationHandler.suspendArtificialIntelligenceUpdate();
+	}
+	
+	public static void requestArtificialIntelligenceAnimation() {
+		AnimationHandler.requestArtificialIntelligenceAnimation();
 	}
 	
 }

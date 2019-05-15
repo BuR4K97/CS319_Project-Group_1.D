@@ -15,8 +15,8 @@ import UIComponents.SelectGameModePanel;
 public class JumpingBox {
 	// lines
 	static int lineLength = 450;
-	static int y = 900;
-	static int diffFromBorders = 265;
+	static int y = 775;
+	static int diffFromBorders = 200;
 	static int yMax = -200;
 	
 	static int leftLineX = diffFromBorders;

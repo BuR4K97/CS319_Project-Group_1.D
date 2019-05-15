@@ -26,7 +26,7 @@ public class FortifyInteraction {
 				unitsInHand.get(i).goTarget(mouseTracer.mousePosition.xCoord + i * 20, mouseTracer.mousePosition.yCoord);
 			} else if(i < 6) {
 				unitsInHand.get(i).goTarget(mouseTracer.mousePosition.xCoord + (i-3) * 20, mouseTracer.mousePosition.yCoord + 1 * 20);
-			}else if(i < 9) {
+			} else if(i < 9) {
 				unitsInHand.get(i).goTarget(mouseTracer.mousePosition.xCoord + (i -6)  * 20, mouseTracer.mousePosition.yCoord + 2 * 20);
 			} else {
 				unitsInHand.get(i).goTarget(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord);
@@ -50,19 +50,26 @@ public class FortifyInteraction {
 			}	
 		}
 		
+		if(sourceTerritory == null || mouseTracer.getFocusTerritory() == sourceTerritory) {
+			if(GameInteractions.isSelectable(mouseTracer.getFocusTerritory(), null, unitsInHand.size())) 
+				((GamePanel)MainApplication.frame.focusPanel).requestPushIntoVisualTerritoryPanelSelectableTerritory(
+						mouseTracer.getFocusTerritory()); 
+		}
+		else if(GameInteractions.isSelectable(sourceTerritory, mouseTracer.getFocusTerritory(), unitsInHand.size())) {
+			((GamePanel)MainApplication.frame.focusPanel).requestPushIntoVisualTerritoryPanelSelectableTerritory(
+					mouseTracer.getFocusTerritory()); 
+		}
+		
 		if(mouseTracer.leftButtonClicked) {
 			if(sourceTerritory == null) {
 				sourceTerritory = mouseTracer.getFocusTerritory();
-				if(isSelectable(sourceTerritory)) {
-					if(GameInteractions.findCorrespondingTerritory(sourceTerritory).getUnitNumber() > Combat.MIN_DEFENSE_UNIT)
-						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
-					else sourceTerritory = null;
-				}
-				else sourceTerritory = null;
+				if(GameInteractions.isSelectable(sourceTerritory, null, 1))
+					unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
+				else 
+					sourceTerritory = null;
 			}
 			else if(sourceTerritory == mouseTracer.getFocusTerritory()) {
-				if(GameInteractions.findCorrespondingTerritory(sourceTerritory).getUnitNumber() 
-						- unitsInHand.size() > Combat.MIN_DEFENSE_UNIT) {
+				if(GameInteractions.isSelectable(sourceTerritory, null, unitsInHand.size() + 1)) {
 					if(unitsInHand.size() < 3)
 						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
 					else if(unitsInHand.size() < 6) 
@@ -73,7 +80,7 @@ public class FortifyInteraction {
 						unitsInHand.add(new SmallBox(mouseTracer.mousePosition.xCoord + unitsInHand.size() * 20, mouseTracer.mousePosition.yCoord));
 				}
 			}
-			else if(isSelectable(mouseTracer.getFocusTerritory())) {
+			else if(GameInteractions.isSelectable(sourceTerritory, mouseTracer.getFocusTerritory(), unitsInHand.size())) {
 				GameController.interactions.synchronizeFocusTerritories(sourceTerritory, mouseTracer.getFocusTerritory());
 				GameController.interactions.requestAction(unitsInHand.size());
 				GameInteractions.requestManualGameUpdate();
@@ -95,13 +102,13 @@ public class FortifyInteraction {
 			}
 		}
 		if(sourceTerritory == returningTerritory && sourceTerritory != null) 
-			((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(sourceTerritory
+			((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(sourceTerritory
 					, unitsInHand.size() + returningUnits.size());
 		else {
 			if(sourceTerritory != null)
-				((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(sourceTerritory, unitsInHand.size());
+				((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(sourceTerritory, unitsInHand.size());
 			if(returningTerritory != null)
-				((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(returningTerritory, returningUnits.size());
+				((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(returningTerritory, returningUnits.size());
 		}
 		if(unitsInHand.size() == 0) sourceTerritory = null;
 		if(returningUnits.size() == 0) returningTerritory = null;
@@ -109,9 +116,9 @@ public class FortifyInteraction {
 	
 	public void flushState() {
 		if(sourceTerritory != null)
-			((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(sourceTerritory, 0);
+			((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(sourceTerritory, 0);
 		if(returningTerritory != null)
-			((GamePanel)MainApplication.frame.focusPanel).requestFortifyInteractionEffect(returningTerritory, 0);
+			((GamePanel)MainApplication.frame.focusPanel).requestVisualDeviationEffect(returningTerritory, 0);
 		sourceTerritory = null;
 		returningTerritory = null;
 		unitsInHand.clear();
@@ -136,11 +143,6 @@ public class FortifyInteraction {
 			painter.setFont(new Font("pixel", Font.BOLD, 60));
 			painter.drawString("" + returningUnits.size(), returningUnits.get(0).x, returningUnits.get(0).y + 50);
 		}
-	}
-	
-	private boolean isSelectable(VisualTerritory target) {
-		if(sourceTerritory == null || target == null) return false;
-		return GameInteractions.isSelectable(sourceTerritory, target);
 	}
 
 }

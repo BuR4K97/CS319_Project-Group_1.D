@@ -12,7 +12,7 @@ import ModelClasses.Card.CARD_ACTIVATION;
 
 public class VisualCardPanel {
 
-	private ArrayList<VisualCard> visualCards;
+	private ArrayList<VisualCard> visualCards = new ArrayList<VisualCard>();
 	private Integer[] focusIndex = new Integer[CARD_ACTIVATION.COMBINATIONAL.activation];
 	private MouseInGameListener mouseTracer;
 
@@ -37,7 +37,8 @@ public class VisualCardPanel {
 
 	public void update() {
 		if(GameController.interactions.getVisualCardPanelUpdateRequest()) {
-			visualCards = GameInteractions.extractActivePlayerVisualCards();
+			visualCards.clear();
+			visualCards.addAll(GameInteractions.extractActivePlayerVisualCards());
 			resetDrawCoordinates();
 		}
 		if(visualCards.size() > 0)

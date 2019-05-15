@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import Controller.GameController.GAME_MODE;
 import Controller.MainApplication;
+import GameAssets.SoundConstants;
 import ModelClasses.Game.PLAYER_MODE;
 
 public class ApplicationPanel extends DynamicPanel {
@@ -22,6 +23,7 @@ public class ApplicationPanel extends DynamicPanel {
 	private JPanel aboutUsPanel;
 	private JPanel gamePanelTest;
 	private JPanel selectGameModePanel;
+	private JPanel quitPanel;
 	
 	public ApplicationPanel() {
 		// current panel in the frame
@@ -35,21 +37,19 @@ public class ApplicationPanel extends DynamicPanel {
 		howToPlayPanel = new HowToPlayPanel();
 		aboutUsPanel = new AboutUsPanel();
 		selectGameModePanel = new SelectGameModePanel();
+		quitPanel = new QuitPanel();
 		
 		add(menuPanel, "menuPanel");
 		add(settingsPanel, "settingsPanel");
 		add(howToPlayPanel, "howToPlayPanel");
 		add(aboutUsPanel, "aboutUsPanel");
 		add(selectGameModePanel, "selectGameModePanel");
+		add(quitPanel, "quitPanel");
 		
 		// beginning of the game
 		layout.show(this, "menuPanel");
 		menuPanel.requestFocusInWindow();
 		((MenuPanel)menuPanel).initialize();
-		
-//		layout.show(this, "selectGameModePanel");
-//		selectGameModePanel.requestFocusInWindow();
-//		((SelectGameModePanel)selectGameModePanel).initialize();
 		
 		
 		/**---------------------------------------------------LISTENERS---------------------------------------*/
@@ -59,12 +59,15 @@ public class ApplicationPanel extends DynamicPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				((MenuPanel)menuPanel).setStringList();
 				layout.show(self, "selectGameModePanel");
 				((SelectGameModePanel)selectGameModePanel).requestFocusInWindow();
 				((SelectGameModePanel)selectGameModePanel).initialize();
+				SoundConstants.menuClickSound();
 			}
 		};
 		
@@ -73,9 +76,15 @@ public class ApplicationPanel extends DynamicPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
-				System.exit(1);
+				((MenuPanel)menuPanel).setStringList();
+				layout.show(self, "quitPanel");
+				((QuitPanel)quitPanel).requestFocusInWindow();
+				((QuitPanel)quitPanel).initialize();
+				SoundConstants.snapSound();
 			}
 		};
 		
@@ -84,12 +93,15 @@ public class ApplicationPanel extends DynamicPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				((MenuPanel)menuPanel).setStringList();
 				layout.show(self, "settingsPanel");
 				((OptionsPanel)settingsPanel).requestFocusInWindow();
 				((OptionsPanel)settingsPanel).initialize();
+				SoundConstants.menuClickSound();
 			}
 		};
 		
@@ -98,12 +110,15 @@ public class ApplicationPanel extends DynamicPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				((MenuPanel)menuPanel).setStringList();
 				layout.show(self, "howToPlayPanel");
 				((HowToPlayPanel)howToPlayPanel).requestFocusInWindow();
 				((HowToPlayPanel)howToPlayPanel).initialize();
+				SoundConstants.menuClickSound();
 			}
 		};
 		
@@ -112,12 +127,15 @@ public class ApplicationPanel extends DynamicPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				((MenuPanel)menuPanel).setStringList();
 				layout.show(self, "aboutUsPanel");
 				((AboutUsPanel)aboutUsPanel).requestFocusInWindow();
 				((AboutUsPanel)aboutUsPanel).initialize();
+				SoundConstants.menuClickSound();
 			}
 		};		
 				
@@ -126,7 +144,9 @@ public class ApplicationPanel extends DynamicPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				((HowToPlayPanel)howToPlayPanel).setStringList();
 				((AboutUsPanel)aboutUsPanel).setStringList();
@@ -135,6 +155,7 @@ public class ApplicationPanel extends DynamicPanel {
 				layout.show(self, "menuPanel");
 				((MenuPanel)menuPanel).requestFocusInWindow();
 				((MenuPanel)menuPanel).initialize();
+				SoundConstants.menuClickSound();
 			}
 		};	
 		
@@ -143,12 +164,15 @@ public class ApplicationPanel extends DynamicPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				((SelectGameModePanel)selectGameModePanel).setStringList();
 				layout.show(self, "gamePanel");
 				MainApplication.destroyMenu();
 				MainApplication.initializeGame(PLAYER_MODE.SINGLEPLAYER, SelectGameModePanel.totalNumber);
+				SoundConstants.menuClickSound();
 			}
 		};
 				
@@ -157,12 +181,15 @@ public class ApplicationPanel extends DynamicPanel {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				((SelectGameModePanel)selectGameModePanel).setStringList();
 				layout.show(self, "gamePanel");
 				MainApplication.destroyMenu();
 				MainApplication.initializeGame(PLAYER_MODE.MULTIPLAYER, SelectGameModePanel.totalNumber);
+				SoundConstants.menuClickSound();
 			}
 		};
 		
@@ -178,7 +205,7 @@ public class ApplicationPanel extends DynamicPanel {
 		((AboutUsPanel)aboutUsPanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsSelectGameModePanel);
 		((SelectGameModePanel)selectGameModePanel).getBackLabel().addMouseListener(listenerToBackLabelInSettingsHowTPAboutUsSelectGameModePanel);
 		((SelectGameModePanel)selectGameModePanel).getMultiplayerLabel().addMouseListener(listenerToMultiplayerLabelInSelectGameModePanel);
-		((SelectGameModePanel)selectGameModePanel).getSingleplayerLabel().addMouseListener(listenerToMultiplayerLabelInSelectGameModePanel);
+		((SelectGameModePanel)selectGameModePanel).getSingleplayerLabel().addMouseListener(listenerToSinglePlayerLabelInSelectGameModePanel);
 	}
 
 	@Override

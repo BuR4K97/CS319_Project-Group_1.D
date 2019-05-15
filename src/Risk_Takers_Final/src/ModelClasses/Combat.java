@@ -11,17 +11,19 @@ import UIComponents.VisualTerritory;
  */
 public class Combat {
 
+	public static enum COMBAT_TYPE { EFFECTIVE, SIMULATIVE };
+	
 	public static final int MAX_DEFENSE_UNIT = 2;
 	public static final int MAX_ATTACK_UNIT = 3;
 	public static final int MIN_DEFENSE_UNIT = 1;
 	public static final int MIN_ATTACK_UNIT = MIN_DEFENSE_UNIT + 1;
 	public static final int UNIT_LOSS_PER_DIE_ROLL = 1;
 	
+	public COMBAT_TYPE combatType = COMBAT_TYPE.EFFECTIVE;
 	private Territory sourceTerritory;
 	private Territory targetTerritory;
 	private Dice sourceDice;
 	private Dice targetDice;
-	
 	
 	/**
 	 * Should check Combat.combatable(sourceTerritory, targetTerritory) of two territories before construct Combat
@@ -63,7 +65,7 @@ public class Combat {
 		}
 		if(Combat.combatable(sourceTerritory, targetTerritory)) return true;
 		
-		if(targetTerritory.getUnitNumber() == 0) {
+		if(targetTerritory.getUnitNumber() < MIN_DEFENSE_UNIT && combatType == COMBAT_TYPE.EFFECTIVE) {
 			sourceTerritory.getPlayer().captureTerritory(targetTerritory);
 			sourceTerritory.getPlayer().moveUnits(sourceTerritory, targetTerritory
 					, sourceTerritory.getUnitNumber() - MIN_DEFENSE_UNIT);

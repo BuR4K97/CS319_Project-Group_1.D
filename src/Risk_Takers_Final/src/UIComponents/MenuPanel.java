@@ -22,9 +22,8 @@ public class MenuPanel extends JPanel {
 	private JLabel lblSettings;
 	private JLabel lblHowToPlay;
 	private JLabel lblAboutUs;
-	private Pixel mapAnimation;
+	public static Pixel mapAnimation;
 	private ArrayList<VisualString> stringList;
-	private Fireworks fireWorks;
 	private int mouseX, mouseY;
 
 	public MenuPanel() {
@@ -109,7 +108,6 @@ public class MenuPanel extends JPanel {
 		stringList.add(new VisualString(50, 804, 8, "Options"));
 		stringList.add(new VisualString(50, 867, 8, "How To Play"));
 		stringList.add(new VisualString(50, 927, 8, "About us"));
-		//fireWorks = new Fireworks(); // I guess we dont need animation here, keep it simple))
 	}
 
 
@@ -119,7 +117,6 @@ public class MenuPanel extends JPanel {
 		mapAnimation.paint(g);
 		for(int i = 0; i < stringList.size(); i++)
 			stringList.get(i).paint(g);
-		//fireWorks.paint(g);
 	}
 
 	public JLabel getPlayGameLabel()

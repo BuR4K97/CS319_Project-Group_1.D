@@ -187,6 +187,8 @@ public class Test{
 		territoryGraph.connectTerritory(territories.get(18), territories.get(21));
 		territoryGraph.connectTerritory(territories.get(18), territories.get(26));
 		
+		territoryGraph.connectTerritory(territories.get(19), territories.get(20));
+		
 		territoryGraph.connectTerritory(territories.get(20), territories.get(21));
 		territoryGraph.connectTerritory(territories.get(20), territories.get(22));
 		territoryGraph.connectTerritory(territories.get(20), territories.get(23));

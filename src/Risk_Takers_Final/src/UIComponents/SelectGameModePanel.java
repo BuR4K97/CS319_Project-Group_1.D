@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import Controller.GameInteractions;
 import GameAssets.GameConstants;
+import GameAssets.SoundConstants;
 import ModelClasses.Game;
 import UIComponents.BoxAni.JumpingBox;
 import UIComponents.Fireworks.Fireworks;
@@ -34,9 +35,10 @@ public class SelectGameModePanel extends JPanel{
 	public static int minNumberOfHuman = Game.MIN_PLAYER_NUMBER;
 	public static int totalNumberOfHuman = Game.PLAYER_MODE.MULTIPLAYER.playerNumber;
 	public static int totalNumber = 2;
-	public static int totalNumberOfAI = totalNumber - totalNumberOfHuman;
 
-
+	int singleMUltiY = 500;
+	int singleX = 195;
+	int multiX = 1280;
 	// mouseListener
 	MouseListener ml;
 
@@ -49,12 +51,12 @@ public class SelectGameModePanel extends JPanel{
 
 		singlePlayer = new JLabel("");
 		singlePlayer.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
-		singlePlayer.setBounds(265, 500, 430, 51);
+		singlePlayer.setBounds(singleX, singleMUltiY, 430, 51);
 		add(singlePlayer);
 
 		multiPlayer = new JLabel("");
 		multiPlayer.setFont(new Font("Baskerville Old Face", Font.BOLD, 50));
-		multiPlayer.setBounds(1210, 500, 430, 51);
+		multiPlayer.setBounds(multiX, singleMUltiY, 430, 51);
 		add(multiPlayer);
 
 		lblBack = new JLabel("");
@@ -68,30 +70,62 @@ public class SelectGameModePanel extends JPanel{
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+				SoundConstants.menuMouseOnButtonSound();
+			}
 			public void mouseClicked(MouseEvent e) {
 				if(stringList.get(stringList.size()-2).getRectangle().contains(getMousePosition())) {
 					if(totalNumber < maxNumberOfHuman) {
 						totalNumber++;
 						stringList.get(stringList.size()-1).updateStringNoAnimation( "" + totalNumber);
+						stringList.get(stringList.size()-6).updateStringNoAnimation("" + totalNumberOfHuman);
+						stringList.get(stringList.size()-5).updateStringNoAnimation("" + (totalNumber - 1));
+						stringList.get(stringList.size()-4).updateStringNoAnimation(  "" + (totalNumber - totalNumberOfHuman));
+						SoundConstants.menuClickSound();
 					}
 				}
 				if(stringList.get(stringList.size()-3).getRectangle().contains(getMousePosition())) {
 					if(totalNumber > minNumberOfHuman) {
 						totalNumber--;
+						if(totalNumber < totalNumberOfHuman) {
+							totalNumberOfHuman--;
+							jumpingBox.removeBox();
+						}
 						stringList.get(stringList.size()-1).updateStringNoAnimation( "" + totalNumber);
+						stringList.get(stringList.size()-6).updateStringNoAnimation("" + totalNumberOfHuman);
+						stringList.get(stringList.size()-5).updateStringNoAnimation("" + (totalNumber - 1));
+						stringList.get(stringList.size()-4).updateStringNoAnimation(  "" + (totalNumber - totalNumberOfHuman));
+						SoundConstants.menuClickSound();
 					}
 				}
 				if(jumpingBox.getRightRectangle().contains(getMousePosition()) && SwingUtilities.isLeftMouseButton(e)) {
 					if(totalNumberOfHuman < totalNumber) {
 						totalNumberOfHuman++;
 						jumpingBox.addBox();
+						stringList.get(stringList.size()-1).updateStringNoAnimation( "" + totalNumber);
+						stringList.get(stringList.size()-6).updateStringNoAnimation("" + totalNumberOfHuman);
+						stringList.get(stringList.size()-5).updateStringNoAnimation("" + (totalNumber - 1));
+						stringList.get(stringList.size()-4).updateStringNoAnimation(  "" + (totalNumber - totalNumberOfHuman));
+						SoundConstants.menuClickSound();
+					}else if(totalNumberOfHuman == totalNumber && totalNumber < maxNumberOfHuman) {
+						totalNumberOfHuman++;
+						jumpingBox.addBox();
+						totalNumber++;
+						stringList.get(stringList.size()-1).updateStringNoAnimation( "" + totalNumber);
+						stringList.get(stringList.size()-6).updateStringNoAnimation("" + totalNumberOfHuman);
+						stringList.get(stringList.size()-5).updateStringNoAnimation("" + (totalNumber - 1));
+						stringList.get(stringList.size()-4).updateStringNoAnimation(  "" + (totalNumber - totalNumberOfHuman));
+						SoundConstants.menuClickSound();
 					}
 				}else if(jumpingBox.getRightRectangle().contains(getMousePosition()) && SwingUtilities.isRightMouseButton(e)) {
 					if(totalNumberOfHuman > minNumberOfHuman) {
 						totalNumberOfHuman--;
 						jumpingBox.removeBox();
-
+						SoundConstants.menuClickSound();
+						stringList.get(stringList.size()-1).updateStringNoAnimation( "" + totalNumber);
+						stringList.get(stringList.size()-6).updateStringNoAnimation("" + totalNumberOfHuman);
+						stringList.get(stringList.size()-5).updateStringNoAnimation("" + (totalNumber - 1));
+						stringList.get(stringList.size()-4).updateStringNoAnimation(  "" + (totalNumber - totalNumberOfHuman));
 					}
 				}
 				GameInteractions.requestResetMultiplayerMode(totalNumberOfHuman);
@@ -104,12 +138,21 @@ public class SelectGameModePanel extends JPanel{
 	{
 		
 		stringList.add(new VisualString(530, 126, 14, "Select Game Mode"));
-		stringList.add(new VisualString(265, 500, 10, "Singleplayer"));
-		stringList.add(new VisualString(1210, 500, 10, "Multiplayer"));
-		stringList.add(new VisualString(750, 800, 7, "Number of humans"));
+		stringList.add(new VisualString(singleX, singleMUltiY, 10, "Singleplayer"));
+		stringList.add(new VisualString(multiX, singleMUltiY, 10, "Multiplayer"));
+		stringList.add(new VisualString(singleX,  singleMUltiY + 295, 5, "Number of humans"));
+		stringList.add(new VisualString(multiX,  singleMUltiY + 295, 5, "Number of humans"));
+		stringList.add(new VisualString(singleX, singleMUltiY + 340, 5, "Number of AI"));
+		stringList.add(new VisualString(multiX, singleMUltiY + 340, 5, "Number of AI"));
 		stringList.add(new VisualString(47, 989, 10, "Back"));
 
 		stringList.add(new VisualString(550, 325,7, "Number of players", true));
+		
+		stringList.add(new VisualString(singleX + 440, singleMUltiY + 295, 5, "1", true));
+		stringList.add(new VisualString(multiX + 425, singleMUltiY +  295 , 5, "" + totalNumberOfHuman, true));
+		stringList.add(new VisualString(singleX + 440, singleMUltiY + 340, 5, "" + (totalNumber - 1), true));
+		stringList.add(new VisualString(multiX + 425, singleMUltiY +  340, 5, "" + (totalNumber - totalNumberOfHuman), true));
+		
 		stringList.add(new VisualString(1100, 325, 10, "<", true));
 		stringList.add(new VisualString(1300, 325, 10, ">", true));
 

@@ -45,21 +45,23 @@ public class VisualTerritoryPanel {
 		AnimationHandler.terminateAttackAnimation();
 	}
 	
-	public void insertMouseListeners(JPanel target) {
-		target.addMouseListener(mouseTracer);
-		target.addMouseMotionListener(mouseTracer);
-	}
-	
 	public void update() {
-		mouseEventUpdate();
-		if(GameInteractions.getActivePhase() != TURN_PHASE.ATTACK)
-			flushPrevState();
-		else
+		flushSelectableTerritory();
+		if(!suspendMouseEventUpdate()) { 
+			mouseEventUpdate();
 			GameController.interactions.synchronizeFocusTerritories(focusTerritories[0], focusTerritories[1]); 
+		}
 	}
 	
 	public void flushPrevState() {
 		popOutFocusTerritory(focusTerritories[0]);
+		flushSelectableTerritory();
+	}
+	
+	private void flushSelectableTerritory() {
+		if(selectableTerritory != focusTerritories[0] && selectableTerritory != focusTerritories[1])
+			AnimationHandler.terminateMouseOnTerritoryAnimation(selectableTerritory);
+		selectableTerritory = null;
 	}
 	
 	public void destroy() {
@@ -67,13 +69,13 @@ public class VisualTerritoryPanel {
 	}
 	
 	ArrayList<Integer> effectAmounts = new ArrayList<>();
-	public void requestFortifyInteractionEffect(VisualTerritory focusTerritory, int effectAmount) {
+	public void requestVisualDeviationEffect(VisualTerritory focusTerritory, int effectAmount) {
 		effectAmounts.set(visualTerritories.indexOf(focusTerritory), effectAmount);
 	}
 	
 	public void paint(Graphics painter) {
 		AnimationHandler.visualBuffer.paint(painter);
-		painter.setFont(new Font("pixel", Font.BOLD, 20));
+		int defaultFontSize = 16;
 		
 		Territory corresponding;
 		for(int i = 0; i < visualTerritories.size(); i++) {
@@ -90,13 +92,26 @@ public class VisualTerritoryPanel {
 			visualTerritories.get(i).paint(painter, selected);
 			
 			if(!AnimationHandler.suspendVisualTerritoryPanel()) {
-				if(visualTerritories.get(i).mainCoordinate != null) { 
+				Coordinate mainCoord = visualTerritories.get(i).mainCoordinate;
+				if(visualTerritories.get(i).mainCoordinate != null) {
+					VisualTerritory.applyPixelJumpHierarchy(mainCoord);
 					painter.setColor(Color.WHITE);
-					painter.fillRect(visualTerritories.get(i).mainCoordinate.xCoord - 1, visualTerritories.get(i).mainCoordinate.yCoord - VisualTerritory.PIXEL_JUMP
-							- 6, 1 * VisualTerritory.PIXEL_JUMP,  2 *VisualTerritory.PIXEL_JUMP);
+					int pixelGap = VisualTerritory.PIXEL_JUMP - visualTerritories.get(i).drawSize;
+					int fontSize = (2 - pixelGap) + defaultFontSize;
+					painter.setFont(new Font("pixel", Font.BOLD, fontSize));
+					int xCoordOffset = 1;
+					if(corresponding.getUnitNumber() - effectAmounts.get(i) < 10)
+						painter.fillRect(mainCoord.xCoord, mainCoord.yCoord, VisualTerritory.PIXEL_JUMP - pixelGap
+								,  2*VisualTerritory.PIXEL_JUMP - pixelGap);
+					else {
+						painter.fillRect(mainCoord.xCoord, mainCoord.yCoord, 2*VisualTerritory.PIXEL_JUMP - pixelGap
+								,  2*VisualTerritory.PIXEL_JUMP - pixelGap);
+						xCoordOffset += 1;
+					}
 					painter.setColor(Color.BLACK);
 					painter.drawString(Integer.toString(corresponding.getUnitNumber() - effectAmounts.get(i))
-							, visualTerritories.get(i).mainCoordinate.xCoord, visualTerritories.get(i).mainCoordinate.yCoord);
+							, mainCoord.xCoord + xCoordOffset + (2 - pixelGap) / 2, mainCoord.yCoord - (2 - pixelGap) / 2 
+							+ VisualTerritory.PIXEL_JUMP - pixelGap + fontSize / 2);
 				}
 			}
 		}
@@ -120,12 +135,8 @@ public class VisualTerritoryPanel {
 			}
 		}
 		
-		if(selectableTerritory != focusTerritories[0] && selectableTerritory != focusTerritories[1])
-			AnimationHandler.terminateMouseOnTerritoryAnimation(selectableTerritory);
-		selectableTerritory = null;
-		
 		if(focusTerritory == null)  return;
-		if(!pushIntoSelectableTerritories(focusTerritory)) return;
+		if(!pushIntoSelectableTerritory(focusTerritory)) return;
 		if(mouseTracer.mousePressed) {
 			if(focusTerritories[0] == focusTerritory || focusTerritories[1] == focusTerritory) 
 				alreadyFocused = true;
@@ -137,20 +148,20 @@ public class VisualTerritoryPanel {
 	
 	private boolean pushIntoFocusTerritories(VisualTerritory push) {
 		if(focusTerritories[0] == null) {
-			if(GameInteractions.isSelectable(push, push)) {
+			if(GameInteractions.isSelectable(push, null, 0)) {
 				AnimationHandler.requestMouseOnTerritoryAnimation(push);
 				focusTerritories[0] = push;
 				return true;
 			}
 			return false;
 		}
-		if(GameInteractions.isSelectable(focusTerritories[0], push)) {
+		if(GameInteractions.isSelectable(focusTerritories[0], push, 1)) {
 			AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[1]);
 			AnimationHandler.requestMouseOnTerritoryAnimation(push);
 			focusTerritories[1] = push;
 			return true;
 		}
-		else if(GameInteractions.isSelectable(push, push)) {
+		else if(GameInteractions.isSelectable(push, null, 0)) {
 			AnimationHandler.terminateMouseOnTerritoryAnimation(focusTerritories[0]);
 			AnimationHandler.requestMouseOnTerritoryAnimation(push);
 			focusTerritories[0] = push;
@@ -161,26 +172,35 @@ public class VisualTerritoryPanel {
 		return false;
 	}
 	
-	private boolean pushIntoSelectableTerritories(VisualTerritory push) {
+	private boolean pushIntoSelectableTerritory(VisualTerritory push) {
 		if(focusTerritories[0] == null) {
-			if(GameInteractions.isSelectable(push, push)) {
+			if(GameInteractions.isSelectable(push, null, 0)) {
 				AnimationHandler.requestMouseOnTerritoryAnimation(push);
 				selectableTerritory = push;
 				return true;
 			}
 			return false;
 		}
-		if(GameInteractions.isSelectable(focusTerritories[0], push)) {
+		if(GameInteractions.isSelectable(focusTerritories[0], push, 1)) {
 			AnimationHandler.requestMouseOnTerritoryAnimation(push);
 			selectableTerritory = push;
 			return true;
 		}
-		else if(GameInteractions.isSelectable(push, push)) {
+		else if(GameInteractions.isSelectable(push, null, 0)) {
 			AnimationHandler.requestMouseOnTerritoryAnimation(push);
 			selectableTerritory = push;
 			return true;
 		}
 		return false;
+	}
+	
+	private boolean suspendMouseEventUpdate() {
+		return GameInteractions.getActivePhase() != TURN_PHASE.ATTACK;
+	}
+	
+	public void requestPushIntoSelectableTerritory(VisualTerritory push) {
+		AnimationHandler.requestMouseOnTerritoryAnimation(push);
+		selectableTerritory = push;
 	}
 	
 	private void popOutFocusTerritory(VisualTerritory pop) {

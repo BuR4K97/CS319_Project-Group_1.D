@@ -17,6 +17,7 @@ public class DefaultRiskTerritory extends Territory {
 	@Override
 	public Territory stateCopy() {
 		Territory copy = new DefaultRiskTerritory(territory, continent);
+		copy.connectToGraph(this.graphConnected);
 		copy.setPlayer(getPlayer());
 		copy.setUnitNumber(getUnitNumber());
 		return copy;

@@ -1,14 +1,24 @@
 package UIComponents;
 
 import java.awt.Color;
-
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+
+import javax.swing.KeyStroke;
 
 import AnimationComponents.AnimationHandler;
 import Controller.GameController;
+import Controller.MainApplication;
+import GameAssets.SoundConstants;
 import ModelClasses.Territory;
+import javax.swing.JLabel;
 
 public class GamePanel extends DynamicPanel {
 
@@ -20,39 +30,17 @@ public class GamePanel extends DynamicPanel {
 	private TextualInGamePanel textualInGamePanel;
 	private VisualCardPanel visualCardPanel;
 	private MouseInGameListener mouseTracer;
-	
-	private ArrayList<VisualString> draftPhaseStr;
-	private ArrayList<VisualString> attackPhaseStr;
-	private ArrayList<VisualString> fortifyPhaseStr;
-	private ArrayList<VisualString> showCardsModeStr;
-	private ArrayList<VisualString> attackModeStr;
-	private ArrayList<VisualString> currentStateStrToDraw;
-	private InGameSettingsPanel inGameSettingsPanel;
-	//stringList.add(new VisualString(770, 126, 14, "Options"));
+	public static boolean inGameMenuLabelPressed;
+	public static  ArrayList<VisualString> stringList;
 	
 	public GamePanel() {
+		
 		if(GameController.activeMode == null) return;
+		this.setPreferredSize(new Dimension(1920, 1080));
 		setLayout(null);
 		setBackground(Color.BLACK);
-		
-		setDraftPhaseStr();
-		setAttackPhaseStr();
-		setFortifyPhaseStr();
-		setShowCardsModeStr();
-		setAttackModeStr();
-		setCurrentStateStrToDraw();
-		
-		fillDraftPhaseStr();
-		
-//		for(int i = 0; i < draftPhaseStr.size(); i++)
-//			currentStateStrToDraw.add(draftPhaseStr.get(i));
-		currentStateStrToDraw.add(new VisualString(1210, 875, 5, "Fortify"));
-		currentStateStrToDraw.add(new VisualString(1400, 875, 5, "Player 1", Color.GREEN));
-		currentStateStrToDraw.add(new VisualString(1210, 925, 4, "Attack Till Capture"));
-		currentStateStrToDraw.add(new VisualString(1210, 965, 4, "Attack"));
-		currentStateStrToDraw.add(new VisualString(1210, 1005, 4, "Attack"));
-		
-		inGameSettingsPanel = new InGameSettingsPanel();
+		setFocusable(true);
+		requestFocusInWindow();		
 		
 		currState = PANEL_STATES.NORMAL;
 		mouseTracer = new MouseInGameListener();
@@ -65,10 +53,13 @@ public class GamePanel extends DynamicPanel {
 		textualInGamePanel.initialize(mouseTracer);
 		visualCardPanel = new VisualCardPanel();
 		visualCardPanel.initialize(mouseTracer);
+		
 
-		visualTerritoryPanel.insertMouseListeners(this);
+		this.addMouseListener(mouseTracer);
+		this.addMouseMotionListener(mouseTracer);
 		textualInGamePanel.insertLabels(this);
 		interactionPanel.insertButtons(this);
+		
 	}
 		
 	public void initializeAttackScenario(Territory[] combatTerritories) {
@@ -93,60 +84,33 @@ public class GamePanel extends DynamicPanel {
 		currState = PANEL_STATES.NORMAL;
 		interactionPanel.deactivateCardMode();
 	}
-
+	
+	int inGameSettingsPanelWidth = 800;
+	int inGameSettingsPanelHeight = 500;
 	public void paintComponent(Graphics painter) {
 		super.paintComponent(painter);
-		
 		visualTerritoryPanel.paint(painter);
 		if(!suspendVisualCardPanelPaintEvent())
 			visualCardPanel.paint(painter);
-		if(!suspendTextualInGamePanelPaintEvent()) {
+		if(!suspendTextualInGamePanelPaintEvent())
 			textualInGamePanel.paint(painter);
-			drawStringBorders(painter);
-			for(int i = 0; i < currentStateStrToDraw.size(); i++)
-				currentStateStrToDraw.get(i).paint(painter);
-		}
-//		int width, height;
-//		width = 800;
-//		height = 400;
-//		painter.setColor(new Color(0, 0, 0, 170));
-//		painter.fillRect(1920/2 - width/2, 1080/2 - height/2, width, height);
-//		painter.setColor(Color.CYAN);
-//		painter.drawRect(1920/2 - width/2, 1080/2 - height/2, width, height);
-	}
-	
-	public void drawStringBorders(Graphics g) {
-		int xCor = 1200, yCor = 860;
-		for(int i = 0; i < 46; i++) {
-			g.drawRect(xCor, yCor, 4, 4);
-			xCor += 8;
-		}
-		xCor = 1204; yCor = 910;
-		for(int i = 0; i < 45; i++) {
-			g.drawRect(xCor, yCor, 4, 4);
-			xCor += 8;
-		}
-		xCor = 1200; yCor = 1030;
-		for(int i = 0; i < 46; i++) {
-			g.drawRect(xCor, yCor, 4, 4);
-			xCor += 8;
-		}
-		xCor = 1200; yCor = 866;
-		for(int i = 0; i < 33; i++) {
-			g.drawRect(xCor, yCor, 2, 2);
-			yCor += 5;
-		}
-		xCor = 1380; yCor = 866;
-		for(int i = 0; i < 9; i++) {
-			g.drawRect(xCor, yCor, 2, 2);
-			yCor += 5;
-		}
-		xCor = 1562; yCor = 866;
-		for(int i = 0; i < 33; i++) {
-			g.drawRect(xCor, yCor, 2, 2);
-			yCor += 5;
+		painter.setColor(Color.white);
+		painter.fillRect(0, 0, 30, 5);
+		painter.fillRect(0, 12, 30, 5);
+		painter.fillRect(0, 25, 30, 5);
+		
+		if(inGameMenuLabelPressed) {
+			painter.setColor(new Color(0, 0, 0, 220));
+			painter.fillRect(1920/2 - inGameSettingsPanelWidth / 2, 1080 / 2 - inGameSettingsPanelHeight / 2, inGameSettingsPanelWidth, inGameSettingsPanelHeight);
+			painter.setColor(Color.CYAN);
+			painter.drawRect(1920/2 - inGameSettingsPanelWidth / 2, 1080 / 2 - inGameSettingsPanelHeight / 2, inGameSettingsPanelWidth, inGameSettingsPanelHeight);
 		}
 		
+		if(inGameMenuLabelPressed) {
+			for(int i = 0; i < stringList.size(); i++)
+				stringList.get(i).paint(painter);
+		}
+		updateInGameLabels();
 	}
 
 	public void update() {
@@ -159,6 +123,11 @@ public class GamePanel extends DynamicPanel {
 		mouseTracer.mouseClicked = false;
 		mouseTracer.leftButtonClicked = false;
 		mouseTracer.rightButtonClicked = false;
+		
+	}
+	
+	public void requestNotification(String message) {
+		textualInGamePanel.requestNotification(message);
 	}
 	
 	public void requestFlushVisualTerritoryPanel() {
@@ -178,8 +147,12 @@ public class GamePanel extends DynamicPanel {
 		else interactionPanel.deactivateAttackButton();
 	}
 	
-	public void requestFortifyInteractionEffect(VisualTerritory focusTerritory, int effectAmount) {
-		visualTerritoryPanel.requestFortifyInteractionEffect(focusTerritory, effectAmount);
+	public void requestVisualDeviationEffect(VisualTerritory focusTerritory, int effectAmount) {
+		visualTerritoryPanel.requestVisualDeviationEffect(focusTerritory, effectAmount);
+	}
+	
+	public void requestPushIntoVisualTerritoryPanelSelectableTerritory(VisualTerritory push) {
+		visualTerritoryPanel.requestPushIntoSelectableTerritory(push);
 	}
 
 	public void destroy() {
@@ -192,10 +165,6 @@ public class GamePanel extends DynamicPanel {
 	
 	public ArrayList<VisualCard> getFocusVisualCards() {
 		return visualCardPanel.getFocusVisualCards();
-	}
-
-	public void setStringList() {
-		//this.interactionStringList = new ArrayList<VisualString>();
 	}
 	
 	private boolean suspendVisualTerritoryPanelUpdate() {
@@ -227,50 +196,15 @@ public class GamePanel extends DynamicPanel {
 			return true;
 		return AnimationHandler.suspendVisualCardPanelPaintEvent();
 	}
-
-	public void setShowCardsModeStr() {
-		showCardsModeStr = new ArrayList<VisualString>();
-	}
-
-	public void setDraftPhaseStr() {
-		draftPhaseStr = new ArrayList<VisualString>();
-	}
-
-	public void setAttackPhaseStr() {
-		attackPhaseStr = new ArrayList<VisualString>();
-	}
-
-	public void setFortifyPhaseStr() {
-		fortifyPhaseStr = new ArrayList<VisualString>();
-	}
-
-	public void setAttackModeStr() {
-		attackModeStr = new ArrayList<VisualString>();
-	}
-
-	public void setCurrentStateStrToDraw() {
-		currentStateStrToDraw = new ArrayList<VisualString>();
+	public void updateInGameLabels() {
+		interactionPanel.updateInGameLabels();
 	}
 	
-	public void fillCurrentStateStrToDraw() {
-		for(int i = 0; i < showCardsModeStr.size(); i++)
-			currentStateStrToDraw.add(showCardsModeStr.get(i));
-		for(int i = 0; i < draftPhaseStr.size(); i++)
-			currentStateStrToDraw.add(draftPhaseStr.get(i));
-		for(int i = 0; i < attackPhaseStr.size(); i++)
-			currentStateStrToDraw.add(attackPhaseStr.get(i));
-		for(int i = 0; i < fortifyPhaseStr.size(); i++)
-			currentStateStrToDraw.add(fortifyPhaseStr.get(i));
-		for(int i = 0; i < attackModeStr.size(); i++)
-			currentStateStrToDraw.add(attackModeStr.get(i));
+	public boolean isInGameMenuLabelPressed() {
+		return inGameMenuLabelPressed;
 	}
-	
-	public void fillDraftPhaseStr(){
-		//System.out.println(textualInGamePanel.getActivePlayerText());
-		//System.out.println(textualInGamePanel.getActivePhaseText());
-		
-		//draftPhaseStr.add(new VisualString(1210, 875, 5, textualInGamePanel.getPhaseLabel().getText(), Color.CYAN));
-		//draftPhaseStr.add(new VisualString(1400, 875, 5, textualInGamePanel.getPlayerLabel().getText(), textualInGamePanel.getPlayerLabel().getForeground()));
-		//System.out.println(textualInGamePanel.getPhaseLabel().getText());
+
+	public ArrayList<VisualString> getStringList() {
+		return stringList;
 	}
 }

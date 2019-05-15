@@ -69,10 +69,15 @@ public abstract class VisualTerritory implements Serializable {
 	public static boolean checkPixelJumpHierarchy(Coordinate check) {
 		return check.xCoord % PIXEL_JUMP == 0 && check.yCoord % PIXEL_JUMP == 0;
 	}
+	
+	public static void applyPixelJumpHierarchy(Coordinate mainCoord) {
+		mainCoord.xCoord = (mainCoord.xCoord / VisualTerritory.PIXEL_JUMP) * VisualTerritory.PIXEL_JUMP;
+		mainCoord.yCoord = (mainCoord.yCoord / VisualTerritory.PIXEL_JUMP) * VisualTerritory.PIXEL_JUMP;
+	}
 
 	public abstract VisualTerritory copy();
 	public abstract void print();
 	public abstract boolean checkItsCorresponding(String checkTag);
 	public abstract String getCorrespondingTag();
-	
+		
 }
