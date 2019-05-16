@@ -6,6 +6,8 @@ public abstract class Card implements Serializable {
 
 	public CARD_TYPES cardType;
 	
+	public static final int UNIT_ACTIVATION = 5;
+	public static final int CONSTANT_ACTIVATION = 2;
 	public static enum CARD_ACTIVATION { 
 		INSTANT(1), COMBINATIONAL(3); 
 		
@@ -34,11 +36,11 @@ public abstract class Card implements Serializable {
 			if(type == EASY_UNIT) return 1;
 			if(type == EASY_CONTINENT) return 2;
 			if(type == MODERATE_UNIT) return 3;
-			if(type == MODERATE_CONTINENT) return 4;
+			if(type == MODERATE_CONTINENT) return 3;
 			if(type == HARD_UNIT) return 5;
-			if(type == HARD_CONTINENT) return 5;
+			if(type == HARD_CONTINENT) return 4;
 			if(type == EXTREME_UNIT) return 7;
-			if(type == EXTREME_CONTINENT) return 7;
+			if(type == EXTREME_CONTINENT) return 5;
 			return 0;
 		}
 	};

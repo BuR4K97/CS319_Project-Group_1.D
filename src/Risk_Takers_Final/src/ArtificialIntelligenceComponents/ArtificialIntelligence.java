@@ -1,8 +1,6 @@
 package ArtificialIntelligenceComponents;
 
 import java.util.ArrayList;
-
-import AnimationComponents.AnimationHandler;
 import Controller.GameController;
 import Controller.GameInteractions;
 import ModelClasses.Card;
@@ -339,11 +337,11 @@ public class ArtificialIntelligence {
 			double territorialCardScore = extractTerritorialCardScore();
 			int activationalCardScore = extractActivationalCardScore();
 			
-			double territorialScore = (territoryNumber / CARD_ACTIVATION.COMBINATIONAL.activation) + territorialCardScore
+			double territorialScore = (territoryNumber / Card.UNIT_ACTIVATION + Card.CONSTANT_ACTIVATION) + territorialCardScore
 					+ continentalCardScore + Math.pow(activationalCardScore, 1.13);
-			territorialScore = (territorialScore / 100) + 1;
-			territorialScore = Math.pow(territorialScore, 10) * Math.pow(territorialMomentScore, 0.33);
-			heuristicValue = 1000 * Math.pow(distributionalScore + 1, -3) / (territorialScore + 1);
+			territorialScore = (territorialScore / 39);
+			territorialScore = Math.pow(territorialScore + 1, 13) * Math.pow(territorialMomentScore + 1, 0.39);
+			heuristicValue = 1000 * Math.pow(distributionalScore + 1, 0.13) / (territorialScore + 1);
 		}
 
 		private int extractTerritoryNumber() {

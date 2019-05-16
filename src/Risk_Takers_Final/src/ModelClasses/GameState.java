@@ -26,8 +26,8 @@ public class GameState {
 		for(int i = 0; i < prevState.territoriesState.size(); i++)
 			if(currState.territoriesState.get(i).getPlayer() == Turn.activePlayer)
 				territoriesCaptured += 1;
-		Turn.activePlayer.insertUnit(territoriesCaptured / CARD_ACTIVATION.COMBINATIONAL.activation);
-		GameInteractions.requestNotification("You earned " + (territoriesCaptured / CARD_ACTIVATION.COMBINATIONAL.activation) 
+		Turn.activePlayer.insertUnit(territoriesCaptured / Card.UNIT_ACTIVATION + Card.CONSTANT_ACTIVATION);
+		GameInteractions.requestNotification("You earned " + (territoriesCaptured / Card.UNIT_ACTIVATION + Card.CONSTANT_ACTIVATION) 
 				+ " unit for");
 		GameInteractions.requestNotification("capturing " + territoriesCaptured + " territories");
 	}

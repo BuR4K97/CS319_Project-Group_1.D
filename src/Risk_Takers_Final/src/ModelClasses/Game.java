@@ -6,10 +6,7 @@ import ArtificialIntelligenceComponents.ArtificialIntelligenceHandler;
 import Controller.GameController;
 import Controller.GameInteractions;
 import GameAssets.GameConstants;
-import GameAssets.DefaultRiskMode.DefaultRiskMode;
-import ModelClasses.Card.CARD_ACTIVATION;
 import ModelClasses.Turn.TURN_PHASE;
-import UIComponents.VisualTerritory;
 
 /**
  * Statically constructed Game class since there will be only one active Game among the program.
@@ -142,7 +139,7 @@ public class Game {
 			else i--;
 		}
 		
-		final double INITIAL_UNIT_MODIFIER = 3;
+		final double INITIAL_UNIT_MODIFIER = Card.UNIT_ACTIVATION;
 		ArrayList<Card> cardSet = GameController.activeMode.cardSet;
 		ArrayList<Card> activates = new ArrayList<Card>();
 		for(Player player : players) {
@@ -154,6 +151,7 @@ public class Game {
 				player.activateCards(activates);
 				activates.clear();
 			}
+			player.insertUnit(Card.CONSTANT_ACTIVATION);
 		}
 		Turn.initialize();
 		GameController.interactions.requestTextualPanelUpdateRequest();
